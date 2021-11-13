@@ -18,6 +18,14 @@ const routes: Routes = [
   {
     path: 'budget',
     loadChildren: () => import('./budget/budget.module').then( m => m.BudgetPageModule)
+  },
+  {
+    path: 'information',
+    loadChildren: () => import('./information/information.module').then( m => m.InformationPageModule)
+  },
+  {
+    path: 'estimate-history',
+    loadChildren: () => import('./estimate-history/estimate-history.module').then( m => m.EstimateHistoryPageModule)
   }
 ];
 
