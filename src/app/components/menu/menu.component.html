@@ -1,0 +1,57 @@
+<!-- <ion-menu contentId="main-content" type="overlay">
+  <ion-content>
+    <ion-list id="inbox-list">
+      <ion-list-header>Trading Apps</ion-list-header>
+      <ion-note>Business</ion-note>
+
+      <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+        <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+          <ion-label>{{ p.title }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+
+  </ion-content>
+</ion-menu> -->
+<ion-menu side="start" menuId="myMenu" contentId="main-content" type="overlay">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Trading Apps</ion-title>
+
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle>
+        <ion-item (click)="navigateTo('business-plan')" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon slot="start" name="bar-chart" ></ion-icon>
+          <ion-label>Plan de negoscio</ion-label>
+        </ion-item>
+
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item (click)="navigateTo('information')" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon slot="start" name="business" ></ion-icon>
+          <ion-label>Información de la empresa</ion-label>
+        </ion-item>
+
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item (click)="navigateTo('estimate-history')" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon slot="start" name="albums" ></ion-icon>
+          <ion-label>Historial de estimaciones</ion-label>
+        </ion-item>
+
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item>
+          <ion-icon slot="start" name="exit"></ion-icon>
+          <ion-label>Salir</ion-label>
+        </ion-item>
+
+      </ion-menu-toggle>
+
+    </ion-list>
+  </ion-content>
+</ion-menu>
