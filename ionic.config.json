@@ -1,0 +1,7 @@
+{
+  "name": "TradingAppsProyect",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
