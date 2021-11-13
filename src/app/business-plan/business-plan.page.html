@@ -16,9 +16,108 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="navigateTo('budget')">Presupuesto
-    <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" >
-      <ion-refresher-content >Presupuesto</ion-refresher-content>
-    </ion-refresher>
-  </ion-button>
+  <!-- Identificador de la estimacion -->
+  <ion-item>
+    <ion-title ><h2><b>Estimación</b></h2></ion-title>
+          <ion-label slot="end"><b>1</b></ion-label>
+  </ion-item>
+  <!-- La lista de ejemplo -->
+  <ion-list>
+    <!-- PRESUSPIUESTO -->
+    <ion-item color="secundary" (click)="navigateTo('budget')">
+      <ion-title color="primary"><b>Presupuesto</b></ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon color="primary" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Efectivo</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Banco</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Otros</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <!-- CAPITAL OPERATIVO -->
+    <ion-item color="secundary" (click)="navigateTo('budget')">
+      <ion-title color="primary"><b>Capital Oprtarivo</b></ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon color="primary" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Mano de obra del emprendedor</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mano de obra</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Servicios basicos</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Otros</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+
+    <!-- CAPITAL DE INVERSION -->
+    <ion-item color="secundary" (click)="navigateTo('budget')">
+      <ion-title color="primary"><b>Capital de Inversión</b></ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon color="primary" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Equipo de computo</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Muebles</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Otros</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+
+    <!-- Resumen de presupuesto -->
+    <ion-item color="secundary" (click)="navigateTo('budget')">
+      <ion-title color="primary"><b>Resumen de Presupuesto</b></ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon color="primary" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Total de inversion</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Efectivo</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Requerimiento de credito</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+
+  </ion-list>
+
 </ion-content>

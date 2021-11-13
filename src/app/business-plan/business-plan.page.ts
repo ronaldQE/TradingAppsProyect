@@ -18,4 +18,7 @@ export class BusinessPlanPage implements OnInit {
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
+
+
+
 }
