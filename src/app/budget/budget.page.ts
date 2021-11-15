@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Budget } from '../models/interfaces';
+import { serviceDataBase } from '../services/services-database';
 
 @Component({
   selector: 'app-budget',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./budget.page.scss'],
 })
 export class BudgetPage implements OnInit {
-
-  constructor() { }
-
+  newBudget: Budget = {
+    efectivo: null,
+    banco: null,
+    otros: null
+  }
+  constructor(public db: serviceDataBase) { }
+  
   ngOnInit() {
   }
-
+  send(){
+    const data = this.newBudget;
+    this.db.actualizarDatos<Budget>(data,'/Estimaciones/estimicion-1','presupuesto')
+  }
 }
