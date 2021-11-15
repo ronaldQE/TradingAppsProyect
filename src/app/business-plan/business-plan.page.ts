@@ -53,7 +53,6 @@ export class BusinessPlanPage implements OnInit {
     this.getBudget();
     this.getOperatingCapital();
     this.getInvestmentCapital();
-;    console.log(this.budget);
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
