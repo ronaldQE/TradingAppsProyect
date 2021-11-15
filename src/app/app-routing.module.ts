@@ -26,7 +26,11 @@ const routes: Routes = [
   {
     path: 'estimate-history',
     loadChildren: () => import('./estimate-history/estimate-history.module').then( m => m.EstimateHistoryPageModule)
+  },  {
+    path: 'budget-summary',
+    loadChildren: () => import('./pages/budget-summary/budget-summary.module').then( m => m.BudgetSummaryPageModule)
   }
+
 ];
 
 @NgModule({

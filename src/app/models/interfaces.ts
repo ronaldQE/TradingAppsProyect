@@ -3,3 +3,9 @@ export interface Budget{
     banco: number;
     otros: number;
 }
+
+export interface CapitalOperative{
+  consultoria:number;
+  equipamientoOficina: number;
+  equipamientoComputo: number;
+}

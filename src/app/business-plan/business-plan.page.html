@@ -42,15 +42,16 @@
     </ion-item>
     <!-- CAPITAL OPERATIVO -->
     <ion-item color="primary" (click)="navigateTo('budget')" lines="none" detail="true">
-      <ion-title>Capital de Operativo</ion-title>
+      <ion-title>Capital Operativo</ion-title>
     </ion-item>
 
     <ion-item>
       <ion-label>Mano de obra del emprendedor</ion-label>
       <ion-label slot="end">0.00</ion-label>
     </ion-item>
+
     <ion-item>
-      <ion-label>Mano de obra</ion-label>
+      <ion-label>Promociones</ion-label>
       <ion-label slot="end">0.00</ion-label>
     </ion-item>
     <ion-item>
@@ -58,7 +59,11 @@
       <ion-label slot="end">0.00</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Otros</ion-label>
+      <ion-label>Mano de obra</ion-label>
+      <ion-label slot="end">0.00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Alquiler</ion-label>
       <ion-label slot="end">0.00</ion-label>
     </ion-item>
 
@@ -72,29 +77,33 @@
       <ion-label slot="end">0.00</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Muebles</ion-label>
+      <ion-label>Equipamiento Oficina</ion-label>
       <ion-label slot="end">0.00</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Otros</ion-label>
+      <ion-label>Consultoria</ion-label>
       <ion-label slot="end">0.00</ion-label>
     </ion-item>
 
     <!-- Resumen de presupuesto -->
-    <ion-item color="primary" (click)="navigateTo('budget')" lines="none" detail="true">
+    <ion-item color="primary" (click)="navigateTo('budget-summary')" lines="none" detail="true">
       <ion-title>Resumen Presupuesto</ion-title>
     </ion-item>
 
     <ion-item>
-      <ion-label>Total de inversion</ion-label>
+      <ion-label>Aporte Propio</ion-label>
       <ion-label slot="end">{{budget.efectivo}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Efectivo</ion-label>
+      <ion-label>Total Plan Inverción</ion-label>
       <ion-label slot="end">{{budget.banco}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Requerimiento de credito</ion-label>
+      <ion-label>Total del Proyecto</ion-label>
+      <ion-label slot="end">{{budget.otros}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Monto a Financiar</ion-label>
       <ion-label slot="end">{{budget.otros}}</ion-label>
     </ion-item>
 
