@@ -26,7 +26,15 @@ const routes: Routes = [
   {
     path: 'estimate-history',
     loadChildren: () => import('./estimate-history/estimate-history.module').then( m => m.EstimateHistoryPageModule)
+  },  {
+    path: 'investment-capital',
+    loadChildren: () => import('./investment-capital/investment-capital.module').then( m => m.InvestmentCapitalPageModule)
+  },
+  {
+    path: 'operating-capital',
+    loadChildren: () => import('./operating-capital/operating-capital.module').then( m => m.OperatingCapitalPageModule)
   }
+
 ];
 
 @NgModule({

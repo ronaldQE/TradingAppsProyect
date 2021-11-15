@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Capital Operatvo</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="business-plan"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Alquiler</ion-label>
+    <ion-input type="number" [(ngModel)]="newOperatingCapital.alquiler"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-label position="floating">Mano de obra</ion-label>
+    <ion-input type="number" [(ngModel)]="newOperatingCapital.manoObra"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-label position="floating">Mano de obra del Emprendedor</ion-label>
+    <ion-input type="number" [(ngModel)]="newOperatingCapital.manoObraEmprendedor"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-label position="floating">Promociones</ion-label>
+    <ion-input type="number" [(ngModel)]="newOperatingCapital.promociones"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-label position="floating">Servicios basicos</ion-label>
+    <ion-input type="number" [(ngModel)]="newOperatingCapital.serviciosBasicos"></ion-input>
+  </ion-item>
+  <br>
+
+  <ion-button (click)="send()" size="large" expand="block">GUARDAR</ion-button>
+</ion-content>
