@@ -8,21 +8,21 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
+  <ion-item class="inputData">
     <ion-label position="floating">Efectivo</ion-label>
     <ion-input type="number" [(ngModel)]="newBudget.efectivo"></ion-input>
   </ion-item>
   <br>
-  <ion-item>
+  <ion-item class="inputData">
     <ion-label position="floating">Banco</ion-label>
     <ion-input type="number" [(ngModel)]="newBudget.banco"></ion-input>
   </ion-item>
   <br>
-  <ion-item>
+  <ion-item class="inputData">
     <ion-label position="floating">Otros</ion-label>
     <ion-input type="number" [(ngModel)]="newBudget.otros"></ion-input>
   </ion-item>
   <br>
 
-  <ion-button (click)="send()" size="large" expand="block">GUARDAR</ion-button>
+  <ion-button class="btnGuardar" (click)="send()" size="large" expand="block">GUARDAR</ion-button>
 </ion-content>
