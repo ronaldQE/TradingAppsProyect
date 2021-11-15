@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Resumen Presupuesto</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="business-plan"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- PRESUSPIUESTO -->
+  <ion-item color="secondary">
+    <ion-title>Aporte Propio</ion-title>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Efectivo</ion-label>
+    <ion-label slot="end">{{efectivoTotal}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Mano de Obra del Emprendedor</ion-label>
+    <ion-label slot="end">{{operatingCapital.manoObraEmprendedor}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label><b>Total</b></ion-label>
+    <ion-label slot="end"><b>{{operatingCapital.manoObraEmprendedor+efectivoTotal}}</b></ion-label>
+  </ion-item>
+  <!-- Plan de inversion -->
+  <ion-item color="secondary">
+    <ion-title>Plan de Inversión</ion-title>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Gastos Operativos</ion-label>
+    <ion-label slot="end">{{totalGastosOperativos}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Requerimiento Promosionales</ion-label>
+    <ion-label slot="end">{{operatingCapital.promociones}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Equipos, Maquinaria</ion-label>
+    <ion-label slot="end">{{investmentCapital.equipamientoOficina+investmentCapital.equipoComputo}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Requerimientos Legales</ion-label>
+    <ion-label slot="end">{{investmentCapital.consultoria}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label><b>Total</b></ion-label>
+    <ion-label slot="end"><b>{{operatingCapital.promociones+investmentCapital.equipamientoOficina+investmentCapital.equipoComputo+investmentCapital.consultoria+totalGastosOperativos}}</b></ion-label>
+  </ion-item>
+  <br>
+
+  <ion-item color="tertiary">
+    <ion-label>Aporte Propio</ion-label>
+    <ion-label slot="end">{{budgetSummary.aportePropio}}</ion-label>
+  </ion-item>
+  <ion-item color="tertiary">
+    <ion-label>Total del Proyecto</ion-label>
+    <ion-label slot="end">{{budgetSummary.totalProyecto}}</ion-label>
+  </ion-item>
+  <ion-item color="medium">
+    <ion-label>Monto a Financiar</ion-label>
+    <ion-label slot="end">{{budgetSummary.montoFinanciar}}</ion-label>
+  </ion-item>
+
+</ion-content>

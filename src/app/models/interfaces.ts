@@ -3,3 +3,24 @@ export interface Budget{
     banco: number;
     otros: number;
 }
+
+export interface InvestmentCapital{
+    consultoria: number;
+    equipamientoOficina: number;
+    equipoComputo: number;
+}
+
+export interface OperatingCapital{
+    alquiler: number;
+    manoObra: number;
+    manoObraEmprendedor: number;
+    promociones: number;
+    serviciosBasicos: number;
+}
+
+export interface BudgetSummary{
+    aportePropio: number;
+    planInversion: number;
+    montoFinanciar: number;
+    totalProyecto: number;
+}

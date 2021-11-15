@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { serviceDataBase } from '../services/services-database';
+import { serviceDataBase } from 'src/app/services/services-database';
 
-import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../models/interfaces';
-
+import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../../models/interfaces';
 
 
 @Component({
-  selector: 'app-business-plan',
-  templateUrl: './business-plan.page.html',
-  styleUrls: ['./business-plan.page.scss'],
+  selector: 'app-budget-summary',
+  templateUrl: './budget-summary.page.html',
+  styleUrls: ['./budget-summary.page.scss'],
 })
-export class BusinessPlanPage implements OnInit {
-
+export class BudgetSummaryPage implements OnInit {
   public budget: Budget = {
     efectivo: 0,
     banco: 0,
@@ -40,6 +38,7 @@ export class BusinessPlanPage implements OnInit {
   public cOperativo:number=0;
   public cInversion:number=0;
   public efectivoTotal:number=0;
+  public totalGastosOperativos:number=0;
 
   constructor(
     private router: Router,
@@ -99,8 +98,8 @@ export class BusinessPlanPage implements OnInit {
         this.operatingCapital.serviciosBasicos=0;
       }
       this.budgetSummary.aportePropio = this.budget.efectivo + this.budget.banco+ this.budget.otros+this.operatingCapital.manoObraEmprendedor
-      let totalGastosOperativos = this.operatingCapital.alquiler+this.operatingCapital.manoObra+this.operatingCapital.serviciosBasicos
-      this.cOperativo = totalGastosOperativos + this.operatingCapital.promociones
+      this.totalGastosOperativos = this.operatingCapital.alquiler+this.operatingCapital.manoObra+this.operatingCapital.serviciosBasicos
+      this.cOperativo = this.totalGastosOperativos + this.operatingCapital.promociones
       this.budgetSummary.planInversion=this.cOperativo+this.cInversion
       this.budgetSummary.totalProyecto=this.budgetSummary.planInversion+this.budgetSummary.aportePropio-this.efectivoTotal
       this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
@@ -136,16 +135,4 @@ export class BusinessPlanPage implements OnInit {
     }
     )
   }
-  getBudgetSummary(){
-    this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe( (data)=>{
-      this.budgetSummary = data;
-
-    },
-    (error:any) => {
-      console.log(`Error: ${error}`);
-
-    }
-    )
-  }
-
 }

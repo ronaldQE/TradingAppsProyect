@@ -30,72 +30,81 @@
 
     <ion-item>
       <ion-label>Efectivo</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label slot="end">{{budget.efectivo}}</ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Banco</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label slot="end">{{budget.banco}}</ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Otros</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label slot="end">{{budget.otros}}</ion-label>
     </ion-item>
     <!-- CAPITAL OPERATIVO -->
-    <ion-item color="primary" (click)="navigateTo('budget')" lines="none" detail="true">
+    <ion-item color="primary" (click)="navigateTo('operating-capital')" lines="none" detail="true">
       <ion-title>Capital de Operativo</ion-title>
     </ion-item>
 
     <ion-item>
       <ion-label>Mano de obra del emprendedor</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label slot="end">{{operatingCapital.manoObraEmprendedor}}</ion-label>
     </ion-item>
+
     <ion-item>
-      <ion-label>Mano de obra</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label>Promociones</ion-label>
+      <ion-label slot="end">{{operatingCapital.promociones}}</ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Servicios basicos</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label slot="end">{{operatingCapital.serviciosBasicos}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Otros</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label>Mano de obra</ion-label>
+      <ion-label slot="end">{{operatingCapital.manoObra}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Alquiler</ion-label>
+      <ion-label slot="end">{{operatingCapital.alquiler}}</ion-label>
     </ion-item>
 
     <!-- CAPITAL DE INVERSION -->
-    <ion-item color="primary" (click)="navigateTo('budget')" lines="none" detail="true">
+    <ion-item color="primary" (click)="navigateTo('investment-capital')" lines="none" detail="true">
       <ion-title>Capital de Inversión</ion-title>
     </ion-item>
 
     <ion-item>
       <ion-label>Equipo de computo</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label slot="end">{{investmentCapital.equipoComputo}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Muebles</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label>Equipamiento Oficina</ion-label>
+      <ion-label slot="end">{{investmentCapital.equipamientoOficina}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Otros</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label>Consultoria</ion-label>
+      <ion-label slot="end">{{investmentCapital.consultoria}}</ion-label>
     </ion-item>
 
     <!-- Resumen de presupuesto -->
-    <ion-item color="primary" (click)="navigateTo('budget')" lines="none" detail="true">
+    <ion-item color="primary" (click)="navigateTo('budget-summary')" lines="none" detail="true">
       <ion-title>Resumen Presupuesto</ion-title>
     </ion-item>
 
     <ion-item>
-      <ion-label>Total de inversion</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label>Aporte Propio</ion-label>
+      <ion-label slot="end">{{budgetSummary.aportePropio}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Efectivo</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label>Total Plan Inverción</ion-label>
+      <ion-label slot="end">{{budgetSummary.planInversion}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Requerimiento de credito</ion-label>
-      <ion-label slot="end">0.00</ion-label>
+      <ion-label>Total del Proyecto</ion-label>
+      <ion-label slot="end">{{budgetSummary.totalProyecto}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Monto a Financiar</ion-label>
+      <ion-label slot="end">{{budgetSummary.montoFinanciar}}</ion-label>
     </ion-item>
 
   </ion-list>
