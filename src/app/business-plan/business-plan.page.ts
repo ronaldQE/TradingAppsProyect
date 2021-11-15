@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { serviceDataBase } from '../services/services-database';
 
-import { Budget, InvestmentCapital, OperatingCapital } from '../models/interfaces';
+import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../models/interfaces';
 
 
 
@@ -18,18 +18,26 @@ export class BusinessPlanPage implements OnInit {
     banco: 0,
     otros: 0
   }
-  public onvestmentCapital: InvestmentCapital ={
+  public investmentCapital: InvestmentCapital ={
     consultoria: 0,
     equipamientoOficina: 0,
     equipoComputo: 0
   }
   public operatingCapital: OperatingCapital={
-    alquiler: null,
-    manoObra: null,
-    manoObraEmprendedor: null,
-    promociones: null,
-    serviciosBasicos: null
+    alquiler: 0,
+    manoObra: 0,
+    manoObraEmprendedor: 0,
+    promociones: 0,
+    serviciosBasicos:0
   }
+  public budgetSummary: BudgetSummary={
+    aportePropio: 0,
+    planInversion: 0,
+    montoFinanciar: 0,
+    totalProyecto: 0
+  }
+
+
   constructor(
     private router: Router,
     public db: serviceDataBase
@@ -40,7 +48,9 @@ export class BusinessPlanPage implements OnInit {
 
   ngOnInit() {
     this.getBudget();
-    console.log(this.budget);
+    this.getOperatingCapital();
+    this.getInvestmentCapital();
+;    console.log(this.budget);
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
@@ -48,8 +58,18 @@ export class BusinessPlanPage implements OnInit {
   getBudget(){
     this.db.getCollection<Budget>('/Estimaciones/estimicion-1/presupuesto').subscribe( (data)=>{
       this.budget = data;
-      console.log(data)
-      console.log(this.budget)
+
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+
+    }
+    )
+  }
+  getOperatingCapital(){
+    this.db.getCollection<OperatingCapital>('/Estimaciones/estimicion-1/capital-operativo').subscribe( (data)=>{
+      this.operatingCapital = data;
+
     },
     (error:any) => {
       console.log(`Error: ${error}`);
@@ -58,5 +78,27 @@ export class BusinessPlanPage implements OnInit {
     )
   }
 
+  getInvestmentCapital(){
+    this.db.getCollection<InvestmentCapital>('/Estimaciones/estimicion-1/capital-de-inversion').subscribe( (data)=>{
+      this.investmentCapital = data;
+
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+
+    }
+    )
+  }
+  getBudgetSummary(){
+    this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe( (data)=>{
+      this.budgetSummary = data;
+
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+
+    }
+    )
+  }
 
 }

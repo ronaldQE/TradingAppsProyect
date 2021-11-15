@@ -20,6 +20,7 @@ export interface OperatingCapital{
 
 export interface BudgetSummary{
     aportePropio: number;
+    planInversion: number;
     montoFinanciar: number;
     totalProyecto: number;
 }
