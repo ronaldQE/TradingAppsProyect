@@ -71,8 +71,10 @@ export class BusinessPlanPage implements OnInit {
       }
       this.budgetSummary.aportePropio = this.budget.efectivo + this.budget.banco+ this.budget.otros+this.operatingCapital.manoObraEmprendedor
       this.budgetSummary.totalProyecto=this.budgetSummary.planInversion+this.budgetSummary.aportePropio-this.budget.efectivo
-      this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
+      //this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
       this.efectivoTotal = this.budget.efectivo + this.budget.banco+ this.budget.otros
+      this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
+
     },
     (error:any) => {
       console.log(`Error: ${error}`);
@@ -129,6 +131,8 @@ export class BusinessPlanPage implements OnInit {
       this.budgetSummary.planInversion=this.cOperativo+this.cInversion
       this.budgetSummary.totalProyecto=this.budgetSummary.planInversion+this.budgetSummary.aportePropio-this.efectivoTotal
       this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
+      this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
+
     },
     (error:any) => {
       console.log(`Error: ${error}`);
