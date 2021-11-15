@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Budget } from '../models/interfaces';
 import { serviceDataBase } from '../services/services-database';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-budget',
@@ -13,12 +14,18 @@ export class BudgetPage implements OnInit {
     banco: null,
     otros: null
   }
-  constructor(public db: serviceDataBase) { }
+  constructor(
+    private router: Router,
+    public db: serviceDataBase) { }
   
   ngOnInit() {
   }
   send(){
     const data = this.newBudget;
-    this.db.actualizarDatos<Budget>(data,'/Estimaciones/estimicion-1','presupuesto')
+    this.db.actualizarDatos<Budget>(data,'/Estimaciones/estimicion-1','presupuesto');
+    this.navigateTo('business-plan');
+  }
+  navigateTo(path: String) {
+    this.router.navigate([path]);
   }
 }
