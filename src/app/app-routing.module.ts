@@ -39,7 +39,15 @@ const routes: Routes = [
   {
     path: 'operating-capital',
     loadChildren: () => import('./operating-capital/operating-capital.module').then( m => m.OperatingCapitalPageModule)
+  },  {
+    path: 'credit',
+    loadChildren: () => import('./pages/credit/credit.module').then( m => m.CreditPageModule)
+  },
+  {
+    path: 'content-budget',
+    loadChildren: () => import('./pages/content-budget/content-budget.module').then( m => m.ContentBudgetPageModule)
   }
+
 
 ];
 
