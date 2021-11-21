@@ -24,3 +24,19 @@ export interface BudgetSummary{
     montoFinanciar: number;
     totalProyecto: number;
 }
+
+export interface MonthlyCost{
+    servicioLuz: number;
+    servicioAgua: number;
+    servicioTelefono: number;
+    servicioInternet: number;
+    alquiler: number;
+    materialEscritorio: number;
+    pagosEmpleados: number;
+    promocion: number;
+    serviciosCloud: number;
+    mantenimientoOtros: number;
+    vestimenta: number;
+    salud: number;
+    complementariosOtros: number;
+}
