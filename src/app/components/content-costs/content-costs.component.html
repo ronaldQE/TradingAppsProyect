@@ -1,0 +1,48 @@
+<div>
+  <!-- La lista de ejemplo -->
+  <ion-list>
+    <!-- COSTOS DE PRODUCCION -->
+    <ion-item color="primary" (click)="navigateTo('budget')" lines="none" detail="true">
+      <ion-title>Costos de Producción</ion-title>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Apps Empresarial</ion-label>
+      <ion-label slot="end">0</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Apps Personal</ion-label>
+      <ion-label slot="end">0</ion-label>
+    </ion-item>
+
+    <!-- COMPORTAMIENTO DE VENTAS MENSUALES -->
+    <ion-item color="primary" (click)="navigateTo('operating-capital')" lines="none" detail="true">
+      <ion-title>Comportamiento Ventas mensuales</ion-title>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Ventas totales</ion-label>
+      <ion-label slot="end">0</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Costos totales</ion-label>
+      <ion-label slot="end">0</ion-label>
+    </ion-item>
+
+
+    <!-- COSTOS OPERATIVOS MENSUALES -->
+    <ion-item color="tertiary" (click)="navigateTo('investment-capital')" lines="none" detail="true">
+      <ion-title>Costos Operativos mensuales</ion-title>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Total costos operativos</ion-label>
+      <ion-label slot="end">0</ion-label>
+    </ion-item>
+
+
+  </ion-list>
+</div>
+
+
