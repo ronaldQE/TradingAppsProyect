@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { serviceDataBase } from '../../services/services-database';
 
+import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../../models/interfaces';
+
 @Component({
   selector: 'app-content-credit',
   templateUrl: './content-credit.component.html',
@@ -9,13 +11,34 @@ import { serviceDataBase } from '../../services/services-database';
 })
 export class ContentCreditComponent implements OnInit {
 
+  public budgetSummary: BudgetSummary={
+    aportePropio: 0,
+    planInversion: 0,
+    montoFinanciar: 0,
+    totalProyecto: 0
+  }
+
   constructor(
     private router: Router,
     public db: serviceDataBase
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getBudgetSummary();
+  }
+
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+  getBudgetSummary(){
+    this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe( (data)=>{
+      this.budgetSummary = data;
+
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+
+    }
+    )
   }
 }

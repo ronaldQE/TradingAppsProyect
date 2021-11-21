@@ -34,7 +34,7 @@ export class ContentBudgetComponent implements OnInit {
     montoFinanciar: 0,
     totalProyecto: 0
   }
-
+  public dataUp:any
   public cOperativo:number=0;
   public cInversion:number=0;
   public efectivoTotal:number=0;
@@ -74,6 +74,15 @@ export class ContentBudgetComponent implements OnInit {
       this.efectivoTotal = this.budget.efectivo + this.budget.banco+ this.budget.otros
       this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
 
+      this.dataUp = {
+        aportePropio:this.budgetSummary.aportePropio,
+        //planInversion:this.budgetSummary.planInversion,
+        montoFinanciar:this.budgetSummary.montoFinanciar,
+        totalProyecto:this.budgetSummary.totalProyecto
+      }
+      this.dataUpdate(this.dataUp);
+
+
     },
     (error:any) => {
       console.log(`Error: ${error}`);
@@ -106,6 +115,14 @@ export class ContentBudgetComponent implements OnInit {
       this.budgetSummary.totalProyecto=this.budgetSummary.planInversion+this.budgetSummary.aportePropio-this.efectivoTotal
       this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
 
+      this.dataUp = {
+        aportePropio:this.budgetSummary.aportePropio,
+        planInversion:this.budgetSummary.planInversion,
+        montoFinanciar:this.budgetSummary.montoFinanciar,
+        totalProyecto:this.budgetSummary.totalProyecto
+      }
+      this.dataUpdate(this.dataUp);
+
     },
     (error:any) => {
       console.log(`Error: ${error}`);
@@ -130,14 +147,23 @@ export class ContentBudgetComponent implements OnInit {
       this.budgetSummary.planInversion=this.cOperativo+this.cInversion
       this.budgetSummary.totalProyecto=this.budgetSummary.planInversion+this.budgetSummary.aportePropio-this.efectivoTotal
       this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
-      this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
-
+      //this.budgetSummary.montoFinanciar=this.budgetSummary.totalProyecto-this.budgetSummary.aportePropio
+      this.dataUp = {
+        planInversion:this.budgetSummary.planInversion,
+        montoFinanciar:this.budgetSummary.montoFinanciar,
+        totalProyecto:this.budgetSummary.totalProyecto
+      }
+      this.dataUpdate(this.dataUp);
     },
     (error:any) => {
       console.log(`Error: ${error}`);
 
     }
     )
+  }
+
+  dataUpdate(data:any){
+    this.db.updateData(data,'/Estimaciones/estimicion-1','resumen-presupuesto')
   }
   getBudgetSummary(){
     this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe( (data)=>{

@@ -17,15 +17,22 @@ export class BudgetPage implements OnInit {
   constructor(
     private router: Router,
     public db: serviceDataBase) { }
-  
+
   ngOnInit() {
+    //this.testUpdate()
   }
   send(){
     const data = this.newBudget;
     this.db.actualizarDatos<Budget>(data,'/Estimaciones/estimicion-1','presupuesto');
+
     this.navigateTo('business-plan');
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+
+  testUpdate(){
+    const data = {montoFinanciar:45}
+    this.db.updateData(data,'/Estimaciones/estimicion-1','resumen-presupuesto')
   }
 }
