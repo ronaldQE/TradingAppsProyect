@@ -36,7 +36,7 @@ export class MonthlyCostsPage implements OnInit {
   send(){
     const data = this.newMonthlyCost;
     this.db.actualizarDatos<MonthlyCost>(data,'/Estimaciones/estimicion-1','costos-operativos');
-    //this.navigateTo('business-plan');
+    this.navigateTo('business-plan');
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
