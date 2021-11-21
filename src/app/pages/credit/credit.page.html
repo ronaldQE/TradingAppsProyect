@@ -25,9 +25,12 @@
   <br>
   <ion-item class="inputData">
     <ion-label position="floating">Tipo de credito</ion-label>
-    <ion-input [(ngModel)]="dataCredit.tipoCuota"></ion-input>
+    <ion-select  interface="popover" (ionChange)="selectTipeCouta($event)" [value]="dataCredit.tipoCuota">
+      <ion-select-option value="Cuota Fija">Cuota Fija</ion-select-option>
+      <ion-select-option value="Cuota Variable">Cuota Variable</ion-select-option>
+    </ion-select>
   </ion-item>
   <br>
 
-  <ion-button class="btnGuardar"  size="large" expand="block">GUARDAR</ion-button>
+  <ion-button class="btnGuardar"  size="large" expand="block" (click)="send()">GUARDAR</ion-button>
 </ion-content>
