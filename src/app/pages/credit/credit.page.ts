@@ -84,6 +84,6 @@ export class CreditPage implements OnInit {
       message: 'Debe seleccionar Tipo de Cuota',
       duration: 5000
     });
-    toast.present();
+    toast.present(); //
   }
 }
