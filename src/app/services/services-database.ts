@@ -20,4 +20,9 @@ export class serviceDataBase{
       const collection = this.database.object<tipo>(path);
       return collection.valueChanges();
     }
+    updateData<tipo>(data: tipo,enlace: string,coleccion: string){
+      this.database.list(enlace).update(coleccion,data);
+  }
+
 }
+

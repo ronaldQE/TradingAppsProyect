@@ -17,13 +17,14 @@ export class BudgetPage implements OnInit {
   constructor(
     private router: Router,
     public db: serviceDataBase) { }
-  
+
   ngOnInit() {
     this.getBudget();
   }
   send(){
     const data = this.newBudget;
     this.db.actualizarDatos<Budget>(data,'/Estimaciones/estimicion-1','presupuesto');
+
     this.navigateTo('business-plan');
   }
   navigateTo(path: String) {

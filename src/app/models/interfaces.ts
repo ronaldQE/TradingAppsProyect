@@ -40,3 +40,10 @@ export interface MonthlyCost{
     salud: number;
     complementariosOtros: number;
 }
+
+export interface DataCredit{
+  montoFinanciar: number;
+  tasaInteres: number;
+  plazo:number;
+  tipoCuota: string;
+}
