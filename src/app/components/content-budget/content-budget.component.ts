@@ -6,10 +6,10 @@ import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../.
 
 @Component({
   selector: 'app-content-budget',
-  templateUrl: './content-budget.page.html',
-  styleUrls: ['./content-budget.page.scss'],
+  templateUrl: './content-budget.component.html',
+  styleUrls: ['./content-budget.component.scss'],
 })
-export class ContentBudgetPage implements OnInit {
+export class ContentBudgetComponent implements OnInit {
 
   public budget: Budget = {
     efectivo: 0,
@@ -150,4 +150,5 @@ export class ContentBudgetPage implements OnInit {
     }
     )
   }
+
 }

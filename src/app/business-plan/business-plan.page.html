@@ -38,8 +38,18 @@
   </ion-segment>
   <!-- Vistas de opciones -->
   <div *ngIf="valueSelected == 'p'">
-    <!-- <app-content-budget></app-content-budget> -->
+    <app-content-budget></app-content-budget>
   </div>
+  <div *ngIf="valueSelected == 'co'">
+    <app-content-costs></app-content-costs>
+  </div>
+  <div *ngIf="valueSelected == 'cr'">
+    <app-content-credit></app-content-credit>
+  </div>
+  <div *ngIf="valueSelected == 'fl'">
+    <app-content-flow></app-content-flow>
+  </div>
+
 
 
 

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { CreditPage } from './credit.page';
+import { ContentFlowComponent } from './content-flow.component';
 
-describe('CreditPage', () => {
-  let component: CreditPage;
-  let fixture: ComponentFixture<CreditPage>;
+describe('ContentFlowComponent', () => {
+  let component: ContentFlowComponent;
+  let fixture: ComponentFixture<ContentFlowComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreditPage ],
+      declarations: [ ContentFlowComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CreditPage);
+    fixture = TestBed.createComponent(ContentFlowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

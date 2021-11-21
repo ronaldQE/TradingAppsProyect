@@ -3,16 +3,28 @@ import { CommonModule } from '@angular/common';
 import { MenuComponent } from './menu/menu.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
+import { ContentBudgetComponent } from './content-budget/content-budget.component';
+import { ContentCreditComponent } from './content-credit/content-credit.component';
+import { ContentCostsComponent } from './content-costs/content-costs.component';
+import { ContentFlowComponent } from './content-flow/content-flow.component';
 
 
 
 
 @NgModule({
   declarations: [
-    MenuComponent
+    MenuComponent,
+    ContentBudgetComponent,
+    ContentCreditComponent,
+    ContentCostsComponent,
+    ContentFlowComponent
   ],
   exports: [
-    MenuComponent
+    MenuComponent,
+    ContentBudgetComponent,
+    ContentCreditComponent,
+    ContentCostsComponent,
+    ContentFlowComponent
   ],
   imports: [
     CommonModule,
