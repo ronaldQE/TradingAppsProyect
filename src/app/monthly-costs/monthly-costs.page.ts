@@ -31,6 +31,7 @@ export class MonthlyCostsPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getMonthlyCost();
   }
 
   send(){
@@ -40,5 +41,26 @@ export class MonthlyCostsPage implements OnInit {
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+  getMonthlyCost(){
+    this.db.getCollection<MonthlyCost>('/Estimaciones/estimicion-1/costos-operativos').subscribe( (data)=>{
+      this.newMonthlyCost = data;
+      this.newMonthlyCost.servicioLuz = data.servicioLuz == undefined?0:data.servicioLuz;
+      this.newMonthlyCost.servicioAgua = data.servicioAgua == undefined?0:data.servicioAgua;
+      this.newMonthlyCost.servicioTelefono = data.servicioTelefono == undefined?0:data.servicioTelefono;
+      this.newMonthlyCost.servicioInternet = data.servicioInternet == undefined?0:data.servicioInternet;
+      this.newMonthlyCost.alquiler = data.alquiler == undefined?0:data.alquiler;
+      this.newMonthlyCost.materialEscritorio = data.materialEscritorio == undefined?0:data.materialEscritorio;
+      this.newMonthlyCost.pagosEmpleados = data.pagosEmpleados == undefined?0:data.pagosEmpleados;
+      this.newMonthlyCost.promocion = data.promocion == undefined?0:data.promocion;
+      this.newMonthlyCost.serviciosCloud = data.serviciosCloud == undefined?0:data.serviciosCloud;
+      this.newMonthlyCost.mantenimientoOtros = data.mantenimientoOtros == undefined?0:data.mantenimientoOtros;
+      this.newMonthlyCost.vestimenta = data.vestimenta == undefined?0:data.vestimenta;
+      this.newMonthlyCost.salud = data.salud == undefined?0:data.salud;
+      this.newMonthlyCost.complementariosOtros = data.complementariosOtros == undefined?0:data.complementariosOtros;
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+    })
   }
 }
