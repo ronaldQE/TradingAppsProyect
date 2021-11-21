@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Costos Operativos Mensuales</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="business-plan"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar>
+    <ion-title class="title">Costos Operativos</ion-title>
+  </ion-toolbar>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Servicio de luz</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.servicioLuz"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Servicio de agua</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.servicioAgua"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Servicio de telefono/celular</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.servicioTelefono"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Servicio de internet</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.servicioInternet"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Alquiler</ion-label>
+    <ion-input type="number"[(ngModel)]="newMonthlyCost.alquiler"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Material de escritorio</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.materialEscritorio"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Pagos a empleados</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.pagosEmpleados"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Promoción</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.promocion"></ion-input>
+  </ion-item>
+  <br>
+  <ion-toolbar>
+    <ion-title class="title">Mantenimiento</ion-title>
+  </ion-toolbar>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Servicios de Cloud</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.serviciosCloud"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Otros</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.mantenimientoOtros"></ion-input>
+  </ion-item>
+  <br>
+  <ion-toolbar>
+    <ion-title class="title">Complementarios</ion-title>
+  </ion-toolbar>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Vestimenta</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.vestimenta"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Salud</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.salud"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Otros</ion-label>
+    <ion-input type="number" [(ngModel)]="newMonthlyCost.complementariosOtros"></ion-input>
+  </ion-item>
+  <br>
+
+  <ion-button class="btnGuardar" (click)="send()" size="large" expand="block">GUARDAR</ion-button>
+</ion-content>

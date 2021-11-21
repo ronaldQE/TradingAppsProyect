@@ -21,6 +21,7 @@ export class OperatingCapitalPage implements OnInit {
     public db: serviceDataBase) { }
 
   ngOnInit() {
+    this.getOperatingCapital();
   }
 
   send(){
@@ -30,5 +31,19 @@ export class OperatingCapitalPage implements OnInit {
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+  getOperatingCapital(){
+    this.db.getCollection<OperatingCapital>('/Estimaciones/estimicion-1/capital-operativo').subscribe( (data)=>{
+      this.newOperatingCapital = data;
+      this.newOperatingCapital.alquiler=data.alquiler == undefined?0:data.alquiler;
+      this.newOperatingCapital.manoObra=data.manoObra == undefined?0:data.manoObra;
+      this.newOperatingCapital.manoObraEmprendedor=data.manoObraEmprendedor == undefined?0:data.manoObraEmprendedor;
+      this.newOperatingCapital.promociones=data.promociones == undefined?0:data.promociones;
+      this.newOperatingCapital.serviciosBasicos=data.serviciosBasicos == undefined?0:data.serviciosBasicos;
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+    }
+    )
   }
 }

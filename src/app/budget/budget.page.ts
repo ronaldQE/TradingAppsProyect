@@ -19,6 +19,7 @@ export class BudgetPage implements OnInit {
     public db: serviceDataBase) { }
   
   ngOnInit() {
+    this.getBudget();
   }
   send(){
     const data = this.newBudget;
@@ -27,5 +28,30 @@ export class BudgetPage implements OnInit {
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+  getBudget(){
+    this.db.getCollection<Budget>('/Estimaciones/estimicion-1/presupuesto').subscribe( (data)=>{
+      this.newBudget = data;
+      if (data.otros == undefined){
+        this.newBudget.otros = 0;
+      }else{
+        this.newBudget.otros = data.otros;
+      }
+      if (data.efectivo == undefined){
+        this.newBudget.efectivo = 0;
+      }else{
+        this.newBudget.efectivo = data.efectivo;
+      }
+      if (data.banco == undefined){
+        this.newBudget.banco = 0;
+      }else{
+        this.newBudget.banco = data.banco;
+      }
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+
+    }
+    )
   }
 }
