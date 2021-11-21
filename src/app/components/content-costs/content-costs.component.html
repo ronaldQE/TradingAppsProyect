@@ -32,13 +32,13 @@
 
 
     <!-- COSTOS OPERATIVOS MENSUALES -->
-    <ion-item color="tertiary" (click)="navigateTo('investment-capital')" lines="none" detail="true">
+    <ion-item color="tertiary" (click)="navigateTo('monthly-costs')" lines="none" detail="true">
       <ion-title>Costos Operativos mensuales</ion-title>
     </ion-item>
 
     <ion-item>
       <ion-label>Total costos operativos</ion-label>
-      <ion-label slot="end">0</ion-label>
+      <ion-label slot="end">{{totalCostosOperativosMensuales}}</ion-label>
     </ion-item>
 
 

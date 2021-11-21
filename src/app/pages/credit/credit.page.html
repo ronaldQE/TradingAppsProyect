@@ -10,22 +10,22 @@
 <ion-content>
   <ion-item class="inputData">
     <ion-label position="floating">Monto</ion-label>
-    <ion-input type="number" ></ion-input>
+    <ion-input type="number" [(ngModel)]="budgetSummary.montoFinanciar" disabled></ion-input>
   </ion-item>
   <br>
   <ion-item class="inputData">
     <ion-label position="floating">Tasa de interes %</ion-label>
-    <ion-input type="number" ></ion-input>
+    <ion-input type="number" [(ngModel)]="dataCredit.tasaInteres"></ion-input>
   </ion-item>
   <br>
   <ion-item class="inputData">
     <ion-label position="floating">Plazo (meses)</ion-label>
-    <ion-input type="number" ></ion-input>
+    <ion-input type="number" [(ngModel)]="dataCredit.plazo"></ion-input>
   </ion-item>
   <br>
   <ion-item class="inputData">
     <ion-label position="floating">Tipo de credito</ion-label>
-    <ion-input type="number" ></ion-input>
+    <ion-input [(ngModel)]="dataCredit.tipoCuota"></ion-input>
   </ion-item>
   <br>
 

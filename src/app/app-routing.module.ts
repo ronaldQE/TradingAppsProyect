@@ -40,6 +40,10 @@ const routes: Routes = [
     path: 'credit',
     loadChildren: () => import('./pages/credit/credit.module').then( m => m.CreditPageModule)
   },
+  {
+    path: 'monthly-costs',
+    loadChildren: () => import('./monthly-costs/monthly-costs.module').then( m => m.MonthlyCostsPageModule)
+  },
 
 
 

@@ -18,6 +18,7 @@ export class InvestmentCapitalPage implements OnInit {
     public db: serviceDataBase) { }
 
   ngOnInit() {
+    this.getInvestmentCapital();
   }
 
   send(){
@@ -27,5 +28,17 @@ export class InvestmentCapitalPage implements OnInit {
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+  getInvestmentCapital(){
+    this.db.getCollection<InvestmentCapital>('/Estimaciones/estimicion-1/capital-de-inversion').subscribe( (data)=>{
+      this.newInvestmentCapital = data;  
+      this.newInvestmentCapital.consultoria=data.consultoria == undefined?0:data.consultoria;
+      this.newInvestmentCapital.equipamientoOficina=data.equipamientoOficina == undefined?0:data.equipamientoOficina;
+      this.newInvestmentCapital.equipoComputo=data.equipoComputo == undefined?0:data.equipoComputo;
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+    }
+    )
   }
 }
