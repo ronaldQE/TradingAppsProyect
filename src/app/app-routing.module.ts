@@ -36,7 +36,11 @@ const routes: Routes = [
   {
     path: 'operating-capital',
     loadChildren: () => import('./operating-capital/operating-capital.module').then( m => m.OperatingCapitalPageModule)
+  },  {
+    path: 'credit',
+    loadChildren: () => import('./pages/credit/credit.module').then( m => m.CreditPageModule)
   },
+
 
 
 

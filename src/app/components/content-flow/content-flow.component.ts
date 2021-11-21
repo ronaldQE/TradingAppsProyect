@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { serviceDataBase } from '../../services/services-database';
 
 @Component({
   selector: 'app-content-flow',
@@ -7,8 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContentFlowComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    public db: serviceDataBase
+  ) { }
 
   ngOnInit() {}
-
+  navigateTo(path: String) {
+    this.router.navigate([path]);
+  }
 }
