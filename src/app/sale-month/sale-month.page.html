@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Comportamiento Ventas mensuales</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="business-plan"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-title><b>Ventas totales por mes (Bs)</b></ion-title>
+  </ion-item>
+  <ion-item class="inputData">
+    <ion-label position="floating">Rango de ventas (Bs) Alta</ion-label>
+    <ion-input type="number"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Rango de ventas (Bs) Media</ion-label>
+    <ion-input type="number"></ion-input>
+  </ion-item>
+  <br>
+  <ion-item class="inputData">
+    <ion-label position="floating">Rango de ventas (Bs) Baja</ion-label>
+    <ion-input type="number"></ion-input>
+  </ion-item>
+  <br>
+
+  <ion-item>
+    <ion-title><b>Comportamiento de ventas mensuales</b></ion-title>
+  </ion-item>
+  <ion-list class="inputData">  
+    <ion-item>
+      <ion-label>Enero</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Febrero</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Marzo</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Abril</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mayo</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Junio</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Julio</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Agosto</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Septiembre</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Octubre</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Noviembre</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Diciembre</ion-label>
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-button class="btnGuardar" size="large" expand="block">GUARDAR</ion-button>
+</ion-content>

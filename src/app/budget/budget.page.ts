@@ -29,6 +29,7 @@ export class BudgetPage implements OnInit {
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+    //para navegacion
   }
   getBudget(){
     this.db.getCollection<Budget>('/Estimaciones/estimicion-1/presupuesto').subscribe( (data)=>{

@@ -44,6 +44,14 @@ const routes: Routes = [
     path: 'monthly-costs',
     loadChildren: () => import('./monthly-costs/monthly-costs.module').then( m => m.MonthlyCostsPageModule)
   },
+  {
+    path: 'sale-month',
+    loadChildren: () => import('./sale-month/sale-month.module').then( m => m.SaleMonthPageModule)
+  },
+  {
+    path: 'product-month',
+    loadChildren: () => import('./product-month/product-month.module').then( m => m.ProductMonthPageModule)
+  },
 
 
 
