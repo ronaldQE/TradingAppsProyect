@@ -22,7 +22,11 @@ export class serviceDataBase{
     }
     updateData<tipo>(data: tipo,enlace: string,coleccion: string){
       this.database.list(enlace).update(coleccion,data);
-  }
+    }
 
+    // addCuotaOne(enlase:string, num:number, valor:number){
+    //   this.database.list(enlase).push("").child("c"+num).set(valor);
+    //   //child("c"+num).set(valor);
+    // }
 }
 
