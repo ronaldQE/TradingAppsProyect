@@ -2,30 +2,111 @@
   <!-- La lista de ejemplo -->
   <ion-list>
     <!-- TABLA MENSUAL -->
-    <ion-item color="secondary"  lines="none" >
-      <ion-title>Tabla Mensual</ion-title>
+    <ion-item color="secondary">
+      <ion-label>Proyeción Mensual</ion-label>
+      <ion-select  interface="popover"  >
+        <ion-select-option value="1">Enero</ion-select-option>
+        <ion-select-option value="2">Febrero</ion-select-option>
+        <ion-select-option value="1">Marzo</ion-select-option>
+        <ion-select-option value="2">Abril</ion-select-option>
+        <ion-select-option value="1">Mayo</ion-select-option>
+        <ion-select-option value="2">Junio</ion-select-option>
+        <ion-select-option value="1">Julio</ion-select-option>
+        <ion-select-option value="2">Agosto</ion-select-option>
+        <ion-select-option value="1">Septiembre</ion-select-option>
+        <ion-select-option value="2">Octubre</ion-select-option>
+        <ion-select-option value="1">Noviembre</ion-select-option>
+        <ion-select-option value="2">Diciembre</ion-select-option>
+
+      </ion-select>
     </ion-item>
 
+
     <ion-item>
-      <ion-label>Aqui va la tabla</ion-label>
-      <ion-label slot="end"></ion-label>
+      <ion-label>SALDO INICIAL</ion-label>
+      <ion-label slot="end">00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ingresos</ion-label>
+      <ion-label slot="end">00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Costo de producción</ion-label>
+      <ion-label slot="end">00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Utilidad Bruta</ion-label>
+      <ion-label slot="end">00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Costos Fijos</ion-label>
+      <ion-label slot="end">00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>UTILIDAD NETA</ion-label>
+      <ion-label slot="end">00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Cuota</ion-label>
+      <ion-label slot="end">00</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>FLUJO ACUMULADO</ion-label>
+      <ion-label slot="end">00</ion-label>
     </ion-item>
 
 
     <!-- TABLA AUNAL -->
-    <ion-item color="secondary"  lines="none" >
+    <!-- <ion-item color="secondary"  lines="none" >
       <ion-title>Tabla Anual</ion-title>
+    </ion-item> -->
+    <ion-item color="secondary">
+      <ion-label>Proyeción Anual</ion-label>
+      <ion-select  interface="popover"  >
+        <ion-select-option value="Cuota Fija">2021</ion-select-option>
+        <ion-select-option value="Cuota Variable">2022</ion-select-option>
+      </ion-select>
     </ion-item>
 
-    <ion-item>
-      <ion-label>aqui va la tabla</ion-label>
-      <ion-label slot="end"></ion-label>
-    </ion-item>
+
+      <ion-item>
+        <ion-label>SALDO INICIAL</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Ingresos</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Costo de producción</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Utilidad Bruta</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Costos Fijos</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>UTILIDAD NETA</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Cuota</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>FLUJO ACUMULADO</ion-label>
+        <ion-label slot="end">00</ion-label>
+      </ion-item>
 
 
 
 
-    <!-- COSTOS OPERATIVOS MENSUALES -->
+
+    <!-- Calculos -->
     <ion-item color="tertiary"  lines="none" >
       <ion-title>VAN</ion-title>
       <ion-label slot="end">0</ion-label>
