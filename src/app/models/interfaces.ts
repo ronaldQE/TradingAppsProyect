@@ -45,5 +45,6 @@ export interface DataCredit{
   montoFinanciar: number;
   tasaInteres: number;
   plazo:number;
+  poliza:number;
   tipoCuota: string;
 }

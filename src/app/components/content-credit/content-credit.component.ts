@@ -21,6 +21,7 @@ export class ContentCreditComponent implements OnInit {
     montoFinanciar:0,
     tasaInteres:0,
     plazo:0,
+    poliza:0,
     tipoCuota: "",
   }
   constructor(
