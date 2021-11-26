@@ -48,3 +48,14 @@ export interface DataCredit{
   poliza:number;
   tipoCuota: string;
 }
+
+export interface MonthlyFlow{
+    saldoInicial: number;
+    ingresos: number;
+    costoProduccion: number;
+    utilidadBruta: number;
+    costosFijos: number;
+    utilidadNeta: number;
+    cuota: number;
+    flujoAcumulado: number;
+}
