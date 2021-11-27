@@ -60,7 +60,7 @@ export class BusinessPlanPage implements OnInit {
   }
   segmentChanged(event: CustomEvent |any) {
     this.valueSelected = event.detail.value;
-    console.log('Segment changed', event);
+    //console.log('Segment changed', event);
   }
   getBudget(){
     this.db.getCollection<Budget>('/Estimaciones/estimicion-1/presupuesto').subscribe( (data)=>{
@@ -145,16 +145,6 @@ export class BusinessPlanPage implements OnInit {
     }
     )
   }
-  getBudgetSummary(){
-    this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe( (data)=>{
-      this.budgetSummary = data;
 
-    },
-    (error:any) => {
-      console.log(`Error: ${error}`);
-
-    }
-    )
-  }
 
 }
