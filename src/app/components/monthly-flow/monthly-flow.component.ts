@@ -21,6 +21,17 @@ export class MonthlyFlowComponent implements OnInit {
     this.getBudgetSummary();
   }
 
+  public initialMonthFlow : MonthlyFlow = {
+    saldoInicial: 0,
+    ingresos: 0,
+    costoProduccion: 0,
+    utilidadBruta: 0,
+    costosFijos: 0,
+    utilidadNeta: 0,
+    cuota: 0,
+    flujoAcumulado: 0
+  }
+
   public previousMonthFlow : MonthlyFlow = {
     saldoInicial: 0,
     ingresos: 0,
@@ -58,6 +69,7 @@ export class MonthlyFlowComponent implements OnInit {
       }else{
         this.budgetSummary.planInversion = data.planInversion;
         this.currentMonthlyFlow.saldoInicial = data.planInversion;
+        this.initialMonthFlow.saldoInicial = data.planInversion;
       }
       this.budgetSummary.montoFinanciar = data.montoFinanciar == undefined ? 0:data.montoFinanciar;
       this.budgetSummary.totalProyecto = data.totalProyecto == undefined ? 0:data.totalProyecto;
@@ -72,36 +84,37 @@ export class MonthlyFlowComponent implements OnInit {
 
   calculateNextMonthlyFlow(){
     this.currentMonthlyFlow.saldoInicial = this.previousMonthFlow.flujoAcumulado;
-    this.currentMonthlyFlow.ingresos = 0;
-    this.currentMonthlyFlow.costoProduccion = 0;
+    this.currentMonthlyFlow.ingresos = 46000;
+    this.currentMonthlyFlow.costoProduccion = 1359;
     this.currentMonthlyFlow.utilidadBruta = this.previousMonthFlow.ingresos-this.previousMonthFlow.costoProduccion;
     this.currentMonthlyFlow.costosFijos = this.totalOperatingCosts;
     this.currentMonthlyFlow.utilidadNeta = this.currentMonthlyFlow.utilidadBruta-this.currentMonthlyFlow.costosFijos;
-    this.currentMonthlyFlow.cuota = 0;
+    this.currentMonthlyFlow.cuota = 2068;
     this.currentMonthlyFlow.flujoAcumulado = this.currentMonthlyFlow.utilidadNeta+this.currentMonthlyFlow.saldoInicial-this.currentMonthlyFlow.cuota;
   }
 
-  saveFlowCurrentMonth(flowMont: MonthlyFlow){
-    this.previousMonthFlow.saldoInicial = flowMont.saldoInicial;
-    this.previousMonthFlow.ingresos = flowMont.ingresos;
-    this.previousMonthFlow.costoProduccion = flowMont.costoProduccion;
-    this.previousMonthFlow.utilidadBruta = flowMont.utilidadBruta;
-    this.previousMonthFlow.costosFijos = flowMont.costosFijos;
-    this.previousMonthFlow.utilidadNeta = flowMont.utilidadNeta;
-    this.previousMonthFlow.cuota = flowMont.cuota;
-    this.previousMonthFlow.flujoAcumulado = flowMont.flujoAcumulado;
+  saveFlowCurrentMonth(auxFlowMont: MonthlyFlow, currentFlowMont: MonthlyFlow){
+    auxFlowMont.saldoInicial = currentFlowMont.saldoInicial;
+    auxFlowMont.ingresos = currentFlowMont.ingresos;
+    auxFlowMont.costoProduccion = currentFlowMont.costoProduccion;
+    auxFlowMont.utilidadBruta = currentFlowMont.utilidadBruta;
+    auxFlowMont.costosFijos = currentFlowMont.costosFijos;
+    auxFlowMont.utilidadNeta = currentFlowMont.utilidadNeta;
+    auxFlowMont.cuota = currentFlowMont.cuota;
+    auxFlowMont.flujoAcumulado = currentFlowMont.flujoAcumulado;
   }
 
   recuperar(event: CustomEvent){
     this.newOptionSelect = event.detail.value;
-    /*this.calculateMonthlyFlow(parseInt(this.newOptionSelect+""));*/
-    console.log(this.newOptionSelect+" "+this.previousOptionSelect);
+    this.calculateMonthlyFlow(parseInt(this.newOptionSelect+""));
+    /*console.log(this.newOptionSelect+" "+this.previousOptionSelect);
+    console.log(this.initialMonthFlow);
     if(this.newOptionSelect == (this.previousOptionSelect+1)){
-      this.saveFlowCurrentMonth(this.currentMonthlyFlow);
+      this.saveFlowCurrentMonth(this.previousMonthFlow,this.currentMonthlyFlow);
       this.calculateNextMonthlyFlow();
     }else{
 
-    }
+    }*/
     
     this.previousOptionSelect = parseInt(this.newOptionSelect+"");
 
@@ -115,10 +128,13 @@ export class MonthlyFlowComponent implements OnInit {
 
   calculateMonthlyFlow(numberMonth: number){
     let cont:number = 0;
-    this.initialState();
+    //this.initialState();
+    this.saveFlowCurrentMonth(this.currentMonthlyFlow,this.initialMonthFlow);
+    console.log(cont+"  "+numberMonth)
     while(cont<numberMonth){
-      this.saveFlowCurrentMonth(this.currentMonthlyFlow);
+      this.saveFlowCurrentMonth(this.previousMonthFlow,this.currentMonthlyFlow);
       this.calculateNextMonthlyFlow();
+      cont ++;
     }
   }
 }
