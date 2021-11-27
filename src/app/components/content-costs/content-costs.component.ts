@@ -84,7 +84,7 @@ export class ContentCostsComponent implements OnInit {
         this.monthlyCost.complementariosOtros = 0;
       }
       this.totalCostosOperativosMensuales = this.monthlyCost.servicioLuz + this.monthlyCost.servicioAgua + this.monthlyCost.servicioTelefono + this.monthlyCost.servicioInternet + this.monthlyCost.alquiler + this.monthlyCost.materialEscritorio + this.monthlyCost.pagosEmpleados + this.monthlyCost.promocion + this.monthlyCost.serviciosCloud + this.monthlyCost.mantenimientoOtros + this.monthlyCost.vestimenta + this.monthlyCost.salud + this.monthlyCost.complementariosOtros;
-
+      
     },
     (error:any) => {
       console.log(`Error: ${error}`);

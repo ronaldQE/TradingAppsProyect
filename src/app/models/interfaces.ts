@@ -59,3 +59,13 @@ export interface FlujoAnual{
   cuota:number,
   flujoAcumulado:number
 }
+export interface MonthlyFlow{
+    saldoInicial: number;
+    ingresos: number;
+    costoProduccion: number;
+    utilidadBruta: number;
+    costosFijos: number;
+    utilidadNeta: number;
+    cuota: number;
+    flujoAcumulado: number;
+}

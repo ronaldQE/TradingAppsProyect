@@ -1,0 +1,55 @@
+<div>
+  <ion-item color="secondary">
+    <ion-label>Proyeción Mensual</ion-label>
+    <ion-select (ionChange)="recuperar($event)" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Selecciona un mes" >
+      <ion-select-option value="1">Enero</ion-select-option>
+      <ion-select-option value="2">Febrero</ion-select-option>
+      <ion-select-option value="3">Marzo</ion-select-option>
+      <ion-select-option value="4">Abril</ion-select-option>
+      <ion-select-option value="5">Mayo</ion-select-option>
+      <ion-select-option value="6">Junio</ion-select-option>
+      <ion-select-option value="7">Julio</ion-select-option>
+      <ion-select-option value="8">Agosto</ion-select-option>
+      <ion-select-option value="9">Septiembre</ion-select-option>
+      <ion-select-option value="10">Octubre</ion-select-option>
+      <ion-select-option value="11">Noviembre</ion-select-option>
+      <ion-select-option value="12">Diciembre</ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>SALDO INICIAL</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.saldoInicial}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Ingresos</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.ingresos}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Costo de producción</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.costoProduccion}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Utilidad Bruta</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.utilidadBruta}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Costos Fijos</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.costosFijos}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>UTILIDAD NETA</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.utilidadNeta}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Cuota</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.cuota}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>FLUJO ACUMULADO</ion-label>
+    <ion-label slot="end">{{currentMonthlyFlow.flujoAcumulado}}</ion-label>
+  </ion-item>
+
+</div>
