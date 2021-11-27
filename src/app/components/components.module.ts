@@ -7,7 +7,7 @@ import { ContentBudgetComponent } from './content-budget/content-budget.componen
 import { ContentCreditComponent } from './content-credit/content-credit.component';
 import { ContentCostsComponent } from './content-costs/content-costs.component';
 import { ContentFlowComponent } from './content-flow/content-flow.component';
-
+import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
 
 
 
@@ -17,14 +17,16 @@ import { ContentFlowComponent } from './content-flow/content-flow.component';
     ContentBudgetComponent,
     ContentCreditComponent,
     ContentCostsComponent,
-    ContentFlowComponent
+    ContentFlowComponent,
+    MonthlyFlowComponent
   ],
   exports: [
     MenuComponent,
     ContentBudgetComponent,
     ContentCreditComponent,
     ContentCostsComponent,
-    ContentFlowComponent
+    ContentFlowComponent,
+    MonthlyFlowComponent
   ],
   imports: [
     CommonModule,
