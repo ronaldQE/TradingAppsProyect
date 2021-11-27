@@ -62,7 +62,7 @@
     </ion-item> -->
     <ion-item color="secondary">
       <ion-label>Proyección Anual</ion-label>
-      <ion-select  interface="popover" (ionChange)="segmentChanged($event)">
+      <ion-select  interface="popover" (ionChange)="segmentChanged($event)" [value]="valueSelected">
         <ion-select-option *ngFor="let gestion of gestions" [value]="gestion.rank">{{gestion.rank}}</ion-select-option>
       </ion-select>
     </ion-item>

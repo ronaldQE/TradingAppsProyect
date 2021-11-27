@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { FlujoAnual } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 
@@ -25,7 +26,7 @@ export class ContentFlowComponent implements OnInit {
     cuota:0,
     flujoAcumulado:0
   }
-  public selectGestion:string
+  public valueSelected:string = "2021"
   public gestions:Gestions [] = [
     {
       id: 1,
@@ -50,7 +51,9 @@ export class ContentFlowComponent implements OnInit {
   ];
   constructor(
     private router: Router,
-    public db: serviceDataBase
+    public db: serviceDataBase,
+    public toast: ToastController,
+
   ) {
 
   }
@@ -63,19 +66,43 @@ export class ContentFlowComponent implements OnInit {
     this.router.navigate([path]);
   }
   segmentChanged(event: CustomEvent |any) {
-    this.selectGestion = event.detail.value;
+    this.valueSelected = event.detail.value;
     //console.log('la gestion es: '+ this.selectGestion);
-    this.getFlujoAnual(this.selectGestion);
+    this.getFlujoAnual(this.valueSelected);
   }
   getFlujoAnual(gestion:string){
     this.db.getCollection<FlujoAnual>(`/Estimaciones/estimicion-1/flujo-anual/${gestion}`).subscribe( (data)=>{
-      this.flujoAnual = data;
+      if(data==null){
+        this.presentToast("La gestion esta vacia");
+        this.flujoAnual={
+          saldoInicial:0,
+          ingresos:0,
+          costoProduccion:0,
+          utilidadBruta:0,
+          costosFijo:0,
+          utilidadNeta:0,
+          cuota:0,
+          flujoAcumulado:0
+        }
+        //this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', '2022')
+
+      }else{
+
+        this.flujoAnual = data;
+      }
+
 
     },
     (error:any) => {
       console.log(`Error: ${error}`);
-
     }
     )
+  }
+  async presentToast(mensaje: string) {
+    const toast = await this.toast.create({
+      message: mensaje,
+      duration: 5000
+    });
+    toast.present(); //
   }
 }
