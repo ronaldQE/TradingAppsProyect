@@ -11,6 +11,9 @@ export class serviceDataBase{
     actualizarDatos<tipo>(data: tipo,enlace: string,coleccion: string){
         this.database.list(enlace).set(coleccion,data);
     }
+    replaceData<tipo>(data: tipo,enlace: string,coleccion: string){
+        this.database.list(enlace).set(coleccion,data);
+    }
 
     recuperarDato(enlace: string){
         return this.database.list(enlace);

@@ -101,7 +101,7 @@ export class ContentFlowComponent implements OnInit {
   async presentToast(mensaje: string) {
     const toast = await this.toast.create({
       message: mensaje,
-      duration: 5000
+      duration: 4000
     });
     toast.present(); //
   }
