@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { FlujoAnual } from 'src/app/models/interfaces';
+import { FlujoAnual, OutCome } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 
 
@@ -25,6 +25,11 @@ export class ContentFlowComponent implements OnInit {
     utilidadNeta:0,
     cuota:0,
     flujoAcumulado:0
+  }
+  public outCome: OutCome={
+    van:0,
+    tir:0,
+    conclusion:"No Factible"
   }
   public valueSelected:string = "2021"
   public gestions:Gestions [] = [
@@ -61,6 +66,7 @@ export class ContentFlowComponent implements OnInit {
   ngOnInit() {
 
     this.getFlujoAnual("2021");
+    this.getOutCome();
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
@@ -98,6 +104,17 @@ export class ContentFlowComponent implements OnInit {
     }
     )
   }
+  getOutCome(){
+    this.db.getCollection<OutCome>(`/Estimaciones/estimicion-1/resultado`).subscribe( (data)=>{
+      this.outCome=data;
+
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+    }
+    )
+  }
+
   async presentToast(mensaje: string) {
     const toast = await this.toast.create({
       message: mensaje,

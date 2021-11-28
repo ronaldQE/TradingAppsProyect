@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { serviceDataBase } from '../../services/services-database';
 import { Router } from '@angular/router';
 
-import { BudgetSummary, DataCredit, FlujoAnual, MonthlyCostFull } from '../../models/interfaces';
+import { BudgetSummary, DataCredit, FlujoAnual, MonthlyCostFull, OutCome } from '../../models/interfaces';
 import { ToastController } from '@ionic/angular';
 import { Cuota } from '../../clases/credit'
 
@@ -45,6 +45,11 @@ export class CreditPage implements OnInit {
   public costoProducionT = 11434;
 
   public costoFijoT = 0;
+  public outCome: OutCome={
+    van:0,
+    tir:0,
+    conclusion:"No Factible"
+  }
 
   constructor(
     private router: Router,
@@ -193,7 +198,12 @@ export class CreditPage implements OnInit {
 
         this.setFlujoAnual(this.ingresosT, this.costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
         //console.log("total Cuota: "+this.calCuotaTotal(this.cuotas, indexCuotas))
-        this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString())
+        this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString());
+        //calcular el van como el excel
+        this.outCome.van=this.calVanForFCctte(this.dataCredit.montoFinanciar, this.flujoAnual.flujoAcumulado, this.dataCredit.tasaInteres, this.dataCredit.plazo);
+        if(this.outCome.van > 0){ this.outCome.conclusion='Es Factible'}
+        this.db.updateData<OutCome>(this.outCome, '/Estimaciones/estimicion-1', 'resultado');
+
       } else {
         indexCuotas = indexCuotas + 12;
         anio = anio + 1;
@@ -205,5 +215,16 @@ export class CreditPage implements OnInit {
     }
   }
 
+  //METODOS PARA EL CALCULLO DE VAN (tipo excel)
+
+  calVanForFCctte(inversion:number, fc:number, interes:number, periodo:number):number{
+
+    let expr = Math.pow((1+(interes/12)/100),(-periodo))
+    let res = Math.round((fc/12) * ((1-expr)/((interes/12)/100))-inversion)
+    return res;
+  }
+
+
+  //METODOS PARA EL CALCULLO DE TIR
 
 }

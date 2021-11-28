@@ -110,14 +110,14 @@
     <!-- Calculos -->
     <ion-item color="tertiary"  lines="none" >
       <ion-title>VAN</ion-title>
-      <ion-label slot="end">0</ion-label>
+      <ion-label slot="end">{{outCome.van}}</ion-label>
     </ion-item>
     <ion-item color="tertiary"  lines="none" >
-      <ion-title>TIR</ion-title>
-      <ion-label slot="end">0%</ion-label>
+      <ion-title>TIR %</ion-title>
+      <ion-label slot="end">{{outCome.tir}}</ion-label>
     </ion-item>
     <ion-item  lines="none" >
-      <ion-title color="Success">La inversión es Factible?</ion-title>
+      <ion-title color="Success">{{"La Inversión "+outCome.conclusion}}</ion-title>
     </ion-item>
 
   </ion-list>

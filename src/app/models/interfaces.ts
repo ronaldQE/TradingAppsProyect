@@ -86,3 +86,9 @@ export interface MonthlyFlow{
     cuota: number;
     flujoAcumulado: number;
 }
+
+export interface OutCome{
+  van:number;
+  tir:number;
+  conclusion:string;
+}
