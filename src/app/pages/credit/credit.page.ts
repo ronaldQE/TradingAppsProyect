@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { serviceDataBase } from '../../services/services-database';
 import { Router } from '@angular/router';
 
-import { BudgetSummary, DataCredit } from '../../models/interfaces';
+import { BudgetSummary, DataCredit, FlujoAnual, MonthlyCostFull } from '../../models/interfaces';
 import { ToastController } from '@ionic/angular';
 import { Cuota } from '../../clases/credit'
 
@@ -28,16 +28,36 @@ export class CreditPage implements OnInit {
   }
   public planPagosVariado = new Cuota();
   public cuotas = [];
+  public flujoAnual: FlujoAnual = {
+    saldoInicial: 0,
+    ingresos: 0,
+    costoProduccion: 0,
+    utilidadBruta: 0,
+    costosFijo: 0,
+    utilidadNeta: 0,
+    cuota: 0,
+    flujoAcumulado: 0
+  }
+  public monthlyCostFull: MonthlyCostFull;
+
+  //VALORES TOTALES DE INGRESOS Y COSTOS
+  public ingresosT = 387000;
+  public costoProducionT = 11434;
+
+  public costoFijoT = 0;
+
   constructor(
     private router: Router,
     public db: serviceDataBase,
     public toast: ToastController,
+
 
   ) { }
 
   ngOnInit() {
     this.getBudgetSummary();
     this.getDataCredit();
+    this.getCostosOperativosTotal();
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
@@ -45,7 +65,7 @@ export class CreditPage implements OnInit {
   getBudgetSummary() {
     this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe((data) => {
       this.budgetSummary = data;
-      this.dataCredit.montoFinanciar = data.montoFinanciar
+      this.budgetSummary.montoFinanciar = data.montoFinanciar
 
     },
       (error: any) => {
@@ -95,6 +115,9 @@ export class CreditPage implements OnInit {
           }
           //CArgado de datos de credito a la base de datos
           this.db.actualizarDatos<DataCredit>(data, '/Estimaciones/estimicion-1', 'dato-credito');
+          //console.log("total cuotas: "+this.calCuotaTotal(this.cuotas,12));
+
+          this.addFlujoGestion(2021, this.dataCredit.plazo);
         }
       }
     }
@@ -108,9 +131,78 @@ export class CreditPage implements OnInit {
   async presentToast(mensaje: string) {
     const toast = await this.toast.create({
       message: mensaje,
-      duration: 5000
+      duration: 4000
     });
     toast.present(); //
+  }
+
+  //METODOS PRA GUARDAR LOS TOTALES DE FUJO ANUAL
+  getCostosOperativosTotal() {
+    this.db.getCollection<MonthlyCostFull>('/Estimaciones/estimicion-1/costos-operativos').subscribe((data) => {
+      this.costoFijoT = data.totalCostosOperativos * 12;
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+
+      }
+    )
+  }
+
+  calUtilidadBrutaTotal(totalIngeso: number, totalCostoProduccion: number): number {
+    return totalIngeso - totalCostoProduccion;
+  }
+  calUtilidadNetaTotal(totalUtiliadBruta: number, totalCostoFijo: number): number {
+    return totalUtiliadBruta - totalCostoFijo;
+  }
+  calFlujoAcumuladoTotal(saldoInicial:number, totalUtilidadNeta: number, totalCuota: number): number {
+    return totalUtilidadNeta + saldoInicial - totalCuota;
+  }
+
+  setFlujoAnual(totalIngreso: number, totalCostoProduccion: number, saldoIncial: number, totalCuota: number) {
+
+    this.flujoAnual.saldoInicial = saldoIncial;
+    this.flujoAnual.ingresos = totalIngreso;
+    this.flujoAnual.costoProduccion = totalCostoProduccion;
+    this.flujoAnual.utilidadBruta = this.calUtilidadBrutaTotal(totalIngreso, totalCostoProduccion);
+    this.flujoAnual.costosFijo = this.costoFijoT;
+    this.flujoAnual.utilidadNeta = this.calUtilidadNetaTotal(this.flujoAnual.utilidadBruta, this.flujoAnual.costosFijo);
+    this.flujoAnual.cuota = totalCuota;
+    this.flujoAnual.flujoAcumulado = this.calFlujoAcumuladoTotal(this.flujoAnual.saldoInicial, this.flujoAnual.utilidadNeta, totalCuota);
+
+  }
+
+  calCuotaTotal(cuotas: any[], indexInicio: number) {
+    let totalCuotaAnual = 0;
+    let cont = 0
+    for (let i = indexInicio; (cont < 12 && i < cuotas.length); i++) {
+      totalCuotaAnual = totalCuotaAnual + cuotas[i]
+      cont = cont + 1
+    }
+    return totalCuotaAnual
+  }
+
+
+  addFlujoGestion(anio: number, numMeses: number) {
+    let numGestiones = numMeses / 12;
+    let saldoInicial = 0;
+    let indexCuotas = 0;
+    this.db.replaceData({}, '/Estimaciones/estimicion-1', 'flujo-anual')
+    for (let i = 0; i < numGestiones; i++) {
+      if (i == 0) {
+
+        this.setFlujoAnual(this.ingresosT, this.costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
+        //console.log("total Cuota: "+this.calCuotaTotal(this.cuotas, indexCuotas))
+        this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString())
+      } else {
+        indexCuotas = indexCuotas + 12;
+        anio = anio + 1;
+        saldoInicial=this.flujoAnual.flujoAcumulado;
+        this.setFlujoAnual(this.ingresosT, this.costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
+        this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString())
+      }
+
+    }
   }
 
 
