@@ -13,17 +13,17 @@
   </ion-item>
   <ion-item class="inputData">
     <ion-label position="floating">Rango de ventas (Bs) Alta</ion-label>
-    <ion-input type="number"></ion-input>
+    <ion-input type="number" [(ngModel)]="saleMonth.ventaAlta"></ion-input>
   </ion-item>
   <br>
   <ion-item class="inputData">
     <ion-label position="floating">Rango de ventas (Bs) Media</ion-label>
-    <ion-input type="number"></ion-input>
+    <ion-input type="number" [(ngModel)]="saleMonth.ventaMedia"></ion-input>
   </ion-item>
   <br>
   <ion-item class="inputData">
     <ion-label position="floating">Rango de ventas (Bs) Baja</ion-label>
-    <ion-input type="number"></ion-input>
+    <ion-input type="number" [(ngModel)]="saleMonth.ventaBaja"></ion-input>
   </ion-item>
   <br>
 
@@ -33,77 +33,77 @@
   <ion-list class="inputData">  
     <ion-item>
       <ion-label>Enero</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectEneroRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Febrero</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectFebreroRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Marzo</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectMarzoRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Abril</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectAbrilRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Mayo</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectMayoRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Junio</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectJunioRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Julio</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectJulioRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Agosto</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectAgostoRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Septiembre</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectSeptiembreRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Octubre</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectOctubreRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Noviembre</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectNoviembreRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Diciembre</ion-label>
-      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false">
+      <ion-select placeholder="Seleccione uno" [compareWith]="compareWith" multiple="false" (ionChange)="selectDiciembreRango($event)">
         <ion-select-option *ngFor="let user of users" [value]="user">{{user.rank}}</ion-select-option>
       </ion-select>
     </ion-item>
   </ion-list>
 
-  <ion-button class="btnGuardar" size="large" expand="block">GUARDAR</ion-button>
+  <ion-button class="btnGuardar" size="large" expand="block" (click)="save()" >GUARDAR</ion-button>
 </ion-content>

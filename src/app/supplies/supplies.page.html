@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Costos de Porduccion Mensuales</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="business-plan"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item class="inputData">
+      <ion-label position="floating">Insumo</ion-label>
+      <ion-input type="text" [(ngModel)]="newSupplies.insumo"></ion-input>
+    </ion-item>
+    <ion-item class="inputData">
+      <ion-label position="floating">Cantidad (A)</ion-label>
+      <ion-input type="number"  [(ngModel)]="newSupplies.cantidadA"></ion-input>
+    </ion-item>
+    <ion-item class="inputData">
+      <ion-label position="floating">unidad</ion-label>
+      <ion-input type="text"  [(ngModel)]="newSupplies.unidad"></ion-input>
+    </ion-item>
+    <ion-item class="inputData">
+      <ion-label position="floating">N° de Unidades de Productos o Servicios (B) </ion-label>
+      <ion-input type="number"  [(ngModel)]="newSupplies.unidProducB"></ion-input>
+    </ion-item>
+    <ion-item class="inputData">
+      <ion-label position="floating">Precio Unitario (C)</ion-label>
+      <ion-input type="number"  [(ngModel)]="newSupplies.precioUnutarioC"></ion-input>
+    </ion-item>
+  </ion-card>
+
+  <!-- <ion-button class="btnGuardar" size="large" expand="block" (click)="navigateTo('product-month')">
+    GUARDAR
+  </ion-button> -->
+  <ion-button class="btnGuardar" size="large" expand="block" (click)="save()">
+    GUARDAR
+  </ion-button>
+</ion-content>
+
+
+
