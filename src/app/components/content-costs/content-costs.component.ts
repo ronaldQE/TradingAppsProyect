@@ -1,7 +1,10 @@
+import { CollectionToArrayPipe } from './../../common/collection-to-array.pipe';
+import { ComportamientoVentas } from './../../models/interfaces';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { serviceDataBase } from '../../services/services-database';
-import { MonthlyCost } from 'src/app/models/interfaces';
+import { MonthlyCost, ProductMonth } from 'src/app/models/interfaces';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-content-costs',
@@ -9,6 +12,15 @@ import { MonthlyCost } from 'src/app/models/interfaces';
   styleUrls: ['./content-costs.component.scss'],
 })
 export class ContentCostsComponent implements OnInit {
+
+  totalSumaVenta = 0;
+  totalSumaCostos = 0;
+  
+  public comportamientoVentas: ComportamientoVentas = {
+    venta: 0,
+    costoVenta: 0,
+  }
+  meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
 
   public monthlyCost: MonthlyCost = {
     servicioLuz: 0,
@@ -26,21 +38,48 @@ export class ContentCostsComponent implements OnInit {
     complementariosOtros: 0
   };
 
+  public totalVenta: number = 0;
+  public totalCostoVenta: number = 0;
+
   public totalCostosOperativosMensuales: number = 0;
+  products: Observable<any>;
 
   constructor(
     private router: Router,
     public db: serviceDataBase
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
+    this.getTotalVenta();
     this.getMonthlyCost();
+    this.products = this.db.getCollection<any>('Estimaciones/estimicion-1/productos');
   }
 
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
 
+  getComportamientoVentas(){
+    this.db.getCollection<ComportamientoVentas>('/Estiamciones/estimicion-1/comportamientoVentas').subscribe((data) =>{
+      this.comportamientoVentas = data;
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
+  }
+  getTotalVenta(){
+    for(let i = 0; i< this.meses.length; i++ ){
+      this.db.getCollection<ComportamientoVentas>('/Estiamciones/estimicion-1/comportamientoVentas'+ this.meses[i]).subscribe((data) => {
+       this.totalSumaCostos = this.totalSumaCostos + data.costoVenta;
+      },
+        (error:any) => {
+          console.log(`Error: ${error}`);
+        }
+      )
+    }
+  }
   getMonthlyCost(){
     this.db.getCollection<MonthlyCost>('/Estimaciones/estimicion-1/costos-operativos').subscribe( (data)=>{
       this.monthlyCost = data;

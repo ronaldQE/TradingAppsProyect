@@ -6,12 +6,8 @@
       <ion-title>Costos de Producción</ion-title>
     </ion-item>
 
-    <ion-item>
-      <ion-label>Apps Empresarial</ion-label>
-      <ion-label slot="end">0</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Apps Personal</ion-label>
+    <ion-item *ngFor="let product of products|async|collectionToArray">
+      <ion-label>{{product.productoServicio}}</ion-label>
       <ion-label slot="end">0</ion-label>
     </ion-item>
 
@@ -27,7 +23,7 @@
 
     <ion-item>
       <ion-label>Costos totales</ion-label>
-      <ion-label slot="end">0</ion-label>
+      <ion-label slot="end">{{totalCostoVenta}}</ion-label>
     </ion-item>
 
 

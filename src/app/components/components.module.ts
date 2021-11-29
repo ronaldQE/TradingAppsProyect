@@ -8,6 +8,7 @@ import { ContentCreditComponent } from './content-credit/content-credit.componen
 import { ContentCostsComponent } from './content-costs/content-costs.component';
 import { ContentFlowComponent } from './content-flow/content-flow.component';
 import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
+import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
 
 
 
@@ -18,7 +19,8 @@ import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
     ContentCreditComponent,
     ContentCostsComponent,
     ContentFlowComponent,
-    MonthlyFlowComponent
+    MonthlyFlowComponent,
+    CollectionToArrayPipe,
   ],
   exports: [
     MenuComponent,
@@ -32,6 +34,9 @@ import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
     CommonModule,
     IonicModule,
     RouterModule
+  ],
+  providers: [
+    CollectionToArrayPipe
   ]
 })
 export class ComponentsModule { }

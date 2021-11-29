@@ -1,3 +1,6 @@
+import { SuppliesPage } from './../supplies/supplies.page';
+import { ProductMonthPage } from './../product-month/product-month.page';
+import { SaleMonthPage } from './../sale-month/sale-month.page';
 export interface Budget{
     efectivo: number;
     banco: number;
@@ -85,4 +88,29 @@ export interface MonthlyFlow{
     utilidadNeta: number;
     cuota: number;
     flujoAcumulado: number;
+}
+export interface SaleMonth{
+    ventaAlta: number,
+    ventaMedia: number,
+    ventaBaja: number,
+}
+export interface ComportamientoVentas{
+    venta: number,
+    costoVenta: number,
+}
+export interface ProductMonth{
+    productoServicio: string,
+    tipo: string,
+    cantidad: number,
+    unidadVenta: number,
+    tipoFrecuencia: string,
+    precioC: number,
+    precioV: number,
+}
+export interface Supplies{
+    insumo: string,
+    cantidadA: number,
+    unidProducB: number,
+    unidad: number,
+    precioUnutarioC: number
 }
