@@ -21,6 +21,9 @@ export class serviceDataBase{
 
     getCollection<tipo>(path:string){
       const collection = this.database.object<tipo>(path);
+      collection.valueChanges().subscribe(a => {
+          console.log(a);
+      })
       return collection.valueChanges();
     }
     updateData<tipo>(data: tipo,enlace: string,coleccion: string){

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { FlujoAnual } from 'src/app/models/interfaces';
+import { ComportamientoVentas, FlujoAnual, OutCome } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 
 
@@ -26,6 +26,14 @@ export class ContentFlowComponent implements OnInit {
     cuota:0,
     flujoAcumulado:0
   }
+  public outCome: OutCome={
+    van:0,
+    tir:"",
+    conclusion:"No Factible"
+  }
+  meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+  totalCostos = 0;
+  totalVentas = 0;
   public valueSelected:string = "2021"
   public gestions:Gestions [] = [
     {
@@ -61,6 +69,7 @@ export class ContentFlowComponent implements OnInit {
   ngOnInit() {
 
     this.getFlujoAnual("2021");
+    this.getOutCome();
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
@@ -98,11 +107,51 @@ export class ContentFlowComponent implements OnInit {
     }
     )
   }
+  getOutCome(){
+    this.db.getCollection<OutCome>(`/Estimaciones/estimicion-1/resultado`).subscribe( (data)=>{
+      this.outCome=data;
+
+    },
+    (error:any) => {
+      console.log(`Error: ${error}`);
+    }
+    )
+  }
+
   async presentToast(mensaje: string) {
     const toast = await this.toast.create({
       message: mensaje,
       duration: 4000
     });
     toast.present(); //
+  }
+  getTotalSuma() {
+    this.totalCostos=0;
+    this.totalVentas=0;
+
+    for (let i = 0; i < this.meses.length; i++) {
+      this.db.getCollection<ComportamientoVentas>('/Estimaciones/estimicion-1/comportamientoVentas/' + this.meses[i]).subscribe((data) => {
+        if (data !== null) {
+          this.totalCostos = this.totalCostos + data.costoVenta;
+          this.totalVentas = this.totalVentas + data.venta;
+        }
+        if (i == 11) {
+          let dataTotal = {
+            totalVenta: this.totalVentas,
+            totalCostoVenta: this.totalCostos,
+          }
+          this.db.updateData(dataTotal, '/Estimaciones/estimicion-1/comportamientoVentas', 'totales');
+          console.log("----------------------------------------")
+          console.log(this.totalVentas)
+          console.log(this.totalCostos)
+        }
+      },
+        (error: any) => {
+          console.log(`Error: ${error}`);
+
+        }
+      )
+    }
+
   }
 }
