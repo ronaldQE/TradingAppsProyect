@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { serviceDataBase } from '../../services/services-database';
 import { Router } from '@angular/router';
 
-import { BudgetSummary, DataCredit, FlujoAnual, MonthlyCostFull, OutCome } from '../../models/interfaces';
+import { BudgetSummary, ComportamientoVentas, ComportamientoVentasTotales, DataCredit, FlujoAnual, MonthlyCostFull, OutCome } from '../../models/interfaces';
 import { ToastController } from '@ionic/angular';
 import { Cuota } from '../../clases/credit'
 
@@ -36,13 +36,16 @@ export class CreditPage implements OnInit {
     costosFijo: 0,
     utilidadNeta: 0,
     cuota: 0,
-    flujoAcumulado:0 //Solo Prueba
+    flujoAcumulado: 0 //Solo Prueba
   }
   public monthlyCostFull: MonthlyCostFull;
 
   //VALORES TOTALES DE INGRESOS Y COSTOS
-  public ingresosT = 384000;
-  public costoProducionT = 11345;
+  //public ingresosT = 384000;
+  //public costoProducionT = 11345;
+  meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+  totalCostos = 0;
+  totalVentas = 0;
 
   public costoFijoT = 0;
   public outCome: OutCome = {
@@ -50,7 +53,7 @@ export class CreditPage implements OnInit {
     tir: "",
     conclusion: "No Factible"
   }
-  public tirCal=0;
+  public tirCal = 0;
 
   constructor(
     private router: Router,
@@ -64,6 +67,7 @@ export class CreditPage implements OnInit {
     this.getBudgetSummary();
     this.getDataCredit();
     this.getCostosOperativosTotal();
+
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
@@ -123,7 +127,8 @@ export class CreditPage implements OnInit {
           this.db.actualizarDatos<DataCredit>(data, '/Estimaciones/estimicion-1', 'dato-credito');
           //console.log("total cuotas: "+this.calCuotaTotal(this.cuotas,12));
 
-          this.addFlujoGestion(2021, this.dataCredit.plazo);
+          //this.addFlujoGestion(2021, this.dataCredit.plazo);
+          this.getTotalSuma();
         }
       }
     }
@@ -143,6 +148,37 @@ export class CreditPage implements OnInit {
   }
 
   //METODOS PRA GUARDAR LOS TOTALES DE FUJO ANUAL
+  getTotalSuma() {
+    this.totalCostos = 0;
+    this.totalVentas = 0;
+
+    for (let i = 0; i < this.meses.length; i++) {
+      this.db.getCollection<ComportamientoVentas>('/Estimaciones/estimicion-1/comportamientoVentas/' + this.meses[i]).subscribe((data) => {
+        if (data !== null) {
+          this.totalCostos = this.totalCostos + data.costoVenta;
+          this.totalVentas = this.totalVentas + data.venta;
+        }
+        if (i == 11) {
+          let dataTotal: ComportamientoVentasTotales = {
+            totalVenta: this.totalVentas,
+            totalCostoVenta: this.totalCostos,
+          }
+          this.addFlujoGestion(2021, this.dataCredit.plazo, this.totalVentas, this.totalCostos);
+          this.db.updateData(dataTotal, '/Estimaciones/estimicion-1/comportamientoVentas', 'totales');
+          console.log("----------------------------------------")
+          console.log(this.totalVentas)
+          console.log(this.totalCostos)
+        }
+      },
+        (error: any) => {
+          console.log(`Error: ${error}`);
+
+        }
+      )
+    }
+
+  }
+
   getCostosOperativosTotal() {
     this.db.getCollection<MonthlyCostFull>('/Estimaciones/estimicion-1/costos-operativos').subscribe((data) => {
       this.costoFijoT = data.totalCostosOperativos * 12;
@@ -189,7 +225,7 @@ export class CreditPage implements OnInit {
   }
 
 
-  addFlujoGestion(anio: number, numMeses: number) {
+  addFlujoGestion(anio: number, numMeses: number, ingresosT: number, costoProducionT: number) {
     let numGestiones = numMeses / 12;
     let saldoInicial = 0;
     let indexCuotas = 0;
@@ -197,7 +233,7 @@ export class CreditPage implements OnInit {
     for (let i = 0; i < numGestiones; i++) {
       if (i == 0) {
 
-        this.setFlujoAnual(this.ingresosT, this.costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
+        this.setFlujoAnual(ingresosT, costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
         //console.log("total Cuota: "+this.calCuotaTotal(this.cuotas, indexCuotas))
         this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString());
         //calcular el van como el excel
@@ -206,8 +242,8 @@ export class CreditPage implements OnInit {
         if (this.outCome.van > 0) { this.outCome.conclusion = 'Es Factible' }
 
         //calcular TIR
-        this.testTirCal(this.dataCredit.montoFinanciar,this.flujoAnual.flujoAcumulado,this.dataCredit.plazo);
-        this.outCome.tir=this.tirCal.toFixed(2)
+        this.testTirCal(this.dataCredit.montoFinanciar, this.flujoAnual.flujoAcumulado, this.dataCredit.plazo);
+        this.outCome.tir = this.tirCal.toFixed(2)
         //carga de datos Reusltado
         this.db.updateData<OutCome>(this.outCome, '/Estimaciones/estimicion-1', 'resultado');
 
@@ -215,7 +251,7 @@ export class CreditPage implements OnInit {
         indexCuotas = indexCuotas + 12;
         anio = anio + 1;
         saldoInicial = this.flujoAnual.flujoAcumulado;
-        this.setFlujoAnual(this.ingresosT, this.costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
+        this.setFlujoAnual(ingresosT, costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
         this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString())
       }
 
@@ -233,7 +269,7 @@ export class CreditPage implements OnInit {
 
 
   //METODOS PARA EL CALCULLO DE TIR
-  testTir(k1: number, k2: number, montoFinanciar:number, flujoAcumulado:number, plazo:number): number {
+  testTir(k1: number, k2: number, montoFinanciar: number, flujoAcumulado: number, plazo: number): number {
 
     let van1Posi = false;
     let van2Posi = false;
@@ -244,7 +280,7 @@ export class CreditPage implements OnInit {
     console.log("VAN1: " + van1 + " VAN2: " + van2)
 
     console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
-    this.tirCal= (this.proximoAcero(k1, k2, van1, van2));
+    this.tirCal = (this.proximoAcero(k1, k2, van1, van2));
 
     if (van1 > 0) {
       van1Posi = true;
@@ -260,14 +296,14 @@ export class CreditPage implements OnInit {
       console.log("nuevo TIR:" + tir + " nuevo VAN: " + vanNew)
 
 
-      if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew==0) {
+      if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew == 0) {
 
         return tir;
       } else {
         console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
         if (this.proximoAcero(k1, k2, van1, van2) === k1) {
 
-         // console.log("Nuevo TIR posi:" +this.nuevoTir(k2, tir, van2, vanNew) )
+          // console.log("Nuevo TIR posi:" +this.nuevoTir(k2, tir, van2, vanNew) )
           this.testTir(k1 - 1, this.nuevoTir(k2, tir, van2, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
         } else {
           this.testTir(k1 - 1, this.nuevoTir(k1, tir, van1, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
@@ -305,7 +341,7 @@ export class CreditPage implements OnInit {
     }
   }
 
-  private nuevoTir(kMay: number, kcal: number, vanMayor: number, vanCal: number, montoFinanciar:number, flujoAcumulado:number, plazo:number): number {
+  private nuevoTir(kMay: number, kcal: number, vanMayor: number, vanCal: number, montoFinanciar: number, flujoAcumulado: number, plazo: number): number {
     if (kcal == this.proximoAcero(kcal, kMay, vanCal, vanMayor)) {
       if (vanCal < 0) {
 
@@ -314,7 +350,7 @@ export class CreditPage implements OnInit {
 
           vanCal = this.calVanForFCctte(montoFinanciar, flujoAcumulado, kcal = kcal - 1, plazo);
         }
-        console.log("VAN a positivo: "+ vanCal)
+        console.log("VAN a positivo: " + vanCal)
         return kcal
 
       } else {
@@ -326,8 +362,8 @@ export class CreditPage implements OnInit {
 
   }
 
-  testTirCal( montoFinanciar:number, flujoAcumulado:number, plazo:number) {
-    this.testTir(500, 1,montoFinanciar, flujoAcumulado, plazo);
+  testTirCal(montoFinanciar: number, flujoAcumulado: number, plazo: number) {
+    this.testTir(500, 1, montoFinanciar, flujoAcumulado, plazo);
     console.log("Este es el tir: " + this.tirCal.toFixed(2));
   }
 }
