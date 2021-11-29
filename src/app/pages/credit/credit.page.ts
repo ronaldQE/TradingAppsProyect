@@ -16,13 +16,13 @@ export class CreditPage implements OnInit {
   public budgetSummary: BudgetSummary = {
     aportePropio: 0,
     planInversion: 0,
-    montoFinanciar: 0,
+    montoFinanciar: 0,//Solo prueba
     totalProyecto: 0
   }
   public dataCredit: DataCredit = {
     montoFinanciar: 0,
     tasaInteres: 0,
-    plazo: 0,
+    plazo: 0, //Solo prueba
     poliza: 0,
     tipoCuota: ""
   }
@@ -36,20 +36,21 @@ export class CreditPage implements OnInit {
     costosFijo: 0,
     utilidadNeta: 0,
     cuota: 0,
-    flujoAcumulado: 0
+    flujoAcumulado:0 //Solo Prueba
   }
   public monthlyCostFull: MonthlyCostFull;
 
   //VALORES TOTALES DE INGRESOS Y COSTOS
-  public ingresosT = 387000;
-  public costoProducionT = 11434;
+  public ingresosT = 384000;
+  public costoProducionT = 11345;
 
   public costoFijoT = 0;
-  public outCome: OutCome={
-    van:0,
-    tir:0,
-    conclusion:"No Factible"
+  public outCome: OutCome = {
+    van: 0,
+    tir: "",
+    conclusion: "No Factible"
   }
+  public tirCal=0;
 
   constructor(
     private router: Router,
@@ -160,7 +161,7 @@ export class CreditPage implements OnInit {
   calUtilidadNetaTotal(totalUtiliadBruta: number, totalCostoFijo: number): number {
     return totalUtiliadBruta - totalCostoFijo;
   }
-  calFlujoAcumuladoTotal(saldoInicial:number, totalUtilidadNeta: number, totalCuota: number): number {
+  calFlujoAcumuladoTotal(saldoInicial: number, totalUtilidadNeta: number, totalCuota: number): number {
     return totalUtilidadNeta + saldoInicial - totalCuota;
   }
 
@@ -200,14 +201,20 @@ export class CreditPage implements OnInit {
         //console.log("total Cuota: "+this.calCuotaTotal(this.cuotas, indexCuotas))
         this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString());
         //calcular el van como el excel
-        this.outCome.van=this.calVanForFCctte(this.dataCredit.montoFinanciar, this.flujoAnual.flujoAcumulado, this.dataCredit.tasaInteres, this.dataCredit.plazo);
-        if(this.outCome.van > 0){ this.outCome.conclusion='Es Factible'}
+        this.outCome.van = this.calVanForFCctte(this.dataCredit.montoFinanciar, this.flujoAnual.flujoAcumulado, this.dataCredit.tasaInteres, this.dataCredit.plazo);
+        console.log(this.outCome.van)
+        if (this.outCome.van > 0) { this.outCome.conclusion = 'Es Factible' }
+
+        //calcular TIR
+        this.testTirCal(this.dataCredit.montoFinanciar,this.flujoAnual.flujoAcumulado,this.dataCredit.plazo);
+        this.outCome.tir=this.tirCal.toFixed(2)
+        //carga de datos Reusltado
         this.db.updateData<OutCome>(this.outCome, '/Estimaciones/estimicion-1', 'resultado');
 
       } else {
         indexCuotas = indexCuotas + 12;
         anio = anio + 1;
-        saldoInicial=this.flujoAnual.flujoAcumulado;
+        saldoInicial = this.flujoAnual.flujoAcumulado;
         this.setFlujoAnual(this.ingresosT, this.costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas));
         this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString())
       }
@@ -217,14 +224,110 @@ export class CreditPage implements OnInit {
 
   //METODOS PARA EL CALCULLO DE VAN (tipo excel)
 
-  calVanForFCctte(inversion:number, fc:number, interes:number, periodo:number):number{
+  calVanForFCctte(inversion: number, fc: number, interes: number, periodo: number): number {
 
-    let expr = Math.pow((1+(interes/12)/100),(-periodo))
-    let res = Math.round((fc/12) * ((1-expr)/((interes/12)/100))-inversion)
+    let expr = Math.pow((1 + (interes / 12) / 100), (-periodo))
+    let res = Math.round((fc / 12) * ((1 - expr) / ((interes / 12) / 100)) - inversion)
     return res;
   }
 
 
   //METODOS PARA EL CALCULLO DE TIR
+  testTir(k1: number, k2: number, montoFinanciar:number, flujoAcumulado:number, plazo:number): number {
 
+    let van1Posi = false;
+    let van2Posi = false;
+
+    let van1 = this.calVanForFCctte(montoFinanciar, flujoAcumulado, k1, plazo);
+    let van2 = this.calVanForFCctte(montoFinanciar, flujoAcumulado, k2, plazo);
+    console.log("----------------------------------------------");
+    console.log("VAN1: " + van1 + " VAN2: " + van2)
+
+    console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
+    this.tirCal= (this.proximoAcero(k1, k2, van1, van2));
+
+    if (van1 > 0) {
+      van1Posi = true;
+    }
+    if (van2 > 0) {
+      van2Posi = true;
+    }
+
+    if (van1Posi == true && van2Posi == false || van2Posi == true && van1Posi == false) {
+      let tir = this.interpolar(k1, k2, van1, van2)
+      let vanNew = this.calVanForFCctte(montoFinanciar, flujoAcumulado, tir, plazo);
+
+      console.log("nuevo TIR:" + tir + " nuevo VAN: " + vanNew)
+
+
+      if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew==0) {
+
+        return tir;
+      } else {
+        console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
+        if (this.proximoAcero(k1, k2, van1, van2) === k1) {
+
+         // console.log("Nuevo TIR posi:" +this.nuevoTir(k2, tir, van2, vanNew) )
+          this.testTir(k1 - 1, this.nuevoTir(k2, tir, van2, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
+        } else {
+          this.testTir(k1 - 1, this.nuevoTir(k1, tir, van1, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
+        }
+        //this.testTir(k1 - 1, k2 + 1);
+
+      }
+
+    } else {
+      return 0.000002
+    }//
+
+  }
+
+  private interpolar(k1: number, k2: number, van1: number, van2: number) {
+    return k1 + (k2 - k1) * (van1 / (van1 - van2))
+  }
+  private proximoAcero(k1: number, k2: number, van1: number, van2: number): number {
+    let van1Compare = van1
+    let van2Compare = van2
+
+    if (van1 < 0) {
+      van1Compare = van1 * (-1)
+    }
+    if (van2 < 0) {
+      van2Compare = van2 * (-1)
+    }
+    console.log("n1: " + van1Compare)
+    console.log("n2: " + van2Compare)
+
+    if (van1Compare < van2Compare) {
+      return k1
+    } else {
+      return k2
+    }
+  }
+
+  private nuevoTir(kMay: number, kcal: number, vanMayor: number, vanCal: number, montoFinanciar:number, flujoAcumulado:number, plazo:number): number {
+    if (kcal == this.proximoAcero(kcal, kMay, vanCal, vanMayor)) {
+      if (vanCal < 0) {
+
+        while (vanCal < 0) {
+          //let tir = this.interpolar(k1, k2, van1, van2)
+
+          vanCal = this.calVanForFCctte(montoFinanciar, flujoAcumulado, kcal = kcal - 1, plazo);
+        }
+        console.log("VAN a positivo: "+ vanCal)
+        return kcal
+
+      } else {
+        return kcal;
+      }
+    } else {
+      return kMay
+    }
+
+  }
+
+  testTirCal( montoFinanciar:number, flujoAcumulado:number, plazo:number) {
+    this.testTir(500, 1,montoFinanciar, flujoAcumulado, plazo);
+    console.log("Este es el tir: " + this.tirCal.toFixed(2));
+  }
 }

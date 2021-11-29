@@ -89,6 +89,6 @@ export interface MonthlyFlow{
 
 export interface OutCome{
   van:number;
-  tir:number;
+  tir:string;
   conclusion:string;
 }

@@ -28,7 +28,7 @@ export class ContentFlowComponent implements OnInit {
   }
   public outCome: OutCome={
     van:0,
-    tir:0,
+    tir:"",
     conclusion:"No Factible"
   }
   public valueSelected:string = "2021"
