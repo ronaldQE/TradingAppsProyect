@@ -124,3 +124,9 @@ export interface Supplies{
     unidad: number,
     precioUnutarioC: number
 }
+
+export interface HistoryData{
+  title:string,
+  van: number,
+  tir:string
+}

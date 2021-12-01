@@ -1,3 +1,29 @@
-<p>
-  calculated-estimate works!
-</p>
+<div>
+  <ion-card>
+    <ion-row>
+      <ion-col class="content-row">
+
+        <ion-title class="title">{{title}}</ion-title>
+        <div class="contentData">
+          <ion-label>VAN: {{van}}</ion-label>
+          <ion-label slot="end"></ion-label>
+
+        </div>
+        <div class="contentData">
+          <ion-label>TIR %: {{tir}}</ion-label>
+          <ion-label slot="end"></ion-label>
+
+        </div>
+
+      </ion-col>
+      <ion-col>
+        <ion-button color="light" size="large" expand="block"><div class="btn"
+          (click)="navigateTo('/business-plan')">VER DATOS</div>
+          <ion-icon color="secondary"  slot="start" name="reader"></ion-icon>
+        </ion-button>
+
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+</div>
