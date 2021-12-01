@@ -7,13 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { EstimateHistoryPageRoutingModule } from './estimate-history-routing.module';
 
 import { EstimateHistoryPage } from './estimate-history.page';
+import { ComponentsModule } from '../components/components.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EstimateHistoryPageRoutingModule
+    EstimateHistoryPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [EstimateHistoryPage]
 })

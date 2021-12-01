@@ -9,6 +9,7 @@ import { ContentCostsComponent } from './content-costs/content-costs.component';
 import { ContentFlowComponent } from './content-flow/content-flow.component';
 import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
 import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
+import { CalculatedEstimateComponent } from './calculated-estimate/calculated-estimate.component';
 
 
 
@@ -21,6 +22,7 @@ import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
     ContentFlowComponent,
     MonthlyFlowComponent,
     CollectionToArrayPipe,
+    CalculatedEstimateComponent,
   ],
   exports: [
     MenuComponent,
@@ -28,7 +30,8 @@ import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
     ContentCreditComponent,
     ContentCostsComponent,
     ContentFlowComponent,
-    MonthlyFlowComponent
+    MonthlyFlowComponent,
+    CalculatedEstimateComponent
   ],
   imports: [
     CommonModule,
