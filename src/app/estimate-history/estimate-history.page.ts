@@ -37,6 +37,7 @@ export class EstimateHistoryPage implements OnInit {
   // ];
   public estimaciones:HistoryData[]=[];
   public dataHistory: HistoryData ={
+    id:0,
     title:"",
     van: 0,
     tir:""
@@ -73,11 +74,12 @@ export class EstimateHistoryPage implements OnInit {
 
           this.db.getCollection<OutCome>(`/Estimaciones/estimacion-${num}/resultado`).subscribe((data) => {
             let dataHistory={
+              id:(i+1),
               title:"Estimación-" + num,
               van:data.van,
               tir:data.tir
             }
-
+            //console.log("el id: "+dataHistory.id)
             this.estimaciones [i] = dataHistory;
 
 

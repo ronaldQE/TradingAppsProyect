@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./calculated-estimate.component.scss'],
 })
 export class CalculatedEstimateComponent implements OnInit {
+  @Input() id:number;
   @Input() title:string;
   @Input() van:number;
   @Input() tir:string;

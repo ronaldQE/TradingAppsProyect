@@ -126,6 +126,7 @@ export interface Supplies{
 }
 
 export interface HistoryData{
+  id:number,
   title:string,
   van: number,
   tir:string
