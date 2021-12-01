@@ -9,5 +9,8 @@
 </ion-header>
 
 <ion-content>
+<div *ngFor="let estimacion of estimaciones; ">
+  <app-calculated-estimate [title]="estimacion.title" [van]="estimacion.van" [tir]="estimacion.tir" ></app-calculated-estimate>
 
+</div>
 </ion-content>
