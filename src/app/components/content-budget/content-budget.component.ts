@@ -137,12 +137,14 @@ export class ContentBudgetComponent implements OnInit {
           let maquinariaEquipos = this.investmentCapital.equipoComputo+this.investmentCapital.equipamientoOficina
           let planInversionCal=gastosOperativos+this.operatingCapital.promociones+maquinariaEquipos+this.investmentCapital.consultoria
           let totalProyectoCal=planInversionCal+this.budgetSummary.aportePropio-this.budgetSummary.totalEfectivo
+          let montoFinanciarCal=planInversionCal-this.budgetSummary.totalEfectivo
           const dataUp = {
             planInversion: planInversionCal,
             totalProyecto: totalProyectoCal,
-            montoFinanciar: planInversionCal-this.budgetSummary.totalEfectivo,
+            montoFinanciar: montoFinanciarCal,
           }
           this.dataUpdate(dataUp);
+          this.dataUpdateMontoCredit({montoFinanciar: montoFinanciarCal})
         },
           (error: any) => {
             console.log(`Error: ${error}`);
@@ -189,6 +191,9 @@ export class ContentBudgetComponent implements OnInit {
 
   dataUpdate(data: any) {
     this.db.updateData(data, '/Estimaciones/estimicion-1', 'resumen-presupuesto')
+  }
+  dataUpdateMontoCredit(data: any) {
+    this.db.updateData(data, '/Estimaciones/estimicion-1', 'dato-credito')
   }
   getBudgetSummary() {
     this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe((data) => {
