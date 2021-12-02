@@ -32,7 +32,8 @@ export class BudgetSummaryPage implements OnInit {
     aportePropio: 0,
     planInversion: 0,
     montoFinanciar: 0,
-    totalProyecto: 0
+    totalProyecto: 0,
+    totalEfectivo:0
   }
 
   public cOperativo:number=0;

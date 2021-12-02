@@ -64,7 +64,9 @@ export class MonthlyFlowComponent implements OnInit {
     aportePropio: 0,
     planInversion: 0,
     montoFinanciar: 0,
-    totalProyecto: 0
+    totalProyecto: 0,
+    totalEfectivo:0
+
   }
 
   async getBudgetSummary(){
@@ -145,7 +147,7 @@ export class MonthlyFlowComponent implements OnInit {
     await this.getTotalOperatingCosts();
     await this.getBudgetSummary();
   }
-  
+
 
   calculateMonthlyFlow(numberMonth: number){
     let cont:number = 0;
@@ -166,9 +168,9 @@ export class MonthlyFlowComponent implements OnInit {
       } else {
         //recuperacion de la cuotas aun arreglo
         this.cuotas = []
-  
+
         if (data.tipoCuota == "Cuota Fija") {
-  
+
           this.planPagosVariado.calPlanPagosFijo(data.montoFinanciar, data.tasaInteres, data.plazo, data.poliza);
           this.cuotas = this.planPagosVariado.cuotasF
         }
@@ -207,7 +209,7 @@ export class MonthlyFlowComponent implements OnInit {
       this.costoVenta[11]=data.diciembre.costoVenta;
       this.venta[11]=data.diciembre.venta;
     })
-    
+
   }
 
 }

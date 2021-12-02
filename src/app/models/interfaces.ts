@@ -26,6 +26,7 @@ export interface BudgetSummary{
     planInversion: number;
     montoFinanciar: number;
     totalProyecto: number;
+    totalEfectivo: number;
 }
 
 export interface MonthlyCost{

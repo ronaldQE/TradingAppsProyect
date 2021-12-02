@@ -15,7 +15,9 @@ export class ContentCreditComponent implements OnInit {
     aportePropio: 0,
     planInversion: 0,
     montoFinanciar: 0,
-    totalProyecto: 0
+    totalProyecto: 0,
+    totalEfectivo:0
+
   }
   public dataCredit: DataCredit={
     montoFinanciar:0,
