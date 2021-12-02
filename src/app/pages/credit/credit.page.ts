@@ -97,6 +97,28 @@ export class CreditPage implements OnInit {
     )
   }
 
+  //METO ALTERNATIVO SOLO DE GUARDADO DE DATOS DE CREDITO
+  upDataCredit(){
+    if (this.dataCredit.plazo == null || this.dataCredit.poliza == null || this.dataCredit.tasaInteres == null) {
+      this.presentToast("Exiten campos sin completar");
+    } else {
+      if (!(this.dataCredit.plazo > 0 && this.dataCredit.poliza >= 0 && this.dataCredit.tasaInteres > 0)) {
+        this.presentToast("Los datos son incorrectos, intente nuevamente");
+      } else {
+        const data = this.dataCredit;
+        if (this.dataCredit.tipoCuota == null) {
+          this.presentToast("selcione un tipo de credito");
+        } else {
+
+          //Cargado de datos de credito a la base de datos
+          this.db.actualizarDatos<DataCredit>(data, '/Estimaciones/estimicion-1', 'dato-credito');
+          this.navigateTo('/business-plan');
+        }
+      }
+    }
+  }
+
+//********************************************************************/
   upCredit() {
 
     if (this.dataCredit.plazo == null || this.dataCredit.poliza == null || this.dataCredit.tasaInteres == null) {

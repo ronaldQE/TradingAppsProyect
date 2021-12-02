@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { ComportamientoVentas, DataCredit, FlujoAnual, OutCome } from 'src/app/models/interfaces';
+import { ComportamientoVentas, ComportamientoVentasTotales, DataCredit, FlujoAnual, MonthlyCostFull, OutCome } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 
 import { Cuota } from '../../clases/credit'
@@ -71,6 +71,9 @@ export class ContentFlowComponent implements OnInit {
   public planPagosVariado = new Cuota();
   public cuotas = [];
 
+  public tirCal = 0;
+  public costoFijoT = 0;
+
   constructor(
     private router: Router,
     public db: serviceDataBase,
@@ -82,22 +85,27 @@ export class ContentFlowComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getDataCredit()
+    this.getTotalSuma()
     this.getFlujoAnual("2021");
+    this.getDataCredit()
     //this.getOutCome();
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
+
   segmentChanged(event: CustomEvent | any) {
     this.valueSelected = event.detail.value;
-    //console.log('la gestion es: '+ this.selectGestion);
     this.getFlujoAnual(this.valueSelected);
   }
+
   getFlujoAnual(gestion: string) {
     this.db.getCollection<FlujoAnual>(`/Estimaciones/estimicion-1/flujo-anual/${gestion}`).subscribe((data) => {
       if (data == null) {
-        this.presentToast("La gestion esta vacia");
+        if (gestion !== "2021") {
+          //this.presentToast("La gestion esta vacia");
+
+        }
         this.flujoAnual = {
           saldoInicial: 0,
           ingresos: 0,
@@ -108,7 +116,6 @@ export class ContentFlowComponent implements OnInit {
           cuota: 0,
           flujoAcumulado: 0
         }
-        //this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', '2022')
 
       } else {
 
@@ -122,6 +129,7 @@ export class ContentFlowComponent implements OnInit {
       }
     )
   }
+
   getOutCome() {
     this.db.getCollection<OutCome>(`/Estimaciones/estimicion-1/resultado`).subscribe((data) => {
       this.outCome = data;
@@ -136,7 +144,7 @@ export class ContentFlowComponent implements OnInit {
   async presentToast(mensaje: string) {
     const toast = await this.toast.create({
       message: mensaje,
-      duration: 4000
+      duration: 2000
     });
     toast.present(); //
   }
@@ -170,29 +178,36 @@ export class ContentFlowComponent implements OnInit {
 
   }
 
-  //Metodos para actualizar le Plan de pagos
+  //Metodos para le Plan de pagos
   getDataCredit() {
     this.db.getCollection<DataCredit>('/Estimaciones/estimicion-1/dato-credito').subscribe((data) => {
       this.dataCredit = data;
-      //this.dataCredit.montoFinanciar = this.budgetSummary.montoFinanciar
+      this.db.getCollection<ComportamientoVentasTotales>('/Estimaciones/estimicion-1/comportamientoVentas/totales').subscribe((data) => {
+        let totalVentaAnual = data.totalVenta;
+        let totalCostoVentaAnual = data.totalCostoVenta;
+        this.cuotas = []
 
-      this.cuotas = []
+        if (this.dataCredit.tipoCuota == "Cuota Fija") {
 
-      if (this.dataCredit.tipoCuota == "Cuota Fija") {
+          this.planPagosVariado.calPlanPagosFijo(this.dataCredit.montoFinanciar, this.dataCredit.tasaInteres, this.dataCredit.plazo, this.dataCredit.poliza);
+          this.cuotas = this.planPagosVariado.cuotasF
+          console.log(this.cuotas)
+          this.addFlujoGestion(2021, this.dataCredit.plazo, totalVentaAnual, totalCostoVentaAnual, this.cuotas, this.dataCredit.montoFinanciar, this.dataCredit.tasaInteres, this.dataCredit.plazo);
+        }
+        if (this.dataCredit.tipoCuota == "Cuota Variable") {
+          this.planPagosVariado.calPlanPagosVariado(this.dataCredit.montoFinanciar, this.dataCredit.tasaInteres, this.dataCredit.plazo, this.dataCredit.poliza);
+          this.cuotas = this.planPagosVariado.cuotasV
+          console.log(this.cuotas)
+          this.addFlujoGestion(2021, this.dataCredit.plazo, totalVentaAnual, totalCostoVentaAnual, this.cuotas, this.dataCredit.montoFinanciar, this.dataCredit.tasaInteres, this.dataCredit.plazo);
 
-        this.planPagosVariado.calPlanPagosFijo(this.dataCredit.montoFinanciar, this.dataCredit.tasaInteres, this.dataCredit.plazo, this.dataCredit.poliza);
-        this.cuotas = this.planPagosVariado.cuotasF
-        console.log(this.cuotas)
-        this.updateFlujoCuotaGestion(2021, this.dataCredit.plazo, this.cuotas);
-      }
-      if (this.dataCredit.tipoCuota == "Cuota Variable") {
-        this.planPagosVariado.calPlanPagosVariado(this.dataCredit.montoFinanciar, this.dataCredit.tasaInteres, this.dataCredit.plazo, this.dataCredit.poliza);
-        this.cuotas = this.planPagosVariado.cuotasV
-        console.log(this.cuotas)
-        this.updateFlujoCuotaGestion(2021, this.dataCredit.plazo, this.cuotas);
+        }
 
-      }
+      },
+        (error: any) => {
+          console.log(`Error: ${error}`);
 
+        }
+      )
     },
       (error: any) => {
         console.log(`Error: ${error}`);
@@ -211,35 +226,183 @@ export class ContentFlowComponent implements OnInit {
     return totalCuotaAnual
   }
 
-  updateFlujoCuotaGestion(anio: number, numMeses: number, cuotas: any[]) {
+
+  addFlujoGestion(anio: number, numMeses: number, ingresosT: number, costoProducionT: number, cuotas: any[], montoFinanciar: number, tasaInteres: number, plazo: number) {
     let numGestiones = numMeses / 12;
-    //let saldoInicial = 0;
+    let saldoInicial = 0;
     let indexCuotas = 0;
-    //this.db.replaceData({}, '/Estimaciones/estimicion-1', 'flujo-anual')
-    for (let i = 0; i < numGestiones; i++) {
-      if (i == 0) {
+    this.db.replaceData({}, '/Estimaciones/estimicion-1', 'flujo-anual')
 
-        let totalCuotas = this.calCuotaTotal(cuotas, indexCuotas)
-        const upCuotaAnio={cuota:totalCuotas}
-        this.db.updateData(upCuotaAnio, '/Estimaciones/estimicion-1/flujo-anual', anio.toString())
-        //if (this.outCome.van > 0) { this.outCome.conclusion = 'Es Factible' }
-        console.log("2021: "+totalCuotas)
-        //calcular TIR
-        //this.testTirCal(this.dataCredit.montoFinanciar, this.flujoAnual.flujoAcumulado, this.dataCredit.plazo);
-        //this.outCome.tir = this.tirCal.toFixed(2)
-        //carga de datos Reusltado
-        //this.db.updateData<OutCome>(this.outCome, '/Estimaciones/estimicion-1', 'resultado');
+    this.db.getCollection<MonthlyCostFull>('/Estimaciones/estimicion-1/costos-operativos').subscribe((data) => {
+      let costoFijoT = data.totalCostosOperativos * 12;
+      for (let i = 0; i < numGestiones; i++) {
+        if (i == 0) {
 
-      } else {
-        indexCuotas = indexCuotas + 12;
-        anio = anio + 1;
-        let totalCuotas = this.calCuotaTotal(cuotas, indexCuotas)
-        const upCuotaAnio={cuota:totalCuotas}
-        this.db.updateData(upCuotaAnio, '/Estimaciones/estimicion-1/flujo-anual', anio.toString())
+          this.setFlujoAnual(ingresosT, costoProducionT, saldoInicial, this.calCuotaTotal(cuotas, indexCuotas), costoFijoT);
+          //console.log("total Cuota: "+this.calCuotaTotal(this.cuotas, indexCuotas))
+          this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString());
+
+          this.outCome.van = this.calVanForFCctte(montoFinanciar, this.flujoAnual.flujoAcumulado, tasaInteres, plazo);
+          console.log(this.outCome.van)
+
+          if (this.outCome.van > 0) { this.outCome.conclusion = 'Es Factible' }
+
+
+          //calcular TIR
+          this.testTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
+          this.outCome.tir = this.tirCal.toFixed(2)
+          //carga de datos Reusltado
+          this.db.updateData<OutCome>(this.outCome, '/Estimaciones/estimicion-1', 'resultado');
+
+        } else {
+          indexCuotas = indexCuotas + 12;
+          anio = anio + 1;
+          saldoInicial = this.flujoAnual.flujoAcumulado;
+          this.setFlujoAnual(ingresosT, costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas), costoFijoT);
+          this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString());
+
+        }
+
       }
 
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+
+      }
+    )
+
+  }
+
+  calUtilidadBrutaTotal(totalIngeso: number, totalCostoProduccion: number): number {
+    return totalIngeso - totalCostoProduccion;
+  }
+  calUtilidadNetaTotal(totalUtiliadBruta: number, totalCostoFijo: number): number {
+    return totalUtiliadBruta - totalCostoFijo;
+  }
+  calFlujoAcumuladoTotal(saldoInicial: number, totalUtilidadNeta: number, totalCuota: number): number {
+    return totalUtilidadNeta + saldoInicial - totalCuota;
+  }
+
+  setFlujoAnual(totalIngreso: number, totalCostoProduccion: number, saldoIncial: number, totalCuota: number, costoFijoT: number) {
+
+    this.flujoAnual.saldoInicial = saldoIncial;
+    this.flujoAnual.ingresos = totalIngreso;
+    this.flujoAnual.costoProduccion = totalCostoProduccion;
+    this.flujoAnual.utilidadBruta = this.calUtilidadBrutaTotal(totalIngreso, totalCostoProduccion);
+    this.flujoAnual.costosFijo = costoFijoT;
+    this.flujoAnual.utilidadNeta = this.calUtilidadNetaTotal(this.flujoAnual.utilidadBruta, this.flujoAnual.costosFijo);
+    this.flujoAnual.cuota = totalCuota;
+    this.flujoAnual.flujoAcumulado = this.calFlujoAcumuladoTotal(this.flujoAnual.saldoInicial, this.flujoAnual.utilidadNeta, totalCuota);
+
+  }
+
+  //METODOS PARA EL CALCULLO DE VAN (tipo excel)
+
+  calVanForFCctte(inversion: number, fc: number, interes: number, periodo: number): number {
+
+    let expr = Math.pow((1 + (interes / 12) / 100), (-periodo))
+    let res = Math.round((fc / 12) * ((1 - expr) / ((interes / 12) / 100)) - inversion)
+    return res;
+  }
+
+  //METODOS PARA EL CALCULLO DE TIR
+  testTir(k1: number, k2: number, montoFinanciar: number, flujoAcumulado: number, plazo: number): number {
+
+    let van1Posi = false;
+    let van2Posi = false;
+
+    let van1 = this.calVanForFCctte(montoFinanciar, flujoAcumulado, k1, plazo);
+    let van2 = this.calVanForFCctte(montoFinanciar, flujoAcumulado, k2, plazo);
+    console.log("----------------------------------------------");
+    console.log("VAN1: " + van1 + " VAN2: " + van2)
+
+    console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
+    this.tirCal = (this.proximoAcero(k1, k2, van1, van2));
+
+    if (van1 > 0) {
+      van1Posi = true;
+    }
+    if (van2 > 0) {
+      van2Posi = true;
+    }
+
+    if (van1Posi == true && van2Posi == false || van2Posi == true && van1Posi == false) {
+      let tir = this.interpolar(k1, k2, van1, van2)
+      let vanNew = this.calVanForFCctte(montoFinanciar, flujoAcumulado, tir, plazo);
+
+      console.log("nuevo TIR:" + tir + " nuevo VAN: " + vanNew)
+
+
+      if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew == 0) {
+
+        return tir;
+      } else {
+        console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
+        if (this.proximoAcero(k1, k2, van1, van2) === k1) {
+
+          // console.log("Nuevo TIR posi:" +this.nuevoTir(k2, tir, van2, vanNew) )
+          this.testTir(k1 - 1, this.nuevoTir(k2, tir, van2, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
+        } else {
+          this.testTir(k1 - 1, this.nuevoTir(k1, tir, van1, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
+        }
+        //this.testTir(k1 - 1, k2 + 1);
+
+      }
+
+    } else {
+      return 0.000002
+    }//
+
+  }
+
+  private interpolar(k1: number, k2: number, van1: number, van2: number) {
+    return k1 + (k2 - k1) * (van1 / (van1 - van2))
+  }
+  private proximoAcero(k1: number, k2: number, van1: number, van2: number): number {
+    let van1Compare = van1
+    let van2Compare = van2
+
+    if (van1 < 0) {
+      van1Compare = van1 * (-1)
+    }
+    if (van2 < 0) {
+      van2Compare = van2 * (-1)
+    }
+    console.log("n1: " + van1Compare)
+    console.log("n2: " + van2Compare)
+
+    if (van1Compare < van2Compare) {
+      return k1
+    } else {
+      return k2
     }
   }
 
+  private nuevoTir(kMay: number, kcal: number, vanMayor: number, vanCal: number, montoFinanciar: number, flujoAcumulado: number, plazo: number): number {
+    if (kcal == this.proximoAcero(kcal, kMay, vanCal, vanMayor)) {
+      if (vanCal < 0) {
+
+        while (vanCal < 0) {
+          //let tir = this.interpolar(k1, k2, van1, van2)
+
+          vanCal = this.calVanForFCctte(montoFinanciar, flujoAcumulado, kcal = kcal - 1, plazo);
+        }
+        console.log("VAN a positivo: " + vanCal)
+        return kcal
+
+      } else {
+        return kcal;
+      }
+    } else {
+      return kMay
+    }
+
+  }
+
+  testTirCal(montoFinanciar: number, flujoAcumulado: number, plazo: number) {
+    this.testTir(500, 1, montoFinanciar, flujoAcumulado, plazo);
+    console.log("Este es el tir: " + this.tirCal.toFixed(2));
+  }
 
 }
