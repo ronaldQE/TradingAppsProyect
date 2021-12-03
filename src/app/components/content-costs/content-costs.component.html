@@ -2,18 +2,21 @@
   <!-- La lista de ejemplo -->
   <ion-list>
     <!-- COSTOS DE PRODUCCION -->
-    <ion-item color="primary" (click)="navigateTo('product-month')" lines="none" detail="true">
-      <ion-title>Costos de Producción</ion-title>
+    <ion-item color="primary" (click)="navigateTo('/direct-costs')" lines="none" detail="true">
+      <ion-title>Costos de Directos</ion-title>
     </ion-item>
 
     <ion-item *ngFor="let product of products|async|collectionToArray">
       <ion-label>{{product.productoServicio}}</ion-label>
-      <ion-label slot="end"></ion-label>
+      <ion-buttons slot="end">
+        <ion-button  color="medium" size="default" expand="block"><ion-icon name="create-outline"></ion-icon></ion-button>
+        <ion-button  color="danger" size="default" expand="block"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
+      </ion-buttons>
     </ion-item>
 
     <!-- COMPORTAMIENTO DE VENTAS MENSUALES -->
     <ion-item color="primary" (click)="navigateTo('sale-month')" lines="none" detail="true">
-      <ion-title>Comportamiento Ventas mensuales</ion-title>
+      <ion-title>Comportamiento Ventas</ion-title>
     </ion-item>
 
     <ion-item>

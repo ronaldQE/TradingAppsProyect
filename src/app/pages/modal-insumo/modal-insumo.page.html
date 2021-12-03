@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro Insumo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" color="danger" size="default" expand="block">Cerrar</ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <div class="contentForm">
+      <ion-item class="inputData">
+        <ion-label position="floating">Insumo</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Cantidad</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating"
+          >Nº de Unidades Producto o Servicio</ion-label
+        >
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Precio Unitario</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+      <ion-button class="btnGuardar" size="large" expand="block">crear</ion-button>
+    </div>
+  </ion-card>
+</ion-content>

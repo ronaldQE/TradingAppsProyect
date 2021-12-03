@@ -11,7 +11,7 @@ import { ComponentsModule } from './components/components.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { CollectionToArrayPipe } from './common/collection-to-array.pipe';
+//import { CollectionToArrayPipe } from './common/collection-to-array.pipe';
 
 @NgModule({
   declarations: [AppComponent],

@@ -56,6 +56,14 @@ const routes: Routes = [
     path: 'supplies',
     loadChildren: () => import('./supplies/supplies.module').then( m => m.SuppliesPageModule)
   },
+  {
+    path: 'direct-costs',
+    loadChildren: () => import('./pages/direct-costs/direct-costs.module').then( m => m.DirectCostsPageModule)
+  },
+  {
+    path: 'modal-insumo',
+    loadChildren: () => import('./pages/modal-insumo/modal-insumo.module').then( m => m.ModalInsumoPageModule)
+  },
 
 
 

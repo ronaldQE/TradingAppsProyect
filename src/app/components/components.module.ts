@@ -10,12 +10,14 @@ import { ContentFlowComponent } from './content-flow/content-flow.component';
 import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
 import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
 import { CalculatedEstimateComponent } from './calculated-estimate/calculated-estimate.component';
+import { InsumoComponent } from './insumo/insumo.component';
 
 
 
 @NgModule({
   declarations: [
     MenuComponent,
+    InsumoComponent,
     ContentBudgetComponent,
     ContentCreditComponent,
     ContentCostsComponent,
@@ -26,6 +28,7 @@ import { CalculatedEstimateComponent } from './calculated-estimate/calculated-es
   ],
   exports: [
     MenuComponent,
+    InsumoComponent,
     ContentBudgetComponent,
     ContentCreditComponent,
     ContentCostsComponent,
