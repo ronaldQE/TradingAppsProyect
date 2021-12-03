@@ -64,6 +64,14 @@ const routes: Routes = [
     path: 'modal-insumo',
     loadChildren: () => import('./pages/modal-insumo/modal-insumo.module').then( m => m.ModalInsumoPageModule)
   },
+  {
+    path: 'modal-edit',
+    loadChildren: () => import('./pages/modal-edit/modal-edit.module').then( m => m.ModalEditPageModule)
+  },
+  {
+    path: 'direct-costs-edit',
+    loadChildren: () => import('./pages/direct-costs-edit/direct-costs-edit.module').then( m => m.DirectCostsEditPageModule)
+  },
 
 
 

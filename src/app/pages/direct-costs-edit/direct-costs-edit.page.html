@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Costos Directos Edición</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="business-plan"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="contentForm">
+    <div class="contentProduct">
+      <ion-item class="inputData">
+        <ion-label position="floating">Producto o Servicio</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Tipo</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Cantidad</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Frecuencia</ion-label>
+        <ion-select interface="popover">
+          <ion-select-option value="Bimestral">Bimestral</ion-select-option>
+          <ion-select-option value="Trimestral">Trimestral</ion-select-option>
+          <ion-select-option value="Semestral">Semestral</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    <div class="contentInsumo">
+      <ion-item>
+        <ion-title>Lista de Insumos</ion-title>
+        <ion-button (click)="openModalCreateInsumo()" color="secondary" size="default" expand="block"><ion-icon name="add-outline"></ion-icon></ion-button>
+      </ion-item>
+
+      <div *ngFor="let insumo of insumos">
+
+        <app-insumo [nombreInsumo]="insumo"></app-insumo>
+      </div>
+
+      <div class="contentVenta">
+        <ion-item class="inputData">
+          <ion-label position="floating">Precio de Venta</ion-label>
+          <ion-input type="number"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+
+    <ion-button class="btnGuardar" size="large" expand="block"
+      >Gruadar</ion-button
+    >
+  </ion-card>
+</ion-content>

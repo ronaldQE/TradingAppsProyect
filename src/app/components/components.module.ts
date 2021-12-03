@@ -25,6 +25,7 @@ import { InsumoComponent } from './insumo/insumo.component';
     MonthlyFlowComponent,
     CollectionToArrayPipe,
     CalculatedEstimateComponent,
+
   ],
   exports: [
     MenuComponent,
@@ -43,6 +44,6 @@ import { InsumoComponent } from './insumo/insumo.component';
   ],
   providers: [
     CollectionToArrayPipe
-  ]
+  ],
 })
 export class ComponentsModule { }
