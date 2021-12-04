@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary" menu="myMenu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>home-page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+<!--   <ion-item>
+      <ion-img [src]="item.src"></ion-img>
+    <ion-label>{{item.text}}</ion-label>
+  </ion-item> -->
+
+<!-- Expand -->
+<div class="home-container">
+  <ion-label class="title">Bienvenido a nuestro sistema de simulacion</ion-label>
+  <ion-button class="button-selection" (click)="goCompanyInformation()">
+    <div class="button-container">
+      <ion-img src="https://cdn-icons-png.flaticon.com/512/2274/2274794.png" class="button-img"></ion-img>
+      <p class="button-label">Información de la empresa</p>
+    </div>
+  </ion-button>
+  <ion-button class="button-selection" (click)="goHistorial()">
+    <div class="button-container">
+      <ion-img src="https://cdn-icons.flaticon.com/png/512/5714/premium/5714358.png?token=exp=1638488205~hmac=3f61795105575a0c9962521d772311d2" class="button-img"></ion-img>
+      <p class="button-label">Historial</p>
+    </div>
+  </ion-button>
+  <ion-button class="button-selection" (click)="goLastEstimate()">
+    <div class="button-container">
+      <ion-img src="https://cdn-icons-png.flaticon.com/512/2260/2260760.png" class="button-img"></ion-img>
+      <p class="button-label">Ultima Estimación</p>
+    </div>
+  </ion-button>
+  <ion-button class="button-estimate" (click)="newEstimation()">Nueva estimación</ion-button>
+  
+</div>
+
+</ion-content>

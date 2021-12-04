@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'business-plan',
+    redirectTo: 'home-page',
     pathMatch: 'full'
   },
 
@@ -36,7 +36,8 @@ const routes: Routes = [
   {
     path: 'operating-capital',
     loadChildren: () => import('./operating-capital/operating-capital.module').then( m => m.OperatingCapitalPageModule)
-  },  {
+  },
+  {
     path: 'credit',
     loadChildren: () => import('./pages/credit/credit.module').then( m => m.CreditPageModule)
   },
@@ -55,6 +56,14 @@ const routes: Routes = [
   {
     path: 'supplies',
     loadChildren: () => import('./supplies/supplies.module').then( m => m.SuppliesPageModule)
+  },
+  {
+    path: 'home-page',
+    loadChildren: () => import('./home-page/home-page.module').then( m => m.HomePagePageModule)
+  },
+  {
+    path: 'annual-flow-graphs',
+    loadChildren: () => import('./annual-flow-graphs/annual-flow-graphs.module').then( m => m.AnnualFlowGraphsPageModule)
   },
 
 

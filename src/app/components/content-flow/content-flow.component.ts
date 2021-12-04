@@ -66,6 +66,10 @@ export class ContentFlowComponent implements OnInit {
 
   }
 
+  goToGraphics(){
+    this.navigateTo('annual-flow-graphs');
+  }
+
   ngOnInit() {
 
     this.getFlujoAnual("2021");
