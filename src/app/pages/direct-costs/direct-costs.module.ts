@@ -17,10 +17,12 @@ import { ModalInsumoPage } from '../modal-insumo/modal-insumo.page';
     FormsModule,
     IonicModule,
     ComponentsModule,
+
     DirectCostsPageRoutingModule
   ],
   declarations: [
     DirectCostsPage,
+    ModalInsumoPage
     ],
   entryComponents:[ModalInsumoPage]
 })

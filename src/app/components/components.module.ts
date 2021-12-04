@@ -11,6 +11,7 @@ import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
 import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
 import { CalculatedEstimateComponent } from './calculated-estimate/calculated-estimate.component';
 import { InsumoComponent } from './insumo/insumo.component';
+import { ModalEditPage } from '../pages/modal-edit/modal-edit.page';
 
 
 
@@ -26,6 +27,7 @@ import { InsumoComponent } from './insumo/insumo.component';
     CollectionToArrayPipe,
     CalculatedEstimateComponent,
 
+
   ],
   exports: [
     MenuComponent,
@@ -40,7 +42,8 @@ import { InsumoComponent } from './insumo/insumo.component';
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+
   ],
   providers: [
     CollectionToArrayPipe

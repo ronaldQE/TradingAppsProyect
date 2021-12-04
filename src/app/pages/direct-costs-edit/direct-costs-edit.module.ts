@@ -19,8 +19,10 @@ import { ModalInsumoPage } from '../modal-insumo/modal-insumo.page';
     ComponentsModule,
     DirectCostsEditPageRoutingModule
   ],
-  declarations: [DirectCostsEditPage,],
-  entryComponents:[ModalEditPage, ModalInsumoPage]
+  declarations: [
+    DirectCostsEditPage,
+    ModalEditPage],
+  entryComponents:[ModalEditPage]
 
 })
 export class DirectCostsEditPageModule {}

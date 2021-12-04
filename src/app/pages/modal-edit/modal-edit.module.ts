@@ -15,6 +15,6 @@ import { ModalEditPage } from './modal-edit.page';
     IonicModule,
     ModalEditPageRoutingModule
   ],
-  declarations: [ModalEditPage]
+  //declarations: [ModalEditPage]
 })
 export class ModalEditPageModule {}

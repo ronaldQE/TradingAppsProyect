@@ -15,6 +15,6 @@ import { ModalInsumoPage } from './modal-insumo.page';
     IonicModule,
     ModalInsumoPageRoutingModule
   ],
-  declarations: [ModalInsumoPage]
+  //declarations: [ModalInsumoPage]
 })
 export class ModalInsumoPageModule {}
