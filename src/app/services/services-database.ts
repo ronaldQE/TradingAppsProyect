@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 })
 
 export class serviceDataBase{
+
+    private enlaseMain="/Estimaciones/estimacion-"
     constructor(public database: AngularFireDatabase) {}
 
     actualizarDatos<tipo>(data: tipo,enlace: string,coleccion: string){
@@ -22,7 +24,7 @@ export class serviceDataBase{
     getCollection<tipo>(path:string){
       const collection = this.database.object<tipo>(path);
       collection.valueChanges().subscribe(a => {
-          console.log(a);
+          //console.log(a);
       })
       return collection.valueChanges();
     }
@@ -34,5 +36,40 @@ export class serviceDataBase{
     //   this.database.list(enlase).push("").child("c"+num).set(valor);
     //   //child("c"+num).set(valor);
     // }
+
+
+
+    //Nuevo metodos con ID de estimaciones
+    getCollectionNew<tipo>( idEstim:number){
+      let url = `${this.enlaseMain}${idEstim}`
+
+      const collection = this.database.object<tipo>(url);
+      collection.valueChanges().subscribe(a => {
+
+      })
+      return collection.valueChanges();
+    }
+    getCollectionInside<tipo>( idEstim:number, path:string){
+      let url = `${this.enlaseMain}${idEstim}${path}`
+       //console.log(url)
+      const collection = this.database.object<tipo>(url);
+      collection.valueChanges().subscribe(a => {
+
+      })
+      return collection.valueChanges();
+    }
+
+
+    updateDataInside<tipo>(idEstim:number, data: tipo,path: string,coleccion: string){
+      let url = `${this.enlaseMain}${idEstim}${path}`
+
+      this.database.list(url).update(coleccion,data);
+    }
+    replaceDataInside<tipo>(idEstim:number, data: tipo,path: string, coleccion: string){
+      let url = `${this.enlaseMain}${idEstim}${path}`
+
+      this.database.list(url).set(coleccion,data);
+  }
+
 }
 

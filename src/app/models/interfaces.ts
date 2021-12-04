@@ -132,3 +132,34 @@ export interface HistoryData{
   van: number,
   tir:string
 }
+
+//PRODUCTOS-INSUMOS--COSTOS DIRECTOS
+export interface Product{
+  id:number,
+  nombreProduct:string
+}
+
+export interface ProducutMub{
+  mub:number,
+  totalCompras:number,
+  totalVentas:number
+}
+
+export interface ProductSer{
+  cantidad:number,
+  frecuencia:string,
+  frecuenciaNum:number,
+  nombre:string,
+  tipo:string
+}
+
+export interface IsumosOfProduct{
+  cantidad:number,
+  nombreInsumo:string,
+  precioUnitario:number
+}
+
+export interface TotalesInsumo{
+  totalCosto:number,
+  totalVenta:number
+}
