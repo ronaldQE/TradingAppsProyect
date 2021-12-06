@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { serviceDataBase } from '../../services/services-database';
 
 import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../../models/interfaces';
-import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-content-budget',
@@ -11,7 +10,7 @@ import { ThisReceiver } from '@angular/compiler';
   styleUrls: ['./content-budget.component.scss'],
 })
 export class ContentBudgetComponent implements OnInit {
-
+  @Input() idEstim:string;
   public budget: Budget = {
     efectivo: 0,
     banco: 0,
@@ -50,6 +49,7 @@ export class ContentBudgetComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.getBudget();
 
     this.getOperatingCapital();
@@ -57,13 +57,15 @@ export class ContentBudgetComponent implements OnInit {
 
     this.getBudgetSummary();
     //console.log("monto a financiar2: " + this.efectivoTotal)
+
+    console.log(this.idEstim)
   }
 
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
   getBudget() {
-    this.db.getCollection<Budget>('/Estimaciones/estimicion-1/presupuesto').subscribe((data) => {
+    this.db.getCollection<Budget>(`/Estimaciones/${this.idEstim}/presupuesto`).subscribe((data) => {
       this.budget = data;
       if (data.otros == undefined) {
         this.budget.otros = 0;
@@ -74,7 +76,7 @@ export class ContentBudgetComponent implements OnInit {
       if (data.banco == undefined) {
         this.budget.banco = 0;
       }
-      this.db.getCollection<OperatingCapital>('/Estimaciones/estimicion-1/capital-operativo').subscribe((data) => {
+      this.db.getCollection<OperatingCapital>(`/Estimaciones/${this.idEstim}/capital-operativo`).subscribe((data) => {
         let emprededor = data.manoObraEmprendedor
         let aportePropiov = this.budget.banco + this.budget.efectivo + this.budget.otros + emprededor
 
@@ -102,7 +104,7 @@ export class ContentBudgetComponent implements OnInit {
 
 
   getOperatingCapital() {
-    this.db.getCollection<OperatingCapital>('/Estimaciones/estimicion-1/capital-operativo').subscribe((data) => {
+    this.db.getCollection<OperatingCapital>(`/Estimaciones/${this.idEstim}/capital-operativo`).subscribe((data) => {
       this.operatingCapital = data;
       if (data.alquiler == undefined) {
         this.operatingCapital.alquiler = 0;
@@ -120,7 +122,7 @@ export class ContentBudgetComponent implements OnInit {
         this.operatingCapital.serviciosBasicos = 0;
       }
 
-      this.db.getCollection<InvestmentCapital>('/Estimaciones/estimicion-1/capital-de-inversion').subscribe((data) => {
+      this.db.getCollection<InvestmentCapital>(`/Estimaciones/${this.idEstim}/capital-de-inversion`).subscribe((data) => {
         this.investmentCapital = data;
         if (data.consultoria == undefined) {
           this.investmentCapital.consultoria = 0;
@@ -131,7 +133,7 @@ export class ContentBudgetComponent implements OnInit {
         if (data.equipoComputo == undefined) {
           this.investmentCapital.equipoComputo = 0;
         }
-        this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe((data) => {
+        this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data) => {
           this.budgetSummary=data;
           let gastosOperativos = this.operatingCapital.alquiler+this.operatingCapital.manoObra+this.operatingCapital.serviciosBasicos
           let maquinariaEquipos = this.investmentCapital.equipoComputo+this.investmentCapital.equipamientoOficina
@@ -169,7 +171,7 @@ export class ContentBudgetComponent implements OnInit {
   }
 
   getInvestmentCapital() {
-    this.db.getCollection<InvestmentCapital>('/Estimaciones/estimicion-1/capital-de-inversion').subscribe((data) => {
+    this.db.getCollection<InvestmentCapital>(`/Estimaciones/${this.idEstim}/capital-de-inversion`).subscribe((data) => {
       this.investmentCapital = data;
       if (data.consultoria == undefined) {
         this.investmentCapital.consultoria = 0;
@@ -190,13 +192,13 @@ export class ContentBudgetComponent implements OnInit {
   }
 
   dataUpdate(data: any) {
-    this.db.updateData(data, '/Estimaciones/estimicion-1', 'resumen-presupuesto')
+    this.db.updateData(data, `/Estimaciones/${this.idEstim}`, 'resumen-presupuesto')
   }
   dataUpdateMontoCredit(data: any) {
-    this.db.updateData(data, '/Estimaciones/estimicion-1', 'dato-credito')
+    this.db.updateData(data, `/Estimaciones/${this.idEstim}`, 'dato-credito')
   }
   getBudgetSummary() {
-    this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe((data) => {
+    this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data) => {
       this.budgetSummary = data;
 
     },

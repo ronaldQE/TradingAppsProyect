@@ -38,7 +38,7 @@
   </ion-segment>
   <!-- Vistas de opciones -->
   <div *ngIf="valueSelected == 'p'">
-    <app-content-budget></app-content-budget>
+    <app-content-budget [idEstim]="idEstim"></app-content-budget>
   </div>
   <div *ngIf="valueSelected == 'co'">
     <app-content-costs></app-content-costs>

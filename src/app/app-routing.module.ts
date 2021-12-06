@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'business-plan',
+    redirectTo: 'home-page',
     pathMatch: 'full'
   },
 
@@ -74,7 +74,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/direct-costs-edit/direct-costs-edit.module').then( m => m.DirectCostsEditPageModule)
   },
 
-
+  {
+    path: 'home-page',
+    loadChildren: () => import('./home-page/home-page.module').then( m => m.HomePagePageModule)
+  },
+  {
+    path: 'annual-flow-graphs',
+    loadChildren: () => import('./annual-flow-graphs/annual-flow-graphs.module').then( m => m.AnnualFlowGraphsPageModule)
+  },
 
 
 ];
