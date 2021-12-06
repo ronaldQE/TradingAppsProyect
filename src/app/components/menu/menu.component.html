@@ -24,7 +24,14 @@
   <ion-content>
     <ion-list>
       <ion-menu-toggle>
-        <ion-item (click)="navigateTo('business-plan')" lines="none" detail="false" routerLinkActive="selected">
+        <ion-item (click)="navigateTo('home-page')" lines="none" detail="false" routerLinkActive="selected">
+          <ion-icon slot="start" name="home" ></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-item>
+
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item (click)="navigateToPla('business-plan')" lines="none" detail="false" routerLinkActive="selected">
           <ion-icon slot="start" name="bar-chart" ></ion-icon>
           <ion-label>Plan de negocio</ion-label>
         </ion-item>

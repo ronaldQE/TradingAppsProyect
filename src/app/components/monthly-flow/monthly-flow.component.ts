@@ -17,9 +17,12 @@ export class MonthlyFlowComponent implements OnInit {
   public cuotas = [];
   public costoVenta = [];
   public venta = [];
+  public idEstim:string =""
+
   constructor(public db: serviceDataBase) { }
 
   ngOnInit() {
+    this.idEstim = localStorage.getItem('idEstim')
     this.calculateCostOfSale();
     this.calculateDues();
     this.getTotalOperatingCosts();
@@ -64,11 +67,13 @@ export class MonthlyFlowComponent implements OnInit {
     aportePropio: 0,
     planInversion: 0,
     montoFinanciar: 0,
-    totalProyecto: 0
+    totalProyecto: 0,
+    totalEfectivo:0
+
   }
 
   async getBudgetSummary(){
-    this.db.getCollection<BudgetSummary>("/Estimaciones/estimicion-1/resumen-presupuesto").subscribe((data)=>{
+    this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data)=>{
       this.budgetSummary.aportePropio = data.aportePropio == undefined ? 0:data.aportePropio;
       if(data.planInversion == undefined){
         this.budgetSummary.planInversion = 0;
@@ -84,7 +89,7 @@ export class MonthlyFlowComponent implements OnInit {
   }
 
   async getTotalOperatingCosts(){
-    this.db.getCollection<any>('/Estimaciones/estimicion-1/costos-operativos').subscribe( (data)=>{
+    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/costos-operativos`).subscribe( (data)=>{
       this.totalOperatingCosts = data.totalCostosOperativos == undefined?0:data.totalCostosOperativos;
     });
   }
@@ -103,17 +108,17 @@ export class MonthlyFlowComponent implements OnInit {
   calculateJunuary(){
     //this.saveFlowCurrentMonth(this.previousMonthFlow,this.initialMonthFlow);
     this.currentMonthlyFlow.saldoInicial = this.previousMonthFlow.flujoAcumulado;
-    this.db.getCollection<any>('/Estimaciones/estimicion-1/comportamientoVentas').subscribe((data)=>{
+    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/comportamientoVentas`).subscribe((data)=>{
       this.currentMonthlyFlow.ingresos = data.enero.venta;
       this.currentMonthlyFlow.costoProduccion = data.enero.costoVenta;
       this.currentMonthlyFlow.utilidadBruta = this.currentMonthlyFlow.ingresos-this.currentMonthlyFlow.costoProduccion;
-    })
-    this.db.getCollection<any>('/Estimaciones/estimicion-1/costos-operativos').subscribe( (data)=>{
+
+    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/costos-operativos`).subscribe( (data)=>{
       this.currentMonthlyFlow.costosFijos = data.totalCostosOperativos == undefined?0:data.totalCostosOperativos;
       this.currentMonthlyFlow.utilidadNeta = this.currentMonthlyFlow.utilidadBruta-this.currentMonthlyFlow.costosFijos;
       this.currentMonthlyFlow.cuota = this.cuotas[0];
       this.currentMonthlyFlow.flujoAcumulado = this.currentMonthlyFlow.utilidadNeta+this.currentMonthlyFlow.saldoInicial-this.currentMonthlyFlow.cuota;
-    });
+    });})
   }
 
   saveFlowCurrentMonth(auxFlowMont: MonthlyFlow, currentFlowMont: MonthlyFlow){
@@ -145,7 +150,7 @@ export class MonthlyFlowComponent implements OnInit {
     await this.getTotalOperatingCosts();
     await this.getBudgetSummary();
   }
-  
+
 
   calculateMonthlyFlow(numberMonth: number){
     let cont:number = 0;
@@ -160,15 +165,15 @@ export class MonthlyFlowComponent implements OnInit {
 
   calculateDues(){
 
-    this.db.getCollection<any>('/Estimaciones/estimicion-1/dato-credito').subscribe((data) => {
+    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/dato-credito`).subscribe((data) => {
       if (data.tipoCuota == null) {
         console.log("selcione un tipo de credito");
       } else {
         //recuperacion de la cuotas aun arreglo
         this.cuotas = []
-  
+
         if (data.tipoCuota == "Cuota Fija") {
-  
+
           this.planPagosVariado.calPlanPagosFijo(data.montoFinanciar, data.tasaInteres, data.plazo, data.poliza);
           this.cuotas = this.planPagosVariado.cuotasF
         }
@@ -181,7 +186,7 @@ export class MonthlyFlowComponent implements OnInit {
     })
   }
   calculateCostOfSale(){
-    this.db.getCollection<any>('/Estimaciones/estimicion-1/comportamientoVentas').subscribe((data)=>{
+    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/comportamientoVentas`).subscribe((data)=>{
       this.costoVenta[0]=data.enero.costoVenta;
       this.venta[0]=data.enero.venta;
       this.costoVenta[1]=data.febrero.costoVenta;
@@ -207,7 +212,7 @@ export class MonthlyFlowComponent implements OnInit {
       this.costoVenta[11]=data.diciembre.costoVenta;
       this.venta[11]=data.diciembre.venta;
     })
-    
+
   }
 
 }

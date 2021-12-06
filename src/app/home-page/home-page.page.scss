@@ -1,0 +1,44 @@
+.home-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    width: 200px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.button-selection{
+    width: 200px;
+    height: 130px;
+    margin: 10px 0;
+    --background: #DCECFF;   
+}
+
+.button-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.button-img{
+    width: 50px;
+    margin-bottom: 5px;
+}
+
+.button-label{
+    display: block;
+    color: #333;
+    text-transform: none;
+}
+
+.button-estimate{
+    --color: white;
+    --padding-end: 50px;
+    --padding-start: 50px;
+    --background: #FFD362;
+}
+

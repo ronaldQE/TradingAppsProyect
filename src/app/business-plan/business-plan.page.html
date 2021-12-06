@@ -18,8 +18,8 @@
 <ion-content>
   <!-- Identificador de la estimacion -->
   <ion-item>
-    <ion-title ><h2><b>Estimación</b></h2></ion-title>
-          <ion-label slot="end"><b>1</b></ion-label>
+    <ion-title ><h2><b>{{title}}</b></h2></ion-title>
+
   </ion-item>
   <!-- Secciones -->
   <ion-segment (ionChange)="segmentChanged($event)" [value]="valueSelected" color="secondary">
@@ -38,16 +38,16 @@
   </ion-segment>
   <!-- Vistas de opciones -->
   <div *ngIf="valueSelected == 'p'">
-    <app-content-budget></app-content-budget>
+    <app-content-budget [idEstim]="idEstim"></app-content-budget>
   </div>
   <div *ngIf="valueSelected == 'co'">
-    <app-content-costs></app-content-costs>
+    <app-content-costs [idEstim]="idEstim"></app-content-costs>
   </div>
   <div *ngIf="valueSelected == 'cr'">
-    <app-content-credit></app-content-credit>
+    <app-content-credit [idEstim]="idEstim"></app-content-credit>
   </div>
   <div *ngIf="valueSelected == 'fl'">
-    <app-content-flow></app-content-flow>
+    <app-content-flow [idEstim]="idEstim"></app-content-flow>
   </div>
 
 

@@ -18,7 +18,7 @@ export class SaleMonthPage implements OnInit {
 
   totalVentas = 0;
   totalCostos = 0;
-  porsentajeCosto = 0.02954590909
+  porsentajeCosto:number = 1-parseFloat( localStorage.getItem('mub'));
 
   public comportamientoVentas: ComportamientoVentas = {
     venta: 0,
@@ -33,7 +33,7 @@ export class SaleMonthPage implements OnInit {
     ventaMedia: 0,
     ventaBaja: 0,
   }
-
+  public idEstim:string
   meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 
   users: User[] = [
@@ -68,6 +68,8 @@ export class SaleMonthPage implements OnInit {
     public db: serviceDataBase) { }
 
   ngOnInit() {
+
+    this.idEstim = localStorage.getItem('idEstim')
     this.getRangoVentas();
     //this.updataSaleMonth();
     this.getTotalSuma();
@@ -271,7 +273,7 @@ export class SaleMonthPage implements OnInit {
   }
 
   getRangoVentas() {
-    this.db.getCollection<SaleMonth>('/Estimaciones/estimicion-1/rangoVentas').subscribe((data) => {
+    this.db.getCollection<SaleMonth>(`/Estimaciones/${this.idEstim}/rangoVentas`).subscribe((data) => {
       this.saleMonth = data;
     },
       (error: any) => {
@@ -282,11 +284,11 @@ export class SaleMonthPage implements OnInit {
   }
 
   updataSaleMonth() {
-    this.db.updateData<SaleMonth>(this.saleMonth, '/Estimaciones/estimicion-1', 'rangoVentas');
+    this.db.updateData<SaleMonth>(this.saleMonth, `/Estimaciones/${this.idEstim}`, 'rangoVentas');
   }
 
   updataComportamientoVentas(mes: string, dataMes: ComportamientoVentas) {
-    this.db.updateData<ComportamientoVentas>(dataMes, '/Estimaciones/estimicion-1/comportamientoVentas', mes);
+    this.db.updateData<ComportamientoVentas>(dataMes, `/Estimaciones/${this.idEstim}/comportamientoVentas`, mes);
   }
 
   getTotalSuma() {
@@ -294,7 +296,7 @@ export class SaleMonthPage implements OnInit {
     this.totalVentas=0;
 
     for (let i = 0; i < this.meses.length; i++) {
-      this.db.getCollection<ComportamientoVentas>('/Estimaciones/estimicion-1/comportamientoVentas/' + this.meses[i]).subscribe((data) => {
+      this.db.getCollection<ComportamientoVentas>(`/Estimaciones/${this.idEstim}/comportamientoVentas/` + this.meses[i]).subscribe((data) => {
         if (data !== null) {
           this.totalCostos = this.totalCostos + data.costoVenta;
           this.totalVentas = this.totalVentas + data.venta;
@@ -304,7 +306,7 @@ export class SaleMonthPage implements OnInit {
             totalVenta: this.totalVentas,
             totalCostoVenta: this.totalCostos,
           }
-          this.db.updateData(dataTotal, '/Estimaciones/estimicion-1/comportamientoVentas', 'totales');          console.log("----------------------------------------")
+          this.db.updateData(dataTotal, `/Estimaciones/${this.idEstim}/comportamientoVentas`, 'totales');          console.log("----------------------------------------")
           console.log(this.totalVentas)
           console.log(this.totalCostos)
         }
@@ -317,36 +319,17 @@ export class SaleMonthPage implements OnInit {
     }
 
   }
-  // updateTotalVentaCosto(mes: string, newVenta: number, newCostoVenta: number) {
-  //   this.db.getCollection<ComportamientoVentasTotales>('/Estimaciones/estimicion-1/comportamientoVentas').subscribe((data) => {
-  //     this.comportamientoVentasTotales = data;
-  //     this.db.getCollection<ComportamientoVentas>('/Estimaciones/estimicion-1/comportamientoVentas/' + mes).subscribe((data) => {
-  //       this.comportamientoVentas = data;
-  //       this.comportamientoVentasTotales.totalVenta = this.comportamientoVentasTotales.totalVenta - this.comportamientoVentas.venta + newVenta;
-  //       this.comportamientoVentasTotales.totalCostoVenta = this.comportamientoVentasTotales.totalCostoVenta - this.comportamientoVentas.costoVenta + newCostoVenta;
-  //       this.db.updateData(this.comportamientoVentasTotales, '/Estimaciones/estimicion-1', 'comportamientoVentas');
-
-  //     });
-
-  //   }
-  //     ,
-  //     (error: any) => {
-  //       console.log(`Error: ${error}`);
-
-  //     }
-  //   )
-  // }
-
+  navigateTo(path: string) {
+    this.router.navigate([path, this.idEstim, localStorage.getItem('title')]);
+  }
   save() {
     this.updataSaleMonth();
-    // for(let i = 0; i< this.meses.length; i++){
-    //   let dataMes: comportamientoVentas = {}
-    //   this.updataComportamientoVentas('enero');
-    // }
+    this.navigateTo('business-plan')
+
   }
 
   send() {
     const data = this.saleMonth;
-    this.db.actualizarDatos<SaleMonth>(data, '/Estimaciones/estimicion-1', 'valoresMes');
+    this.db.actualizarDatos<SaleMonth>(data, `/Estimaciones/${this.idEstim}`, 'valoresMes');
   }
 }

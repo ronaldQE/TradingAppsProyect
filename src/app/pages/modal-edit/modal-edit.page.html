@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edición Insumo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()" color="danger" size="default" expand="block">Cerrar</ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <div class="contentForm">
+      <ion-item class="inputData">
+        <ion-label position="floating">Insumo</ion-label>
+        <ion-input [(ngModel)]="insumo.nombreInsumo"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Cantidad</ion-label>
+        <ion-input type="number" [(ngModel)]="insumo.cantidad"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Unidad</ion-label>
+        <ion-input  [(ngModel)]="insumo.unidad"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating"
+          >Nº de Unidades Producto o Servicio</ion-label
+        >
+        <ion-input type="number" [(ngModel)]="insumo.unidadProducto"></ion-input>
+      </ion-item>
+
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Precio Unitario</ion-label>
+        <ion-input type="number" [(ngModel)]="insumo.precioUnitario"></ion-input>
+      </ion-item>
+
+      <ion-button class="btnGuardar" (click)="addInsumo()" size="large" expand="block">Guardar</ion-button>
+    </div>
+  </ion-card>
+</ion-content>

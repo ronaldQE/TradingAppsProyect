@@ -1,8 +1,8 @@
 <div>
   <!-- La lista de ejemplo -->
   <ion-list>
-    <!-- PRESUSPIUESTO -->
-    <ion-item color="primary" (click)="navigateTo('budget')" lines="none" detail="true">
+    <!-- PRESUSPIUESTO (click)="navigateTo('budget')"-->
+    <ion-item color="primary" [routerLink]="['/budget']"  lines="none" detail="true">
       <ion-title>Presupuesto</ion-title>
     </ion-item>
 
@@ -18,8 +18,8 @@
       <ion-label>Otros</ion-label>
       <ion-label slot="end">{{budget.otros}}</ion-label>
     </ion-item>
-    <!-- CAPITAL OPERATIVO -->
-    <ion-item color="primary" (click)="navigateTo('operating-capital')" lines="none" detail="true">
+    <!-- CAPITAL OPERATIVO (click)="navigateTo('operating-capital')"-->
+    <ion-item color="primary" [routerLink]="['/operating-capital']" lines="none" detail="true">
       <ion-title>Capital de Operativo</ion-title>
     </ion-item>
 
@@ -45,8 +45,8 @@
       <ion-label slot="end">{{operatingCapital.alquiler}}</ion-label>
     </ion-item>
 
-    <!-- CAPITAL DE INVERSION -->
-    <ion-item color="primary" (click)="navigateTo('investment-capital')" lines="none" detail="true">
+    <!-- CAPITAL DE INVERSION (click)="navigateTo('investment-capital')"-->
+    <ion-item color="primary" [routerLink]="['/investment-capital']" lines="none" detail="true">
       <ion-title>Capital de Inversión</ion-title>
     </ion-item>
 

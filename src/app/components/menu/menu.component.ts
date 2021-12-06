@@ -23,4 +23,7 @@ export class MenuComponent implements OnInit {
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
+  navigateToPla(path: String) {
+    this.router.navigate([path,localStorage.getItem('idEstim'), localStorage.getItem('title')]);
+  }
 }

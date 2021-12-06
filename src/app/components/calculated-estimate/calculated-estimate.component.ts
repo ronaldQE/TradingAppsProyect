@@ -7,10 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./calculated-estimate.component.scss'],
 })
 export class CalculatedEstimateComponent implements OnInit {
-  @Input() id:number;
+  //@Input() id:number;
   @Input() title:string;
   @Input() van:number;
   @Input() tir:string;
+  @Input() idEstim:string;
+  @Input() mub:string;
+
   constructor(
     private router: Router,
 
@@ -18,8 +21,12 @@ export class CalculatedEstimateComponent implements OnInit {
 
   ngOnInit() {}
 
-  navigateTo(path: String) {
-    this.router.navigate([path]);
+  navigateTo(path: string) {
+    this.router.navigate([path,this.idEstim,this.title]);
+    localStorage.setItem('idEstim',this.idEstim);
+    localStorage.setItem('title',this.title);
+    localStorage.setItem('mub',this.mub)
+
   }
 
 }

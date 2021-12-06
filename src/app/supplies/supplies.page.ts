@@ -17,22 +17,20 @@ export class SuppliesPage implements OnInit {
     unidad: null,
     precioUnutarioC: null
   };
+  public idEstim:string
 
   public totalCantidadABC: number = 0;
 
   constructor(private router: Router,
               public db: serviceDataBase) { }
-              
+
   ngOnInit() {
-    // this.getnewSupplies();
+    this.idEstim=localStorage.getItem('idEstim')
   }
 
   save(){
     console.log(this.newSupplies);
-    // const data = this.newSupplies;
-    // this.db.actualizarDatos<Supplies>(data, '/Estimaciones/estimicion-1','sevicios-insumos');
-    // this.saveOperSupplies();
-    // this.navigateTo('product-month')
+
   }
 
   navigateTo(path: String) {
@@ -40,7 +38,7 @@ export class SuppliesPage implements OnInit {
   }
 
   getnewSupplies(){
-    this.db.getCollection<Supplies>('/Estimaciones/estimicion-1/sevicios-insumo').subscribe( (data)=>{
+    this.db.getCollection<Supplies>(`/Estimaciones/${this.idEstim}/sevicios-insumo`).subscribe( (data)=>{
       this.newSupplies = data;
       this.newSupplies.insumo = data.insumo;
       this.newSupplies.cantidadA = data.cantidadA;

@@ -10,12 +10,15 @@ import { ContentFlowComponent } from './content-flow/content-flow.component';
 import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
 import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
 import { CalculatedEstimateComponent } from './calculated-estimate/calculated-estimate.component';
+import { InsumoComponent } from './insumo/insumo.component';
+import { ModalEditPage } from '../pages/modal-edit/modal-edit.page';
 
 
 
 @NgModule({
   declarations: [
     MenuComponent,
+    InsumoComponent,
     ContentBudgetComponent,
     ContentCreditComponent,
     ContentCostsComponent,
@@ -23,23 +26,29 @@ import { CalculatedEstimateComponent } from './calculated-estimate/calculated-es
     MonthlyFlowComponent,
     CollectionToArrayPipe,
     CalculatedEstimateComponent,
+
+
   ],
   exports: [
     MenuComponent,
+    InsumoComponent,
     ContentBudgetComponent,
     ContentCreditComponent,
     ContentCostsComponent,
     ContentFlowComponent,
     MonthlyFlowComponent,
-    CalculatedEstimateComponent
+    CalculatedEstimateComponent,
+    CollectionToArrayPipe
+
   ],
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+
   ],
   providers: [
     CollectionToArrayPipe
-  ]
+  ],
 })
 export class ComponentsModule { }
