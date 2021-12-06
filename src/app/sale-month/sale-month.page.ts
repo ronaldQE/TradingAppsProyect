@@ -319,9 +319,12 @@ export class SaleMonthPage implements OnInit {
     }
 
   }
-
+  navigateTo(path: string) {
+    this.router.navigate([path, this.idEstim, localStorage.getItem('title')]);
+  }
   save() {
     this.updataSaleMonth();
+    this.navigateTo('business-plan')
 
   }
 

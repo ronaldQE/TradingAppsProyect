@@ -58,7 +58,7 @@ export class DirectCostsPage implements OnInit {
 
   }
   navigateTo(path: String) {
-    this.router.navigate([path]);
+    this.router.navigate([path,this.idEstim,localStorage.getItem('title')]);
   }
   async openModal() {
     const modal = await this.modalController.create({

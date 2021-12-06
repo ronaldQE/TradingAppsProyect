@@ -71,12 +71,14 @@ export class CreditPage implements OnInit {
 
   }
   navigateTo(path: String) {
-    this.router.navigate([path]);
+    this.router.navigate([path, this.idEstim, localStorage.getItem('title')]);
   }
   getBudgetSummary() {
     this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data) => {
       this.budgetSummary = data;
-      this.budgetSummary.montoFinanciar = data.montoFinanciar
+
+        this.budgetSummary.montoFinanciar = data.montoFinanciar
+
 
     },
       (error: any) => {
@@ -102,7 +104,7 @@ export class CreditPage implements OnInit {
     if (this.dataCredit.plazo == null || this.dataCredit.poliza == null || this.dataCredit.tasaInteres == null) {
       this.presentToast("Exiten campos sin completar");
     } else {
-      if (!(this.dataCredit.plazo > 0 && this.dataCredit.poliza >= 0 && this.dataCredit.tasaInteres > 0)) {
+      if (!(this.dataCredit.plazo > 0 && this.dataCredit.poliza >= 0 && this.dataCredit.tasaInteres > 0 && this.dataCredit.montoFinanciar<=0)) {
         this.presentToast("Los datos son incorrectos, intente nuevamente");
       } else {
         const data = this.dataCredit;

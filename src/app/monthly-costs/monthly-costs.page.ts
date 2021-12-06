@@ -45,7 +45,7 @@ export class MonthlyCostsPage implements OnInit {
     this.navigateTo('business-plan');
   }
   navigateTo(path: String) {
-    this.router.navigate([path]);
+    this.router.navigate([path,this.idEstim, localStorage.getItem('title')]);
   }
   getMonthlyCost(){
     this.db.getCollection<MonthlyCost>(`/Estimaciones/${this.idEstim}/costos-operativos`).subscribe( (data)=>{

@@ -33,7 +33,7 @@ export class InvestmentCapitalPage implements OnInit {
     this.navigateTo('business-plan',this.idEstim);
   }
   navigateTo(path: String, idEstim: string) {
-    this.router.navigate([path, idEstim]);
+    this.router.navigate([path, idEstim, localStorage.getItem('title')]);
     //para navegacion
   }
   getInvestmentCapital(){

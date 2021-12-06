@@ -60,7 +60,7 @@ export class DirectCostsEditPage implements OnInit {
   }
 
   navigateTo(path: String) {
-    this.router.navigate([path]);
+    this.router.navigate([path, this.idEstim, localStorage.getItem('title')]);
   }
   async openModal(idEstim: string, idProduct: string, idInsumo: string) {
     const modalEdit = await this.modalControllerEdit.create({

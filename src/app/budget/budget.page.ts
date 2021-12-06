@@ -40,7 +40,7 @@ export class BudgetPage implements OnInit {
     this.navigateTo(`business-plan`);
   }
   navigateTo(path: string ) {
-    this.router.navigate([path,]);
+    this.router.navigate([path,this.idEstim,localStorage.getItem('title')]);
     //para navegacion
   }
   getBudget() {
