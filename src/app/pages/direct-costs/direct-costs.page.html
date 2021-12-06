@@ -26,13 +26,19 @@
       </ion-item>
 
       <ion-item class="inputData">
+        <ion-label position="floating">Unidad de Venta</ion-label>
+        <ion-input  [(ngModel)]="productSer.unidad"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
         <ion-label position="floating">Frecuencia</ion-label>
-        <ion-select interface="popover">
+        <ion-select interface="popover"  (ionChange)="selectTipeCouta($event)">
           <ion-select-option value="Bimestral">Bimestral</ion-select-option>
           <ion-select-option value="Trimestral">Trimestral</ion-select-option>
           <ion-select-option value="Semestral">Semestral</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-button class="btnGuardar" (click)="addProduct()" size="large" expand="block">Crear Producto</ion-button>
     </div>
     <div class="contentInsumo">
       <ion-item>
@@ -40,10 +46,17 @@
         <ion-button (click)="openModal()" color="secondary" size="default" expand="block"><ion-icon name="add-outline"></ion-icon></ion-button>
       </ion-item>
 
-      <div *ngFor="let insumo of insumos">
+      <div *ngFor="let insumo of insumos|async|collectionToArray">
 
-        <app-insumo [nombreInsumo]="insumo"></app-insumo>
+        <app-insumo [nombreInsumo]="insumo.nombreInsumo" [idEstim]="idEstim" [idProduct]="idProduct" [idInsumo]="insumo.id"></app-insumo>
       </div>
+      <!-- <ion-item *ngFor="let insumo of insumos|async|collectionToArray">
+        <ion-label>{{insumo.nombreInsumo}}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button  (click)="navigateTo('/direct-costs-edit')" color="medium" size="default" expand="block"><ion-icon name="create-outline"></ion-icon></ion-button>
+          <ion-button  (click)="deleteInsumo(insumo.id)" color="danger" size="default" expand="block"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
+        </ion-buttons>
+      </ion-item> -->
 
       <div class="contentVenta">
         <ion-item class="inputData">
@@ -52,9 +65,8 @@
         </ion-item>
       </div>
     </div>
+    <ion-button *ngIf="!btnShow" class="btnGuardar" disabled size="large" expand="block">Gruardar y Salir</ion-button>
+    <ion-button *ngIf="btnShow"class="btnGuardar" (click)="addDataInsumoProduct()" size="large" expand="block">Gruardar y Salir</ion-button>
 
-    <ion-button class="btnGuardar" size="large" expand="block"
-      >crear</ion-button
-    >
   </ion-card>
 </ion-content>

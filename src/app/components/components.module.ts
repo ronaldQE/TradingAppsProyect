@@ -37,7 +37,9 @@ import { ModalEditPage } from '../pages/modal-edit/modal-edit.page';
     ContentCostsComponent,
     ContentFlowComponent,
     MonthlyFlowComponent,
-    CalculatedEstimateComponent
+    CalculatedEstimateComponent,
+    CollectionToArrayPipe
+
   ],
   imports: [
     CommonModule,

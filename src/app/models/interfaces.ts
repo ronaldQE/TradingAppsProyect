@@ -146,7 +146,9 @@ export interface ProducutMub{
 }
 
 export interface ProductSer{
+  id:string,
   cantidad:number,
+  unidad:string,
   frecuencia:string,
   frecuenciaNum:number,
   nombre:string,
@@ -154,7 +156,10 @@ export interface ProductSer{
 }
 
 export interface IsumosOfProduct{
+  id:string,
   cantidad:number,
+  unidad:string,
+  unidadProducto:number,
   nombreInsumo:string,
   precioUnitario:number
 }

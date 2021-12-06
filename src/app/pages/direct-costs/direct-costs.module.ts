@@ -9,6 +9,7 @@ import { DirectCostsPageRoutingModule } from './direct-costs-routing.module';
 import { DirectCostsPage } from './direct-costs.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { ModalInsumoPage } from '../modal-insumo/modal-insumo.page';
+import { CollectionToArrayPipe } from 'src/app/common/collection-to-array.pipe';
 
 
 @NgModule({
@@ -17,13 +18,15 @@ import { ModalInsumoPage } from '../modal-insumo/modal-insumo.page';
     FormsModule,
     IonicModule,
     ComponentsModule,
-
     DirectCostsPageRoutingModule
   ],
   declarations: [
     DirectCostsPage,
-    ModalInsumoPage
+    ModalInsumoPage,
     ],
-  entryComponents:[ModalInsumoPage]
+  entryComponents:[ModalInsumoPage],
+  providers: [
+    CollectionToArrayPipe
+  ],
 })
 export class DirectCostsPageModule {}
