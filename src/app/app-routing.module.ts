@@ -36,7 +36,8 @@ const routes: Routes = [
   {
     path: 'operating-capital',
     loadChildren: () => import('./operating-capital/operating-capital.module').then( m => m.OperatingCapitalPageModule)
-  },  {
+  },
+  {
     path: 'credit',
     loadChildren: () => import('./pages/credit/credit.module').then( m => m.CreditPageModule)
   },
@@ -55,6 +56,10 @@ const routes: Routes = [
   {
     path: 'supplies',
     loadChildren: () => import('./supplies/supplies.module').then( m => m.SuppliesPageModule)
+  },
+  {
+    path: 'date-cost-estimate',
+    loadChildren: () => import('./date-cost-estimate/date-cost-estimate.module').then( m => m.DateCostEstimatePageModule)
   },
 
 

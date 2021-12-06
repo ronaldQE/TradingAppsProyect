@@ -1,0 +1,147 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary" menu="myMenu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Datos de la estimación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item color="primary">
+    <ion-title><h2>Estimación - 1</h2></ion-title>
+  </ion-item>
+
+  <ion-list>
+    <!-- PRESUSPIUESTO -->
+    <ion-item lines="none">
+      <ion-title><b>Presupuesto</b></ion-title>
+    </ion-item>
+    <!-- PRESUSPIUESTO Disponible -->
+    <ion-item>
+      <label class="subtitulo">Presupuesto Disponible</label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Efectivo</ion-label>
+      <ion-label slot="end">{{budget.efectivo}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Banco</ion-label>
+      <ion-label slot="end">{{budget.banco}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Otros</ion-label>
+      <ion-label slot="end">{{budget.otros}}</ion-label>
+    </ion-item>
+
+    <!-- CAPITAL OPERATIVO -->
+    <ion-item>
+      <label class="subtitulo">Capital de Operativo</label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mano de obra del emprendedor</ion-label>
+      <ion-label slot="end">{{operatingCapital.manoObraEmprendedor}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Promociones</ion-label>
+      <ion-label slot="end">{{operatingCapital.promociones}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Servicios basicos</ion-label>
+      <ion-label slot="end">{{operatingCapital.serviciosBasicos}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mano de obra</ion-label>
+      <ion-label slot="end">{{operatingCapital.manoObra}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Alquiler</ion-label>
+      <ion-label slot="end">{{operatingCapital.alquiler}}</ion-label>
+    </ion-item>
+
+    <!-- CAPITAL DE INVERSION -->
+    <ion-item>
+      <label class="subtitulo">Capital de Inversión</label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Equipo de computo</ion-label>
+      <ion-label slot="end">{{investmentCapital.equipoComputo}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Equipamiento Oficina</ion-label>
+      <ion-label slot="end">{{investmentCapital.equipamientoOficina}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Consultoria</ion-label>
+      <ion-label slot="end">{{investmentCapital.consultoria}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- COSTOS -->
+  <ion-list>
+    <ion-item lines="none">
+      <ion-title><b>Costos</b></ion-title>
+    </ion-item>
+    
+    <!-- Comportamiento Ventas mensuales  -->
+    <ion-item>
+      <label class="subtitulo">Comportamiento Ventas mensuales</label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ventas totales</ion-label>
+      <ion-label slot="end">{{comportamientoVentasTotales.totalVenta}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Costos totales</ion-label>
+      <ion-label slot="end">{{comportamientoVentasTotales.totalCostoVenta}}</ion-label>
+    </ion-item>
+
+     <!-- Costos Operativos mensuales  -->
+     <ion-item>
+      <label class="subtitulo">Costos Operativos mensuales</label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Total costos operativos</ion-label>
+      <ion-label slot="end">{{totalCostosOperativosMensuales}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- CREDITO -->
+  <ion-list>
+    <ion-item lines="none">
+      <ion-title><b>Credito</b></ion-title>
+    </ion-item>
+  </ion-list>
+
+  <!-- Datos del Credito  -->
+  <ion-item>
+    <label class="subtitulo">Datos del Credito</label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Monto</ion-label>
+    <ion-label slot="end">{{budgetSummary.montoFinanciar}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Tasa de interes %</ion-label>
+    <ion-label slot="end">{{dataCredit.tasaInteres}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Plazo (meses)</ion-label>
+    <ion-label slot="end">{{dataCredit.plazo}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Poliza %</ion-label>
+    <ion-label slot="end">{{dataCredit.poliza}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Tipo de Credito</ion-label>
+    <ion-label slot="end">{{dataCredit.tipoCuota}}</ion-label>
+  </ion-item>
+
+  <ion-button style="width: auto;" color="light" size="large" expand="block" (click)="generatePDF()" >
+    <ion-icon color="secondary" name="reader-outline"></ion-icon>
+    GENERAR REPORTE PDF
+  </ion-button>
+
+</ion-content>
