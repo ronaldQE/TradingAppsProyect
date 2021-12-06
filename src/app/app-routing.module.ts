@@ -9,11 +9,11 @@ const routes: Routes = [
   },
 
   {
-    path: 'business-plan',
+    path: 'business-plan/:idEstim',
     loadChildren: () => import('./business-plan/business-plan.module').then( m => m.BusinessPlanPageModule)
   },
   {
-    path: 'budget',
+    path: 'budget/:idEstim',
     loadChildren: () => import('./budget/budget.module').then( m => m.BudgetPageModule)
   },
   {
@@ -30,11 +30,11 @@ const routes: Routes = [
 
   },
   {
-    path: 'investment-capital',
+    path: 'investment-capital/:idEstim',
     loadChildren: () => import('./investment-capital/investment-capital.module').then( m => m.InvestmentCapitalPageModule)
   },
   {
-    path: 'operating-capital',
+    path: 'operating-capital/:idEstim',
     loadChildren: () => import('./operating-capital/operating-capital.module').then( m => m.OperatingCapitalPageModule)
   },
   {
@@ -65,8 +65,6 @@ const routes: Routes = [
     path: 'annual-flow-graphs',
     loadChildren: () => import('./annual-flow-graphs/annual-flow-graphs.module').then( m => m.AnnualFlowGraphsPageModule)
   },
-
-
 
 
 ];

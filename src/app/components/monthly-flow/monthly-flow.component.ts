@@ -107,13 +107,13 @@ export class MonthlyFlowComponent implements OnInit {
       this.currentMonthlyFlow.ingresos = data.enero.venta;
       this.currentMonthlyFlow.costoProduccion = data.enero.costoVenta;
       this.currentMonthlyFlow.utilidadBruta = this.currentMonthlyFlow.ingresos-this.currentMonthlyFlow.costoProduccion;
-    })
+    
     this.db.getCollection<any>('/Estimaciones/estimicion-1/costos-operativos').subscribe( (data)=>{
       this.currentMonthlyFlow.costosFijos = data.totalCostosOperativos == undefined?0:data.totalCostosOperativos;
       this.currentMonthlyFlow.utilidadNeta = this.currentMonthlyFlow.utilidadBruta-this.currentMonthlyFlow.costosFijos;
       this.currentMonthlyFlow.cuota = this.cuotas[0];
       this.currentMonthlyFlow.flujoAcumulado = this.currentMonthlyFlow.utilidadNeta+this.currentMonthlyFlow.saldoInicial-this.currentMonthlyFlow.cuota;
-    });
+    });})
   }
 
   saveFlowCurrentMonth(auxFlowMont: MonthlyFlow, currentFlowMont: MonthlyFlow){

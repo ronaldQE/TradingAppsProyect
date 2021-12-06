@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { serviceDataBase } from '../services/services-database';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.page.html',
   styleUrls: ['./home-page.page.scss'],
 })
 export class HomePagePage implements OnInit {
-
+  idEstim:String = "";
   constructor(
-    private router: Router
+    private router: Router,
+    public db: serviceDataBase
   ) {}
 
   ngOnInit() {
-    
+    this.idEstim = this.getId();
   }
 
   navigateTo(path: String) {
@@ -36,4 +38,7 @@ export class HomePagePage implements OnInit {
     console.log("holaaa");
   }
   
+  getId(){
+    return this.db.generateId();
+  }
 }

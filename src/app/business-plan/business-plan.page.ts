@@ -4,7 +4,7 @@ import { serviceDataBase } from '../services/services-database';
 
 import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../models/interfaces';
 
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-business-plan',
@@ -13,7 +13,7 @@ import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../m
 })
 export class BusinessPlanPage implements OnInit {
   public valueSelected:string = "p"
-
+  public idEstim: any;
   public budget: Budget = {
     efectivo: 0,
     banco: 0,
@@ -44,8 +44,8 @@ export class BusinessPlanPage implements OnInit {
 
   constructor(
     private router: Router,
-    public db: serviceDataBase
-
+    public db: serviceDataBase,
+    private activatedRoute: ActivatedRoute
   ) {
 
   }
@@ -54,6 +54,9 @@ export class BusinessPlanPage implements OnInit {
     this.getBudget();
     this.getOperatingCapital();
     this.getInvestmentCapital();
+
+    this.idEstim = this.activatedRoute.snapshot.paramMap.get("idEstim");
+    console.log(this.idEstim)
   }
   navigateTo(path: String) {
     this.router.navigate([path]);

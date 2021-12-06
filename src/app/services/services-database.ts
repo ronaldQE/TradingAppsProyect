@@ -30,6 +30,13 @@ export class serviceDataBase{
       this.database.list(enlace).update(coleccion,data);
     }
 
+    generateId(){
+       let idGenerate:string =  this.database.createPushId();
+       const data = {id: idGenerate}
+       this.database.list("/Estimaciones").set(idGenerate, data);
+       return idGenerate;
+    }
+
     // addCuotaOne(enlase:string, num:number, valor:number){
     //   this.database.list(enlase).push("").child("c"+num).set(valor);
     //   //child("c"+num).set(valor);
