@@ -9,7 +9,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'business-plan',
+    path: 'business-plan/:idEstim/:title',
     loadChildren: () => import('./business-plan/business-plan.module').then( m => m.BusinessPlanPageModule)
   },
   {

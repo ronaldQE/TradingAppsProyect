@@ -21,7 +21,7 @@ export class AnnualFlowGraphsPage implements OnInit {
   private flujoAcumulado: number[] = [];
   private flowsKeyPearYear: String[] = [];
 
-  public idEstim:string =""
+  public idEstim: string
 
   constructor(
     private router: Router,
@@ -29,13 +29,13 @@ export class AnnualFlowGraphsPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.idEstim = localStorage.getItem('idEstim')
     this.getAnnualFlow();
     this.generateChartsFlowsPerYear();
-    this.idEstim=localStorage.getItem('idEstim')
   }
 
-  getAnnualFlow(){
-    this.db.getCollection<FlujoAnual>(`/Estimaciones/${this.idEstim}/flujo-anual`).subscribe( (data)=>{
+  getAnnualFlow() {
+    this.db.getCollection<FlujoAnual>(`/Estimaciones/${this.idEstim}/flujo-anual`).subscribe((data) => {
       for (const key in data) {
         this.flowsKeyPearYear.push(key);
         let year = data[key];
@@ -48,41 +48,41 @@ export class AnnualFlowGraphsPage implements OnInit {
         this.cuota.push(year.cuota || 0);
         this.flujoAcumulado.push(year.flujoAcumulado || 0);
 
-          /*let aux:FlujoAnual = {
-            saldoInicial:year.saldoInicial || 0,
-            ingresos:year.ingresos || 0,
-            costoProduccion:year.costoProduccion || 0,
-            utilidadBruta:year.utilidadBruta || 0,
-            costosFijo:year.costosFijo || 0,
-            utilidadNeta:year.utilidadNeta || 0,
-            cuota:year.cuota || 0,
-            flujoAcumulado:year.flujoAcumulado || 0
-          };*/
-          this.flowsPerYear.push(<FlujoAnual>data[key]);
+        /*let aux:FlujoAnual = {
+          saldoInicial:year.saldoInicial || 0,
+          ingresos:year.ingresos || 0,
+          costoProduccion:year.costoProduccion || 0,
+          utilidadBruta:year.utilidadBruta || 0,
+          costosFijo:year.costosFijo || 0,
+          utilidadNeta:year.utilidadNeta || 0,
+          cuota:year.cuota || 0,
+          flujoAcumulado:year.flujoAcumulado || 0
+        };*/
+        this.flowsPerYear.push(<FlujoAnual>data[key]);
       }
-      console.log(this.saldoInicial,this.ingresos,this.costoProduccion,this.utilidadBruta,this.costosFijo,this.utilidadNeta,this.cuota,this.flujoAcumulado);
-      this.generateCharts('table-chart-1',this.flowsKeyPearYear,this.saldoInicial,'Saldo Inicial');
-      this.generateCharts('table-chart-2',this.flowsKeyPearYear,this.ingresos,'Ingresos');
-      this.generateCharts('table-chart-3',this.flowsKeyPearYear,this.costoProduccion,'Costo de Produccion');
-      this.generateCharts('table-chart-4',this.flowsKeyPearYear,this.utilidadBruta,'Utilidad Bruta');
-      this.generateCharts('table-chart-5',this.flowsKeyPearYear,this.costosFijo,'Costos Fijos');
-      this.generateCharts('table-chart-6',this.flowsKeyPearYear,this.utilidadNeta,'Utilidad Neta');
-      this.generateCharts('table-chart-7',this.flowsKeyPearYear,this.cuota,'Cuota');
-      this.generateCharts('table-chart-8',this.flowsKeyPearYear,this.flujoAcumulado,'Flujo Acumulado');
+      console.log(this.saldoInicial, this.ingresos, this.costoProduccion, this.utilidadBruta, this.costosFijo, this.utilidadNeta, this.cuota, this.flujoAcumulado);
+      this.generateCharts('table-chart-1', this.flowsKeyPearYear, this.saldoInicial, 'Saldo Inicial');
+      this.generateCharts('table-chart-2', this.flowsKeyPearYear, this.ingresos, 'Ingresos');
+      this.generateCharts('table-chart-3', this.flowsKeyPearYear, this.costoProduccion, 'Costo de Produccion');
+      this.generateCharts('table-chart-4', this.flowsKeyPearYear, this.utilidadBruta, 'Utilidad Bruta');
+      this.generateCharts('table-chart-5', this.flowsKeyPearYear, this.costosFijo, 'Costos Fijos');
+      this.generateCharts('table-chart-6', this.flowsKeyPearYear, this.utilidadNeta, 'Utilidad Neta');
+      this.generateCharts('table-chart-7', this.flowsKeyPearYear, this.cuota, 'Cuota');
+      this.generateCharts('table-chart-8', this.flowsKeyPearYear, this.flujoAcumulado, 'Flujo Acumulado');
     })
   }
 
-  generateChartsFlowsPerYear(){
+  generateChartsFlowsPerYear() {
     console.log(this.flowsKeyPearYear.length)
     for (let i = 0; i < this.flowsKeyPearYear.length; i++) {
-      console.log("su año es: "+this.flowsKeyPearYear[i]);
-      console.log("sus datos son ",this.flowsPerYear[i]);
+      console.log("su año es: " + this.flowsKeyPearYear[i]);
+      console.log("sus datos son ", this.flowsPerYear[i]);
     }
     //console.log(this.flowsKeyPearYear);
     //console.log(this.flowsPerYear);
   }
 
-  generateCharts(id:string,years:String[],dataflow:number[],labelG:string) {
+  generateCharts(id: string, years: String[], dataflow: number[], labelG: string) {
     const ctx = document.getElementById(id);
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -122,7 +122,7 @@ export class AnnualFlowGraphsPage implements OnInit {
     });
   }
 
-  goBack(){
+  goBack() {
     this.navigateTo('business-plan');
   }
 

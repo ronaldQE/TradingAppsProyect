@@ -49,12 +49,10 @@ export class ContentBudgetComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.idEstim = localStorage.getItem('idEstim')
     this.getBudget();
-
     this.getOperatingCapital();
     this.getInvestmentCapital();
-
     this.getBudgetSummary();
     //console.log("monto a financiar2: " + this.efectivoTotal)
 

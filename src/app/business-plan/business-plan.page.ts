@@ -53,8 +53,8 @@ export class BusinessPlanPage implements OnInit {
 
   ngOnInit() {
 
-    this.idEstim = localStorage.getItem('idEstim')//this.activatedRoute.snapshot.paramMap.get("idEstim");
     this.title = localStorage.getItem('title')//this.activatedRoute.snapshot.paramMap.get("idEstim");
+    this.idEstim = this.activatedRoute.snapshot.paramMap.get("idEstim");//localStorage.getItem('idEstim')this.activatedRoute.snapshot.paramMap.get("idEstim");
     console.log(this.idEstim)
   }
   navigateTo(path: String) {

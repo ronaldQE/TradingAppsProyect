@@ -21,7 +21,7 @@ export class CalculatedEstimateComponent implements OnInit {
   ngOnInit() {}
 
   navigateTo(path: string) {
-    this.router.navigate([path]);
+    this.router.navigate([path,this.idEstim,this.title]);
     localStorage.setItem('idEstim',this.idEstim);
     localStorage.setItem('title',this.title);
 

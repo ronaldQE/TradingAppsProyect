@@ -34,6 +34,7 @@ export class ContentCreditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.idEstim = localStorage.getItem('idEstim')
     this.getBudgetSummary();
     this.getDataCredit();
   }

@@ -91,6 +91,7 @@ export class ContentFlowComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.idEstim = localStorage.getItem('idEstim')
 
     this.getTotalSuma()
     this.getFlujoAnual("2021");

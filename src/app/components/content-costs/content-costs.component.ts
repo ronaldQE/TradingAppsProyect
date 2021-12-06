@@ -60,8 +60,7 @@ export class ContentCostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
-    //this.getTotalVenta();
+    this.idEstim = localStorage.getItem('idEstim')
     this.getMonthlyCost();
     //this.products = this.db.getListCollection()
      this.products = this.db.getProductList<ProductSer>(this.idEstim);
@@ -78,7 +77,7 @@ export class ContentCostsComponent implements OnInit {
   }
 
   getComportamientoVentas() {
-    this.db.getCollection<ComportamientoVentasTotales>('/Estimaciones/estimicion-1/comportamientoVentas/totales').subscribe((data) => {
+    this.db.getCollection<ComportamientoVentasTotales>(`/Estimaciones/${this.idEstim}/comportamientoVentas/totales`).subscribe((data) => {
       this.comportamientoVentasTotales.totalCostoVenta = data.totalCostoVenta;
       this.comportamientoVentasTotales.totalVenta = data.totalVenta;
     },
@@ -89,7 +88,7 @@ export class ContentCostsComponent implements OnInit {
   }
   getTotalVenta() {
     for (let i = 0; i < this.meses.length; i++) {
-      this.db.getCollection<ComportamientoVentas>('/Estiamciones/estimicion-1/comportamientoVentas' + this.meses[i]).subscribe((data) => {
+      this.db.getCollection<ComportamientoVentas>(`/Estiamciones/${this.idEstim}/comportamientoVentas` + this.meses[i]).subscribe((data) => {
         this.totalSumaCostos = this.totalSumaCostos + data.costoVenta;
       },
         (error: any) => {
@@ -99,7 +98,7 @@ export class ContentCostsComponent implements OnInit {
     }
   }
   getMonthlyCost() {
-    this.db.getCollection<MonthlyCost>('/Estimaciones/estimicion-1/costos-operativos').subscribe((data) => {
+    this.db.getCollection<MonthlyCost>(`/Estimaciones/${this.idEstim}/costos-operativos`).subscribe((data) => {
       this.monthlyCost = data;
       if (data.servicioLuz == undefined) {
         this.monthlyCost.servicioLuz = 0;
