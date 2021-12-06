@@ -15,6 +15,9 @@ export class InsumoComponent implements OnInit {
   @Input() idEstim:string;
   @Input() idProduct:string;
 
+  public insumoArray:any[]=[]
+
+
   constructor(
     private router: Router,
     public modalControllerEdit: ModalController,
@@ -44,5 +47,25 @@ export class InsumoComponent implements OnInit {
   }
   deleteInsumo(){
     this.db.deleteCollection(this.idEstim,`productos/${this.idProduct}/insumos/${this.idInsumo}`)
+    this.getInsumoDataList()
+  }
+
+  getInsumoDataList(){
+    this.db.getDataCollectionList(this.idEstim, `/productos/${this.idProduct}/insumos`).subscribe((data) => {
+      //console.log("Estimacion: ", data)
+      this.insumoArray = data
+      let totalCostoCal=0
+      console.log("Estimacion: ", this.insumoArray)
+      for(let i=0; i<this.insumoArray.length; i++){
+        totalCostoCal=totalCostoCal+this.insumoArray[i].totalCostoInsumo;
+      }
+      const dataTotal={totalCosto:totalCostoCal}
+      this.db.updateDataCollection(dataTotal,this.idEstim,`productos/${this.idProduct}`,'totalesInsumo')
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
   }
 }

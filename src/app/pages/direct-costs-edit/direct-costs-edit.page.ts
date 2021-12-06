@@ -20,11 +20,11 @@ export class DirectCostsEditPage implements OnInit {
   public idProduct: string
   public idEstim: string
   public idInsumo: string
-  public btnShow:boolean=false;
+  public btnShow: boolean = false;
   public productSer: ProductSer = {
     id: null,
     cantidad: null,
-    unidad:null,
+    unidad: null,
     frecuencia: null,
     frecuenciaNum: null,
     nombre: null,
@@ -37,8 +37,10 @@ export class DirectCostsEditPage implements OnInit {
 
   public estadoFrecuencia: string;
   public numFrecuencia: number = null;
-  public totalCostoVenta:number = 0;
-  public insumos:Observable<any>
+  public totalCostoVenta: number = 0;
+  public insumos: Observable<any>
+  public productosArray: any[] = []
+
 
   constructor(
     public modalControllerEdit: ModalController,
@@ -60,7 +62,7 @@ export class DirectCostsEditPage implements OnInit {
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
-  async openModal(idEstim:string, idProduct:string, idInsumo:string) {
+  async openModal(idEstim: string, idProduct: string, idInsumo: string) {
     const modalEdit = await this.modalControllerEdit.create({
       component: ModalEditPage,
       cssClass: 'my-custom-class',
@@ -73,7 +75,7 @@ export class DirectCostsEditPage implements OnInit {
     });
     return await modalEdit.present();
   }
-  async openModalCreateInsumo(idEstim:string, idProduct:string) {
+  async openModalCreateInsumo(idEstim: string, idProduct: string) {
     const modalEdit = await this.modalControllerEdit.create({
       component: ModalInsumoPage,
       cssClass: 'my-custom-class',
@@ -100,7 +102,7 @@ export class DirectCostsEditPage implements OnInit {
     if (this.estadoFrecuencia === 'Trimestral') { this.numFrecuencia = 3 }
     if (this.estadoFrecuencia === 'Semestral') { this.numFrecuencia = 6 }
   }
-  asignarNumFrecuencia(frecuencia:string) {
+  asignarNumFrecuencia(frecuencia: string) {
 
     if (frecuencia === 'Bimestral') { this.numFrecuencia = 2 }
     if (frecuencia === 'Trimestral') { this.numFrecuencia = 3 }
@@ -123,11 +125,11 @@ export class DirectCostsEditPage implements OnInit {
   }
   //-----------Pruebas--------------//
 
-  getProductData(){
+  getProductData() {
     this.db.getDataCollection<ProductSer>(this.idEstim, `/productos/${this.idProduct}`).subscribe((data) => {
       //console.log("Estimacion: ", data)
       this.productSer = data
-      this.estadoFrecuencia=data.frecuencia
+      this.estadoFrecuencia = data.frecuencia
       this.asignarNumFrecuencia(data.frecuencia)
     },
       (error: any) => {
@@ -135,12 +137,12 @@ export class DirectCostsEditPage implements OnInit {
       }
     )
   }
-  getProductDataTotalesInsumo(){
+  getProductDataTotalesInsumo() {
     this.db.getDataCollection<TotalesInsumo>(this.idEstim, `/productos/${this.idProduct}/totalesInsumo`).subscribe((data) => {
       //console.log("Estimacion: ", data)
-      if(data==null){
+      if (data == null) {
         this.presentToast("Debe agredar el Precion de Venta");
-      }else{
+      } else {
 
         this.totalesInsumo = data
       }
@@ -167,11 +169,11 @@ export class DirectCostsEditPage implements OnInit {
       };
       //console.log("El objeto", data)
       this.db.createProdutCollection(data, this.idEstim, this.idProduct)
-      this.btnShow=true;
+      this.btnShow = true;
     }
   }
 
-  addDataInsumoProduct(){
+  addDataInsumoProduct() {
     if (this.isFormNoFull() || this.totalesInsumo.totalVenta == null) {
       //console.log("estan incomplestos: " + this.isFormNoFull())
       this.presentToast("Exiten campos sin completar");
@@ -179,19 +181,48 @@ export class DirectCostsEditPage implements OnInit {
 
       //console.log(idNew)
       const data = {
-        totalCosto: this.totalCostoVenta,
+        //totalCosto: this.totalCostoVenta,
         totalVenta: this.totalesInsumo.totalVenta
       };
       //console.log("El objeto", data)
       this.db.addCollection(data, `${this.idEstim}/productos/${this.idProduct}`, 'totalesInsumo')
+
+      this.getProductDataList()
 
       this.navigateTo('/business-plan')
     }
 
   }
 
-  deleteInsumo(idInsumo:string){
-    this.db.deleteCollection(this.idEstim,`productos/${this.idProduct}/insumos/${idInsumo}`)
+  deleteInsumo(idInsumo: string) {
+    this.db.deleteCollection(this.idEstim, `productos/${this.idProduct}/insumos/${idInsumo}`)
   }
 
+  getProductDataList() {
+    this.db.getDataCollectionList(this.idEstim, `/productos`).subscribe((data) => {
+      //console.log("Estimacion: ", data)
+      this.productosArray = data
+      let totalCostoCal = 0
+      let totalVentaCal = 0
+      console.log("Estimacion: ", this.productosArray)
+      for (let i = 0; i < this.productosArray.length; i++) {
+        let numfrecuencia: number = this.productosArray[i].frecuenciaNum
+        totalCostoCal = totalCostoCal + (this.productosArray[i].totalesInsumo.totalCosto / numfrecuencia);
+        totalVentaCal = totalVentaCal + (this.productosArray[i].totalesInsumo.totalVenta / numfrecuencia);
+      }
+      const dataTotal = {
+        totalCostos: totalCostoCal,
+        totalVentas: totalVentaCal,
+        mub: ((totalVentaCal - totalCostoCal) / totalVentaCal)
+      }
+      this.db.updateDataCollection(dataTotal, this.idEstim, "", 'productosCalMUB');
+      localStorage.setItem('mub',dataTotal.mub.toString());
+
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
+  }
 }

@@ -18,11 +18,11 @@ export class DirectCostsPage implements OnInit {
 
   public idProduct: string
   public idEstim: string
-  public btnShow:boolean=false;
+  public btnShow: boolean = false;
   public productSer: ProductSer = {
     id: null,
     cantidad: null,
-    unidad:'unid',
+    unidad: 'unid',
     frecuencia: null,
     frecuenciaNum: null,
     nombre: null,
@@ -35,9 +35,10 @@ export class DirectCostsPage implements OnInit {
 
   public estadoFrecuencia: string;
   public numFrecuencia: number = null;
-  public totalCostoVenta:number = 0;
-  public insumos:Observable<any>
+  public totalCostoVenta: number = 0;
+  public insumos: Observable<any>
 
+  public productosArray: any[] = []
 
   constructor(
     public modalController: ModalController,
@@ -49,7 +50,7 @@ export class DirectCostsPage implements OnInit {
 
   ngOnInit() {
     this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
-    this.idProduct =  this.db.generateId();
+    this.idProduct = this.db.generateId();
 
     this.insumos = this.db.getInsumosList<any>(this.idEstim, this.idProduct);
 
@@ -150,11 +151,11 @@ export class DirectCostsPage implements OnInit {
       };
       //console.log("El objeto", data)
       this.db.createProdutCollection(data, this.idEstim, this.idProduct)
-      this.btnShow=true;
+      this.btnShow = true;
     }
   }
 
-  addDataInsumoProduct(){
+  addDataInsumoProduct() {
     if (this.isFormNoFull() || this.totalesInsumo.totalVenta == null) {
       //console.log("estan incomplestos: " + this.isFormNoFull())
       this.presentToast("Exiten campos sin completar");
@@ -162,18 +163,49 @@ export class DirectCostsPage implements OnInit {
 
       //console.log(idNew)
       const data = {
-        totalCosto: this.totalCostoVenta,
+        //totalCosto: this.totalCostoVenta,
         totalVenta: this.totalesInsumo.totalVenta
       };
       //console.log("El objeto", data)
-      this.db.addCollection(data, `${this.idEstim}/productos/${this.idProduct}`, 'totalesInsumo')
+      this.db.addCollection(data, `${this.idEstim}/productos/${this.idProduct}`, 'totalesInsumo');
+
+      this.getProductDataList()
 
       this.navigateTo('/business-plan')
     }
 
   }
 
-  deleteInsumo(idInsumo:string){
-    this.db.deleteCollection(this.idEstim,`productos/${this.idProduct}/insumos/${idInsumo}`)
+  deleteInsumo(idInsumo: string) {
+    this.db.deleteCollection(this.idEstim, `productos/${this.idProduct}/insumos/${idInsumo}`)
+  }
+
+  //metodo calcular MUB
+  getProductDataList() {
+    this.db.getDataCollectionList(this.idEstim, `/productos`).subscribe((data) => {
+      //console.log("Estimacion: ", data)
+      this.productosArray = data
+      let totalCostoCal = 0
+      let totalVentaCal = 0
+      console.log("Estimacion: ", this.productosArray)
+      for (let i = 0; i < this.productosArray.length; i++) {
+        let numfrecuencia: number = this.productosArray[i].frecuenciaNum
+        totalCostoCal = totalCostoCal + (this.productosArray[i].totalesInsumo.totalCosto / numfrecuencia);
+        totalVentaCal = totalVentaCal + (this.productosArray[i].totalesInsumo.totalVenta / numfrecuencia);
+      }
+      const dataTotal = {
+        totalCostos: totalCostoCal,
+        totalVentas: totalVentaCal,
+        mub: ((totalVentaCal - totalCostoCal) / totalVentaCal)
+      }
+      this.db.updateDataCollection(dataTotal, this.idEstim, "", 'productosCalMUB');
+      localStorage.setItem('mub',dataTotal.mub.toString());
+
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
   }
 }

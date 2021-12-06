@@ -105,6 +105,13 @@ export class serviceDataBase {
     })
     return collection.valueChanges();
   }
+  getDataCollectionList(idEstim: string, path:string) {
+    const collection = this.database.list(`/Estimaciones/${idEstim}/${path}`);
+    collection.valueChanges().subscribe(a => {
+
+    })
+    return collection.valueChanges();
+  }
   getDataCollection<tipo>(idEstim: string, path:string) {
     const collection = this.database.object<tipo>(`/Estimaciones/${idEstim}/${path}`);
     collection.valueChanges().subscribe(a => {
@@ -142,6 +149,10 @@ export class serviceDataBase {
   createInsumoCollection<tipo>(data: tipo, idEstim: string, idProduct:string, coleccion: string) {
 
     this.database.list(`/Estimaciones/${idEstim}/productos/${idProduct}/insumos`).update(coleccion, data);
+  }
+  updateDataCollection<tipo>(data: tipo, idEstim: string, path:string, coleccion: string) {
+
+    this.database.list(`/Estimaciones/${idEstim}/${path}`).update(coleccion, data);
   }
 
 

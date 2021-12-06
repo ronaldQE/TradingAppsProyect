@@ -10,18 +10,21 @@ import { serviceDataBase } from 'src/app/services/services-database';
   styleUrls: ['./modal-edit.page.scss'],
 })
 export class ModalEditPage implements OnInit {
-  @Input() idInsumo:string;
-  @Input() idEstim:string;
-  @Input() idProduct:string;
+  @Input() idInsumo: string;
+  @Input() idEstim: string;
+  @Input() idProduct: string;
 
   public insumo: IsumosOfProduct = {
-    id:"",
+    id: "",
     cantidad: null,
     unidad: null,
-    unidadProducto:null,
+    unidadProducto: null,
     nombreInsumo: null,
     precioUnitario: null
   }
+
+  public insumoArray: any[] = []
+  public productosArray: any[] = []
 
   constructor(
     public modalControllerEdit: ModalController,
@@ -32,12 +35,12 @@ export class ModalEditPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.idEstim=this.idEstim
+    this.idEstim = this.idEstim
     //console.log("idEstimacion: "+this.idEstim)
 
     this.getInsumoData()
   }
-  cerrarModal(){
+  cerrarModal() {
     //console.log("CERRAR")
     this.modalControllerEdit.dismiss();
   }
@@ -64,25 +67,26 @@ export class ModalEditPage implements OnInit {
         this.presentToast("Campos numericos debe ser > 0");
       } else {
 
-      //let idNew = this.idProduct;
+        //let idNew = this.idProduct;
 
-      const data = {
-        id: this.idInsumo,
-        cantidad: this.insumo.cantidad,
-        unidad: this.insumo.unidad,
-        unidadProducto:this.insumo.unidadProducto,
-        nombreInsumo: this.insumo.nombreInsumo,
-        precioUnitario: this.insumo.precioUnitario,
-        totalCostoInsumo: this.calTotalCostoInsumo(this.insumo.cantidad,this.insumo.unidadProducto,this.insumo.precioUnitario)
+        const data = {
+          id: this.idInsumo,
+          cantidad: this.insumo.cantidad,
+          unidad: this.insumo.unidad,
+          unidadProducto: this.insumo.unidadProducto,
+          nombreInsumo: this.insumo.nombreInsumo,
+          precioUnitario: this.insumo.precioUnitario,
+          totalCostoInsumo: this.calTotalCostoInsumo(this.insumo.cantidad, this.insumo.unidadProducto, this.insumo.precioUnitario)
 
-      };
-      this.db.createInsumoCollection(data, this.idEstim, this.idProduct,this.idInsumo);
-      this.cerrarModal()
-    }
+        };
+        this.db.createInsumoCollection(data, this.idEstim, this.idProduct, this.idInsumo);
+        this.getInsumoDataList()
+        this.cerrarModal()
+      }
     }
   }
-  calTotalCostoInsumo(cantidad:number,unidadProducto:number, precioUnitario:number ):number{
-    return (cantidad/unidadProducto)*precioUnitario;
+  calTotalCostoInsumo(cantidad: number, unidadProducto: number, precioUnitario: number): number {
+    return (cantidad / unidadProducto) * precioUnitario;
   }
 
   //Metodo de control de campos vacios
@@ -100,10 +104,59 @@ export class ModalEditPage implements OnInit {
     return res
   }
 
-  getInsumoData(){
+  getInsumoData() {
     this.db.getDataCollection<IsumosOfProduct>(this.idEstim, `/productos/${this.idProduct}/insumos/${this.idInsumo}`).subscribe((data) => {
       //console.log("Estimacion: ", data)
       this.insumo = data
+      //console.log("Estimacion: ", this.insumoArray)
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
+  }
+  getInsumoDataList() {
+    this.db.getDataCollectionList(this.idEstim, `/productos/${this.idProduct}/insumos`).subscribe((data) => {
+      //console.log("Estimacion: ", data)
+      this.insumoArray = data
+      let totalCostoCal = 0
+      console.log("Estimacion: ", this.insumoArray)
+      for (let i = 0; i < this.insumoArray.length; i++) {
+        totalCostoCal = totalCostoCal + this.insumoArray[i].totalCostoInsumo;
+      }
+      const dataTotal = { totalCosto: totalCostoCal }
+      this.db.updateDataCollection(dataTotal, this.idEstim, `productos/${this.idProduct}`, 'totalesInsumo')
+      this.getProductDataList()
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
+  }
+
+  //metodo calcular MUB
+  getProductDataList() {
+    this.db.getDataCollectionList(this.idEstim, `/productos`).subscribe((data) => {
+      //console.log("Estimacion: ", data)
+      this.productosArray = data
+      let totalCostoCal = 0
+      let totalVentaCal = 0
+      console.log("Estimacion: ", this.productosArray)
+      for (let i = 0; i < this.productosArray.length; i++) {
+        let numfrecuencia: number = this.productosArray[i].frecuenciaNum
+        totalCostoCal = totalCostoCal + (this.productosArray[i].totalesInsumo.totalCosto / numfrecuencia);
+        totalVentaCal = totalVentaCal + (this.productosArray[i].totalesInsumo.totalVenta / numfrecuencia);
+      }
+      const dataTotal = {
+        totalCostos: totalCostoCal,
+        totalVentas: totalVentaCal,
+        mub: ((totalVentaCal - totalCostoCal) / totalVentaCal)
+      }
+      this.db.updateDataCollection(dataTotal, this.idEstim, "", 'productosCalMUB');
+      localStorage.setItem('mub',dataTotal.mub.toString());
+
     },
       (error: any) => {
         console.log(`Error: ${error}`);

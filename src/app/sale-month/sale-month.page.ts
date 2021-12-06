@@ -18,7 +18,7 @@ export class SaleMonthPage implements OnInit {
 
   totalVentas = 0;
   totalCostos = 0;
-  porsentajeCosto = 0.02954590909
+  porsentajeCosto:number = 1-parseFloat( localStorage.getItem('mub'));
 
   public comportamientoVentas: ComportamientoVentas = {
     venta: 0,
