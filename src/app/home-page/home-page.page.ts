@@ -21,7 +21,7 @@ export class HomePagePage implements OnInit {
 
   }
 
-  navigateTo(path: String) {
+  navigateToPlan(path: String) {
     localStorage.setItem('title','Estimación-nueva');
     localStorage.setItem('idEstim',this.idEstim);
     //iniciar DB
@@ -40,12 +40,17 @@ export class HomePagePage implements OnInit {
     this.router.navigate([path,this.idEstim,'Estimación-nueva']);
   }
 
+  navigateTo(path: string) {
+
+    this.router.navigate([path]);
+  }
+
   goCompanyInformation(){
     this.navigateTo('information');
   }
 
   goLastEstimate(){
-    this.navigateTo('business-plan');
+    this.router.navigate(['business-plan',this.idEstim,localStorage.getItem('title')]);
   }
 
   goHistorial(){
