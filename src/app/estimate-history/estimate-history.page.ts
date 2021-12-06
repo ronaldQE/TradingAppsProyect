@@ -12,30 +12,13 @@ import { Router } from '@angular/router';
 })
 export class EstimateHistoryPage implements OnInit {
 
-  // public estimacioness = [
-  //   {
-  //     title: "estimacion-1",
-  //     van: 1000,
-  //     tir: 122
-  //   },
-  //   {
-  //     title: "estimacion-2",
-  //     van: 2500,
-  //     tir: 102
-  //   },
-  //   {
-  //     title: "estimacion-3",
-  //     van: 900,
-  //     tir: 82
-  //   },
-  //   {
-  //     title: "estimacion-4",
-  //     van: 5630,
-  //     tir: 185
-  //   },
+  public estimacionTitle:string="Estimación"
+  public estimacionVan:number=0
+  public estimacionTir:string="-"
+  public estimacionId:string=""
 
-  // ];
   public estimaciones:HistoryData[]=[];
+  public estimacionArray:any[]=[];
   public dataHistory: HistoryData ={
     id:0,
     title:"",
@@ -51,59 +34,29 @@ export class EstimateHistoryPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getEstimaciones();
+    this.getEstimacionesList();
   }
 
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
+  setValueEstimacion(numTitle:number, van:number, tir:string, id:string){
+    this.estimacionTitle= `Estimación-${numTitle+1}`
+    this.estimacionVan=van;
+    this.estimacionTir=tir
+    this.estimacionId=id
 
+  }
   //metodos carga de historial DE hisrotia
-  getEstimaciones() {
+  getEstimacionesList() {
+    this.db.getEstimacionesList().subscribe((data) => {
+      console.log("Estimacion: ", data)
+      this.estimacionArray = data
 
-    for(let i=0; i<10; i++ ){
-      let num = (i+1).toString();
-      this.db.getCollection(`/Estimaciones/estimacion-${num}`).subscribe((data) => {
-
-        if (data == null) {
-          return;
-
-        } else {
-
-
-
-          this.db.getCollection<OutCome>(`/Estimaciones/estimacion-${num}/resultado`).subscribe((data) => {
-            let dataHistory={
-              id:(i+1),
-              title:"Estimación-" + num,
-              van:data.van,
-              tir:data.tir
-            }
-            //console.log("el id: "+dataHistory.id)
-            this.estimaciones [i] = dataHistory;
-
-
-          },
-            (error: any) => {
-              console.log(`Error: ${error}`);
-
-            }
-          )
-
-        }
-
-      },
-        (error: any) => {
-          console.log(`Error: ${error}`);
-
-        }
-      )
-
-
-    }
-
-
-
-
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
   }
 }
