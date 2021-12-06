@@ -70,6 +70,9 @@ export class ContentCostsComponent implements OnInit {
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
+  navigateToParm(path: String, idEstim:string, idProduct:string) {
+    this.router.navigate([path,idEstim,idProduct]);
+  }
 
   getComportamientoVentas() {
     this.db.getCollection<ComportamientoVentasTotales>('/Estimaciones/estimicion-1/comportamientoVentas/totales').subscribe((data) => {

@@ -47,16 +47,8 @@
       </ion-item>
 
       <div *ngFor="let insumo of insumos|async|collectionToArray">
-
         <app-insumo [nombreInsumo]="insumo.nombreInsumo" [idEstim]="idEstim" [idProduct]="idProduct" [idInsumo]="insumo.id"></app-insumo>
       </div>
-      <!-- <ion-item *ngFor="let insumo of insumos|async|collectionToArray">
-        <ion-label>{{insumo.nombreInsumo}}</ion-label>
-        <ion-buttons slot="end">
-          <ion-button  (click)="navigateTo('/direct-costs-edit')" color="medium" size="default" expand="block"><ion-icon name="create-outline"></ion-icon></ion-button>
-          <ion-button  (click)="deleteInsumo(insumo.id)" color="danger" size="default" expand="block"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
-        </ion-buttons>
-      </ion-item> -->
 
       <div class="contentVenta">
         <ion-item class="inputData">

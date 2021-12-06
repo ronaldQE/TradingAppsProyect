@@ -9,7 +9,7 @@
     <ion-item *ngFor="let product of products|async|collectionToArray">
       <ion-label>{{product.nombre}}</ion-label>
       <ion-buttons slot="end">
-        <ion-button  (click)="navigateTo('/direct-costs-edit')" color="medium" size="default" expand="block"><ion-icon name="create-outline"></ion-icon></ion-button>
+        <ion-button  (click)="navigateToParm('/direct-costs-edit',idEstim, product.id)" color="medium" size="default" expand="block"><ion-icon name="create-outline"></ion-icon></ion-button>
         <ion-button  (click)="deleteProduct(product.id)" color="danger" size="default" expand="block"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
       </ion-buttons>
     </ion-item>

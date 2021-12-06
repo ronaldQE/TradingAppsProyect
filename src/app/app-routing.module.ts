@@ -36,7 +36,8 @@ const routes: Routes = [
   {
     path: 'operating-capital',
     loadChildren: () => import('./operating-capital/operating-capital.module').then( m => m.OperatingCapitalPageModule)
-  },  {
+  },
+  {
     path: 'credit',
     loadChildren: () => import('./pages/credit/credit.module').then( m => m.CreditPageModule)
   },
@@ -69,7 +70,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modal-edit/modal-edit.module').then( m => m.ModalEditPageModule)
   },
   {
-    path: 'direct-costs-edit',
+    path: 'direct-costs-edit/:idEstim/:idProduct',
     loadChildren: () => import('./pages/direct-costs-edit/direct-costs-edit.module').then( m => m.DirectCostsEditPageModule)
   },
 

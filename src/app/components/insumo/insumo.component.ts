@@ -32,7 +32,13 @@ export class InsumoComponent implements OnInit {
   async openModal() {
     const modalEdit = await this.modalControllerEdit.create({
       component: ModalEditPage,
-      cssClass: 'my-custom-class'
+      cssClass: 'my-custom-class',
+      componentProps: {
+        'idEstim': this.idEstim,
+        'idProduct': this.idProduct,
+        'idInsumo': this.idInsumo
+
+      }
     });
     return await modalEdit.present();
   }

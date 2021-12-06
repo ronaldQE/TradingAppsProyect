@@ -3,9 +3,8 @@ import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { IsumosOfProduct, ProductSer, TotalesInsumo } from 'src/app/models/interfaces';
 import { serviceDataBase } from 'src/app/services/services-database';
-import { ModalInsumoPage } from '../modal-insumo/modal-insumo.page';
 import { Observable } from 'rxjs';
-//import { CollectionToArrayPipe } from './../../common/collection-to-array.pipe';
+import { ModalInsumoPage } from '../modal-insumo/modal-insumo.page';
 
 
 
@@ -17,9 +16,7 @@ import { Observable } from 'rxjs';
 })
 export class DirectCostsPage implements OnInit {
 
-  //public insumos = ["servicion de servidores", "alquiler de dominio"];
   public idProduct: string
-  //public idNewProduct: number
   public idEstim: string
   public btnShow:boolean=false;
   public productSer: ProductSer = {
@@ -52,13 +49,11 @@ export class DirectCostsPage implements OnInit {
 
   ngOnInit() {
     this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
-    this.idProduct = "-MqB4s1K4bioJFsMXqrZ"// this.db.generateId();
+    this.idProduct =  this.db.generateId();
 
     this.insumos = this.db.getInsumosList<any>(this.idEstim, this.idProduct);
 
-
     console.log(this.idProduct)
-    //this.products = this.db.getListCollection(this.idEstim,'productos')
 
   }
   navigateTo(path: String) {
@@ -67,7 +62,12 @@ export class DirectCostsPage implements OnInit {
   async openModal() {
     const modal = await this.modalController.create({
       component: ModalInsumoPage,
-      cssClass: 'my-custom-class'
+      cssClass: 'my-custom-class',
+      componentProps: {
+        'idEstim': this.idEstim,
+        'idProduct': this.idProduct,
+
+      }
     });
     return await modal.present();
   }
@@ -94,6 +94,7 @@ export class DirectCostsPage implements OnInit {
     if (
       this.productSer.nombre == null ||
       this.productSer.cantidad == null ||
+      this.productSer.unidad == null ||
       this.productSer.tipo == null ||
       this.numFrecuencia == null
 
@@ -140,10 +141,12 @@ export class DirectCostsPage implements OnInit {
       const data = {
         id: this.idProduct,
         cantidad: this.productSer.cantidad,
+        unidad: this.productSer.unidad,
         frecuencia: this.estadoFrecuencia,
         frecuenciaNum: this.numFrecuencia,
         nombre: this.productSer.nombre,
         tipo: this.productSer.tipo
+
       };
       //console.log("El objeto", data)
       this.db.createProdutCollection(data, this.idEstim, this.idProduct)

@@ -13,28 +13,33 @@
     <div class="contentForm">
       <ion-item class="inputData">
         <ion-label position="floating">Insumo</ion-label>
-        <ion-input></ion-input>
+        <ion-input [(ngModel)]="insumo.nombreInsumo"></ion-input>
       </ion-item>
 
       <ion-item class="inputData">
         <ion-label position="floating">Cantidad</ion-label>
-        <ion-input type="number"></ion-input>
+        <ion-input type="number" [(ngModel)]="insumo.cantidad"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Unidad</ion-label>
+        <ion-input  [(ngModel)]="insumo.unidad"></ion-input>
       </ion-item>
 
       <ion-item class="inputData">
         <ion-label position="floating"
           >Nº de Unidades Producto o Servicio</ion-label
         >
-        <ion-input type="number"></ion-input>
+        <ion-input type="number" [(ngModel)]="insumo.unidadProducto"></ion-input>
       </ion-item>
 
 
       <ion-item class="inputData">
         <ion-label position="floating">Precio Unitario</ion-label>
-        <ion-input type="number"></ion-input>
+        <ion-input type="number" [(ngModel)]="insumo.precioUnitario"></ion-input>
       </ion-item>
 
-      <ion-button class="btnGuardar" size="large" expand="block">Gruadar</ion-button>
+      <ion-button class="btnGuardar" (click)="addInsumo()" size="large" expand="block">Guardar</ion-button>
     </div>
   </ion-card>
 </ion-content>

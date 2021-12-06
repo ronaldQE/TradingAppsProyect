@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { IsumosOfProduct } from 'src/app/models/interfaces';
@@ -11,8 +11,12 @@ import { serviceDataBase } from 'src/app/services/services-database';
 })
 export class ModalInsumoPage implements OnInit {
 
-  public idEstim: string
-  public idProduct: string
+
+  @Input() idEstim:string;
+  @Input() idProduct:string;
+
+  //public idEstim: string
+  //public idProduct: string
   public idInsumo: string
   public insumo: IsumosOfProduct = {
     id:"",
@@ -33,7 +37,7 @@ export class ModalInsumoPage implements OnInit {
 
   ngOnInit() {
     this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
-    this.idProduct = "-MqB4s1K4bioJFsMXqrZ";
+    //this.idProduct = "-MqB4s1K4bioJFsMXqrZ";
     this.idInsumo = this.db.generateId();
   }
   closeModal() {
@@ -71,14 +75,17 @@ export class ModalInsumoPage implements OnInit {
         unidad: this.insumo.unidad,
         unidadProducto:this.insumo.unidadProducto,
         nombreInsumo: this.insumo.nombreInsumo,
-        precioUnitario: this.insumo.precioUnitario
+        precioUnitario: this.insumo.precioUnitario,
+        totalCostoInsumo: this.calTotalCostoInsumo(this.insumo.cantidad,this.insumo.unidadProducto,this.insumo.precioUnitario)
       };
       this.db.createInsumoCollection(data, this.idEstim, this.idProduct,this.idInsumo);
       this.closeModal()
     }
     }
   }
-
+  calTotalCostoInsumo(cantidad:number,unidadProducto:number, precioUnitario:number ):number{
+    return (cantidad/unidadProducto)*precioUnitario;
+  }
   //Metodo de control de campos vacios
   isFormNoFull(): boolean {
     let res = false

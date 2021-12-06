@@ -12,49 +12,53 @@
     <div class="contentProduct">
       <ion-item class="inputData">
         <ion-label position="floating">Producto o Servicio</ion-label>
-        <ion-input></ion-input>
+        <ion-input [(ngModel)]="productSer.nombre"></ion-input>
       </ion-item>
 
       <ion-item class="inputData">
         <ion-label position="floating">Tipo</ion-label>
-        <ion-input></ion-input>
+        <ion-input [(ngModel)]="productSer.tipo"></ion-input>
       </ion-item>
 
       <ion-item class="inputData">
         <ion-label position="floating">Cantidad</ion-label>
-        <ion-input type="number"></ion-input>
+        <ion-input type="number" [(ngModel)]="productSer.cantidad"></ion-input>
+      </ion-item>
+
+      <ion-item class="inputData">
+        <ion-label position="floating">Unidad de Venta</ion-label>
+        <ion-input  [(ngModel)]="productSer.unidad"></ion-input>
       </ion-item>
 
       <ion-item class="inputData">
         <ion-label position="floating">Frecuencia</ion-label>
-        <ion-select interface="popover">
+        <ion-select interface="popover"  (ionChange)="selectTipeCouta($event)" [value]="estadoFrecuencia">
           <ion-select-option value="Bimestral">Bimestral</ion-select-option>
           <ion-select-option value="Trimestral">Trimestral</ion-select-option>
           <ion-select-option value="Semestral">Semestral</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-button class="btnGuardar" (click)="addProduct()" size="large" expand="block">Guardar Cambio</ion-button>
     </div>
     <div class="contentInsumo">
       <ion-item>
         <ion-title>Lista de Insumos</ion-title>
-        <ion-button (click)="openModalCreateInsumo()" color="secondary" size="default" expand="block"><ion-icon name="add-outline"></ion-icon></ion-button>
+        <ion-button (click)="openModalCreateInsumo(idEstim, idProduct)" color="secondary" size="default" expand="block"><ion-icon name="add-outline"></ion-icon></ion-button>
       </ion-item>
 
-      <div *ngFor="let insumo of insumos">
-
-        <app-insumo [nombreInsumo]="insumo"></app-insumo>
+      <div *ngFor="let insumo of insumos|async|collectionToArray">
+        <app-insumo [nombreInsumo]="insumo.nombreInsumo" [idEstim]="idEstim" [idProduct]="idProduct" [idInsumo]="insumo.id"></app-insumo>
       </div>
 
       <div class="contentVenta">
         <ion-item class="inputData">
           <ion-label position="floating">Precio de Venta</ion-label>
-          <ion-input type="number"></ion-input>
+          <ion-input type="number" [(ngModel)]="totalesInsumo.totalVenta"></ion-input>
         </ion-item>
       </div>
     </div>
+    <ion-button *ngIf="!btnShow" class="btnGuardar" disabled size="large" expand="block">Gruardar y Salir</ion-button>
+    <ion-button *ngIf="btnShow"class="btnGuardar" (click)="addDataInsumoProduct()" size="large" expand="block">Gruardar y Salir</ion-button>
 
-    <ion-button class="btnGuardar" size="large" expand="block"
-      >Gruadar</ion-button
-    >
   </ion-card>
 </ion-content>

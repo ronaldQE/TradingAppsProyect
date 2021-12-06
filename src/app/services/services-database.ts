@@ -105,6 +105,13 @@ export class serviceDataBase {
     })
     return collection.valueChanges();
   }
+  getDataCollection<tipo>(idEstim: string, path:string) {
+    const collection = this.database.object<tipo>(`/Estimaciones/${idEstim}/${path}`);
+    collection.valueChanges().subscribe(a => {
+
+    })
+    return collection.valueChanges();
+  }
   getProductList<tipo>(idEstim: string) {
     const collection = this.database.list<tipo>(`/Estimaciones/${idEstim}/productos`);
     collection.valueChanges().subscribe(a => {
