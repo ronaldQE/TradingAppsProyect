@@ -23,7 +23,7 @@ export class BudgetPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.idEstim = this.activatedRoute.snapshot.paramMap.get('idEstim');
+    this.idEstim = localStorage.getItem('idEstim')//this.activatedRoute.snapshot.paramMap.get('idEstim');
     console.log(this.idEstim);
 
     this.getBudget();

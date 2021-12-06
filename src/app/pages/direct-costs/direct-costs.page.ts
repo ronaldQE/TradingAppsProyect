@@ -49,7 +49,7 @@ export class DirectCostsPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
+    this.idEstim = localStorage.getItem('idEstim');
     this.idProduct = this.db.generateId();
 
     this.insumos = this.db.getInsumosList<any>(this.idEstim, this.idProduct);
@@ -110,28 +110,28 @@ export class DirectCostsPage implements OnInit {
     this.db.createEstimacion()
   }
 
-  getEstimacionesLists() {
-    this.db.getEstimacionesList().subscribe((data) => {
-      console.log("Lista: ", data)
-      //console.log(data)
-    },
-      (error: any) => {
-        console.log(`Error: ${error}`);
-      }
-    )
+  // getEstimacionesLists() {
+  //   this.db.getEstimacionesList().subscribe((data) => {
+  //     console.log("Lista: ", data)
+  //     //console.log(data)
+  //   },
+  //     (error: any) => {
+  //       console.log(`Error: ${error}`);
+  //     }
+  //   )
 
-  }
+  // }
 
-  getEstimacion() {
-    this.db.getEstimacion("-Mq9gCpEK8IUZsLaY98B").subscribe((data) => {
-      console.log("Estimacion: ", data)
-      //console.log(data)
-    },
-      (error: any) => {
-        console.log(`Error: ${error}`);
-      }
-    )
-  }
+  // getEstimacion() {
+  //   this.db.getEstimacion("-Mq9gCpEK8IUZsLaY98B").subscribe((data) => {
+  //     console.log("Estimacion: ", data)
+  //     //console.log(data)
+  //   },
+  //     (error: any) => {
+  //       console.log(`Error: ${error}`);
+  //     }
+  //   )
+  // }
 
   addProduct() {
     if (this.isFormNoFull()) {

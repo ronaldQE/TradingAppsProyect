@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ComportamientoVentas, ComportamientoVentasTotales, DataCredit, FlujoAnual, MonthlyCostFull, OutCome } from 'src/app/models/interfaces';
@@ -18,6 +18,9 @@ interface Gestions {
   styleUrls: ['./content-flow.component.scss'],
 })
 export class ContentFlowComponent implements OnInit {
+
+  @Input() idEstim:string;
+
 
   public flujoAnual: FlujoAnual = {
     saldoInicial: 0,
@@ -104,7 +107,7 @@ export class ContentFlowComponent implements OnInit {
   }
 
   getFlujoAnual(gestion: string) {
-    this.db.getCollection<FlujoAnual>(`/Estimaciones/estimicion-1/flujo-anual/${gestion}`).subscribe((data) => {
+    this.db.getCollection<FlujoAnual>(`/Estimaciones/${this.idEstim}/flujo-anual/${gestion}`).subscribe((data) => {
       if (data == null) {
         if (gestion !== "2021") {
           //this.presentToast("La gestion esta vacia");
@@ -135,7 +138,7 @@ export class ContentFlowComponent implements OnInit {
   }
 
   getOutCome() {
-    this.db.getCollection<OutCome>(`/Estimaciones/estimicion-1/resultado`).subscribe((data) => {
+    this.db.getCollection<OutCome>(`/Estimaciones/${this.idEstim}/resultado`).subscribe((data) => {
       this.outCome = data;
 
     },
@@ -157,7 +160,7 @@ export class ContentFlowComponent implements OnInit {
     this.totalVentas = 0;
 
     for (let i = 0; i < this.meses.length; i++) {
-      this.db.getCollection<ComportamientoVentas>('/Estimaciones/estimicion-1/comportamientoVentas/' + this.meses[i]).subscribe((data) => {
+      this.db.getCollection<ComportamientoVentas>(`/Estimaciones/${this.idEstim}/comportamientoVentas/` + this.meses[i]).subscribe((data) => {
         if (data !== null) {
           this.totalCostos = this.totalCostos + data.costoVenta;
           this.totalVentas = this.totalVentas + data.venta;
@@ -167,7 +170,7 @@ export class ContentFlowComponent implements OnInit {
             totalVenta: this.totalVentas,
             totalCostoVenta: this.totalCostos,
           }
-          this.db.updateData(dataTotal, '/Estimaciones/estimicion-1/comportamientoVentas', 'totales');
+          this.db.updateData(dataTotal, `/Estimaciones/${this.idEstim}/comportamientoVentas`, 'totales');
           console.log("----------------------------------------")
           console.log(this.totalVentas)
           console.log(this.totalCostos)
@@ -184,9 +187,9 @@ export class ContentFlowComponent implements OnInit {
 
   //Metodos para le Plan de pagos
   getDataCredit() {
-    this.db.getCollection<DataCredit>('/Estimaciones/estimicion-1/dato-credito').subscribe((data) => {
+    this.db.getCollection<DataCredit>(`/Estimaciones/${this.idEstim}/dato-credito`).subscribe((data) => {
       this.dataCredit = data;
-      this.db.getCollection<ComportamientoVentasTotales>('/Estimaciones/estimicion-1/comportamientoVentas/totales').subscribe((data) => {
+      this.db.getCollection<ComportamientoVentasTotales>(`/Estimaciones/${this.idEstim}/comportamientoVentas/totales`).subscribe((data) => {
         let totalVentaAnual = data.totalVenta;
         let totalCostoVentaAnual = data.totalCostoVenta;
         this.cuotas = []
@@ -235,16 +238,16 @@ export class ContentFlowComponent implements OnInit {
     let numGestiones = numMeses / 12;
     let saldoInicial = 0;
     let indexCuotas = 0;
-    this.db.replaceData({}, '/Estimaciones/estimicion-1', 'flujo-anual')
+    this.db.replaceData({}, `/Estimaciones/${this.idEstim}`, 'flujo-anual')
 
-    this.db.getCollection<MonthlyCostFull>('/Estimaciones/estimicion-1/costos-operativos').subscribe((data) => {
+    this.db.getCollection<MonthlyCostFull>(`/Estimaciones/${this.idEstim}/costos-operativos`).subscribe((data) => {
       let costoFijoT = data.totalCostosOperativos * 12;
       for (let i = 0; i < numGestiones; i++) {
         if (i == 0) {
 
           this.setFlujoAnual(ingresosT, costoProducionT, saldoInicial, this.calCuotaTotal(cuotas, indexCuotas), costoFijoT);
           //console.log("total Cuota: "+this.calCuotaTotal(this.cuotas, indexCuotas))
-          this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString());
+          this.db.updateData<FlujoAnual>(this.flujoAnual, `/Estimaciones/${this.idEstim}/flujo-anual`, anio.toString());
 
           this.outCome.van = this.calVanForFCctte(montoFinanciar, this.flujoAnual.flujoAcumulado, tasaInteres, plazo);
           console.log(this.outCome.van)
@@ -256,14 +259,14 @@ export class ContentFlowComponent implements OnInit {
           this.testTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
           this.outCome.tir = this.tirCal.toFixed(2)
           //carga de datos Reusltado
-          this.db.updateData<OutCome>(this.outCome, '/Estimaciones/estimicion-1', 'resultado');
+          this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
 
         } else {
           indexCuotas = indexCuotas + 12;
           anio = anio + 1;
           saldoInicial = this.flujoAnual.flujoAcumulado;
           this.setFlujoAnual(ingresosT, costoProducionT, saldoInicial, this.calCuotaTotal(this.cuotas, indexCuotas), costoFijoT);
-          this.db.updateData<FlujoAnual>(this.flujoAnual, '/Estimaciones/estimicion-1/flujo-anual', anio.toString());
+          this.db.updateData<FlujoAnual>(this.flujoAnual, `/Estimaciones/${this.idEstim}/flujo-anual`, anio.toString());
 
         }
 

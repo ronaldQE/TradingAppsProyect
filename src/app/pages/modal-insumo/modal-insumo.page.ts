@@ -40,7 +40,7 @@ export class ModalInsumoPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
+    this.idEstim = localStorage.getItem('idEstim');
     //this.idProduct = "-MqB4s1K4bioJFsMXqrZ";
     this.idInsumo = this.db.generateId();
   }

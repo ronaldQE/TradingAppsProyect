@@ -7,7 +7,7 @@ import { serviceDataBase } from '../services/services-database';
   styleUrls: ['./home-page.page.scss'],
 })
 export class HomePagePage implements OnInit {
-  idEstim:String = "";
+  idEstim:string = "";
   constructor(
     private router: Router,
     public db: serviceDataBase
@@ -15,9 +15,15 @@ export class HomePagePage implements OnInit {
 
   ngOnInit() {
     this.idEstim = this.getId();
+    localStorage.setItem('title','Estimación');
+    localStorage.setItem('idEstim','estimicion-1');
+
+
   }
 
   navigateTo(path: String) {
+    localStorage.setItem('title','Estimación-nueva');
+    localStorage.setItem('idEstim',this.idEstim);
     this.router.navigate([path]);
     //para navegacion
   }
@@ -37,7 +43,7 @@ export class HomePagePage implements OnInit {
   newEstimation(){
     console.log("holaaa");
   }
-  
+
   getId(){
     return this.db.generateId();
   }

@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <ion-menu-button color="primary" menu="myMenu"></ion-menu-button>
     </ion-buttons>
-    <ion-title>home-page</ion-title>
+    <ion-title>Trading Apps</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
+
 <!--   <ion-item>
       <ion-img [src]="item.src"></ion-img>
     <ion-label>{{item.text}}</ion-label>
@@ -25,7 +25,7 @@
   </ion-button>
   <ion-button class="button-selection" (click)="goHistorial()">
     <div class="button-container">
-      <ion-img src="https://cdn-icons.flaticon.com/png/512/5714/premium/5714358.png?token=exp=1638488205~hmac=3f61795105575a0c9962521d772311d2" class="button-img"></ion-img>
+      <ion-img src="https://cdn-icons-png.flaticon.com/512/3034/3034637.png" class="button-img"></ion-img>
       <p class="button-label">Historial</p>
     </div>
   </ion-button>
@@ -35,8 +35,8 @@
       <p class="button-label">Ultima Estimación</p>
     </div>
   </ion-button>
-  <ion-button [routerLink]="['/business-plan',idEstim]" class="button-estimate">Nueva estimación</ion-button>
-  
+  <ion-button (click)="navigateTo('/business-plan')" class="button-estimate">Nueva Estimación</ion-button>
+
 </div>
 
 </ion-content>

@@ -21,7 +21,7 @@ export class InvestmentCapitalPage implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.idEstim = this.activatedRoute.snapshot.paramMap.get("idEstim");
+    this.idEstim = localStorage.getItem('idEstim')//this.activatedRoute.snapshot.paramMap.get("idEstim");
     console.log(this.idEstim)
 
     this.getInvestmentCapital();
@@ -39,7 +39,7 @@ export class InvestmentCapitalPage implements OnInit {
   getInvestmentCapital(){
     this.db.getCollection<InvestmentCapital>(`/Estimaciones/${this.idEstim}/capital-de-inversion`).subscribe( (data)=>{
       if(data!==null){
-        this.newInvestmentCapital = data;  
+        this.newInvestmentCapital = data;
         this.newInvestmentCapital.consultoria=data.consultoria == undefined?0:data.consultoria;
         this.newInvestmentCapital.equipamientoOficina=data.equipamientoOficina == undefined?0:data.equipamientoOficina;
         this.newInvestmentCapital.equipoComputo=data.equipoComputo == undefined?0:data.equipoComputo;

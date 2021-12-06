@@ -26,10 +26,11 @@ export class ProductMonthPage implements OnInit {
 
   public totalCompraMensual: number = 0;
 
+  public idEstim:string
   constructor(private router: Router,
               public db: serviceDataBase,
               public fb: FormBuilder) {
-    
+
     this.formProduct = this.fb.group({
       id: uuidv4(),
       productoServicio: [null, [Validators.required]],
@@ -40,22 +41,23 @@ export class ProductMonthPage implements OnInit {
       precioC: [null, [Validators.required]],
       precioV: [null, [Validators.required]],
     })
-    
+
   }
 
   ngOnInit() {
+    this.idEstim=localStorage.getItem('idEstim')
   }
 
   selectTipeCouta(event: CustomEvent | any) {
-    
+
   }
 
   saveProduct() {
-    this.db.actualizarDatos(this.formProduct.value, 'Estimaciones/estimicion-1/productos', this.formProduct.get('id').value);
+    this.db.actualizarDatos(this.formProduct.value, `Estimaciones/${this.idEstim}/productos`, this.formProduct.get('id').value);
     this.saveOpProductMonth();
     this.navigateTo('business-plan');
   }
-  
+
 
   navigateTo(path: String) {
     this.router.navigate([path]);

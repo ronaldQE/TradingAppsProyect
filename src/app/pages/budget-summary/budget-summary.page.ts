@@ -40,7 +40,7 @@ export class BudgetSummaryPage implements OnInit {
   public cInversion:number=0;
   public efectivoTotal:number=0;
   public totalGastosOperativos:number=0;
-
+  public idEstim:string
   constructor(
     private router: Router,
     public db: serviceDataBase
@@ -50,15 +50,17 @@ export class BudgetSummaryPage implements OnInit {
   }
 
   ngOnInit() {
+    this.idEstim=localStorage.getItem('idEstim')
     this.getBudget();
     this.getOperatingCapital();
     this.getInvestmentCapital();
+
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
   getBudget(){
-    this.db.getCollection<Budget>('/Estimaciones/estimicion-1/presupuesto').subscribe( (data)=>{
+    this.db.getCollection<Budget>(`/Estimaciones/${this.idEstim}/presupuesto`).subscribe( (data)=>{
       this.budget = data;
       if (data.otros == undefined){
         this.budget.otros = 0;
@@ -81,7 +83,7 @@ export class BudgetSummaryPage implements OnInit {
     )
   }
   getOperatingCapital(){
-    this.db.getCollection<OperatingCapital>('/Estimaciones/estimicion-1/capital-operativo').subscribe( (data)=>{
+    this.db.getCollection<OperatingCapital>(`/Estimaciones/${this.idEstim}/capital-operativo`).subscribe( (data)=>{
       this.operatingCapital = data;
       if(data.alquiler == undefined){
         this.operatingCapital.alquiler=0;
@@ -114,7 +116,7 @@ export class BudgetSummaryPage implements OnInit {
   }
 
   getInvestmentCapital(){
-    this.db.getCollection<InvestmentCapital>('/Estimaciones/estimicion-1/capital-de-inversion').subscribe( (data)=>{
+    this.db.getCollection<InvestmentCapital>(`/Estimaciones/${this.idEstim}/capital-de-inversion`).subscribe( (data)=>{
       this.investmentCapital = data;
       if(data.consultoria == undefined){
         this.investmentCapital.consultoria=0;

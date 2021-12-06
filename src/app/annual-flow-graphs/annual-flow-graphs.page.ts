@@ -20,6 +20,9 @@ export class AnnualFlowGraphsPage implements OnInit {
   private cuota: number[] = [];
   private flujoAcumulado: number[] = [];
   private flowsKeyPearYear: String[] = [];
+
+  public idEstim:string =""
+
   constructor(
     private router: Router,
     public db: serviceDataBase
@@ -28,10 +31,11 @@ export class AnnualFlowGraphsPage implements OnInit {
   ngOnInit() {
     this.getAnnualFlow();
     this.generateChartsFlowsPerYear();
+    this.idEstim=localStorage.getItem('idEstim')
   }
 
   getAnnualFlow(){
-    this.db.getCollection<FlujoAnual>('/Estimaciones/estimicion-1/flujo-anual').subscribe( (data)=>{
+    this.db.getCollection<FlujoAnual>(`/Estimaciones/${this.idEstim}/flujo-anual`).subscribe( (data)=>{
       for (const key in data) {
         this.flowsKeyPearYear.push(key);
         let year = data[key];
@@ -43,7 +47,7 @@ export class AnnualFlowGraphsPage implements OnInit {
         this.utilidadNeta.push(year.utilidadNeta || 0);
         this.cuota.push(year.cuota || 0);
         this.flujoAcumulado.push(year.flujoAcumulado || 0);
-       
+
           /*let aux:FlujoAnual = {
             saldoInicial:year.saldoInicial || 0,
             ingresos:year.ingresos || 0,

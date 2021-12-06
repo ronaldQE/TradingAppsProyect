@@ -27,19 +27,20 @@ export class MonthlyCostsPage implements OnInit {
   };
 
   public totalCostosOperativosMensuales: number = 0;
-  
+  public idEstim:string=""
   constructor(
     private router: Router,
     public db: serviceDataBase
   ) { }
 
   ngOnInit() {
+    this.idEstim=localStorage.getItem('idEstim')
     this.getMonthlyCost();
   }
 
   send(){
     const data = this.newMonthlyCost;
-    this.db.actualizarDatos<MonthlyCost>(data,'/Estimaciones/estimicion-1','costos-operativos');
+    this.db.actualizarDatos<MonthlyCost>(data,`/Estimaciones/${this.idEstim}`,'costos-operativos');
     this.saveSumMonthlyCost();
     this.navigateTo('business-plan');
   }
@@ -47,7 +48,7 @@ export class MonthlyCostsPage implements OnInit {
     this.router.navigate([path]);
   }
   getMonthlyCost(){
-    this.db.getCollection<MonthlyCost>('/Estimaciones/estimicion-1/costos-operativos').subscribe( (data)=>{
+    this.db.getCollection<MonthlyCost>(`/Estimaciones/${this.idEstim}/costos-operativos`).subscribe( (data)=>{
       this.newMonthlyCost = data;
       this.newMonthlyCost.servicioLuz = data.servicioLuz == undefined?0:data.servicioLuz;
       this.newMonthlyCost.servicioAgua = data.servicioAgua == undefined?0:data.servicioAgua;
@@ -70,7 +71,7 @@ export class MonthlyCostsPage implements OnInit {
 
   saveSumMonthlyCost(){
     this.totalCostosOperativosMensuales = this.newMonthlyCost.servicioLuz + this.newMonthlyCost.servicioAgua + this.newMonthlyCost.servicioTelefono + this.newMonthlyCost.servicioInternet + this.newMonthlyCost.alquiler + this.newMonthlyCost.materialEscritorio + this.newMonthlyCost.pagosEmpleados + this.newMonthlyCost.promocion + this.newMonthlyCost.serviciosCloud + this.newMonthlyCost.mantenimientoOtros + this.newMonthlyCost.vestimenta + this.newMonthlyCost.salud + this.newMonthlyCost.complementariosOtros;
-     
+
   const totalMonthlyCost = {
     servicioLuz: this.newMonthlyCost.servicioLuz,
     servicioAgua: this.newMonthlyCost.servicioAgua,
@@ -87,6 +88,6 @@ export class MonthlyCostsPage implements OnInit {
     complementariosOtros: this.newMonthlyCost.complementariosOtros,
     totalCostosOperativos: this.totalCostosOperativosMensuales
   };
-    this.db.updateData<object>(totalMonthlyCost,'/Estimaciones/estimicion-1','costos-operativos');
+    this.db.updateData<object>(totalMonthlyCost,`/Estimaciones/${this.idEstim}`,'costos-operativos');
   }
 }

@@ -41,6 +41,7 @@ export class BusinessPlanPage implements OnInit {
   public cOperativo:number=0;
   public cInversion:number=0;
   public efectivoTotal:number=0;
+  public title:string=""
 
   constructor(
     private router: Router,
@@ -53,6 +54,7 @@ export class BusinessPlanPage implements OnInit {
   ngOnInit() {
 
     this.idEstim = localStorage.getItem('idEstim')//this.activatedRoute.snapshot.paramMap.get("idEstim");
+    this.title = localStorage.getItem('title')//this.activatedRoute.snapshot.paramMap.get("idEstim");
     console.log(this.idEstim)
   }
   navigateTo(path: String) {

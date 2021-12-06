@@ -47,7 +47,7 @@ export class CreditPage implements OnInit {
   meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
   totalCostos = 0;
   totalVentas = 0;
-
+  public idEstim:string
   public costoFijoT = 0;
   public outCome: OutCome = {
     van: 0,
@@ -65,6 +65,7 @@ export class CreditPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.idEstim=localStorage.getItem('idEstim')
     this.getBudgetSummary();
     this.getDataCredit();
 
@@ -73,7 +74,7 @@ export class CreditPage implements OnInit {
     this.router.navigate([path]);
   }
   getBudgetSummary() {
-    this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe((data) => {
+    this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data) => {
       this.budgetSummary = data;
       this.budgetSummary.montoFinanciar = data.montoFinanciar
 
@@ -85,7 +86,7 @@ export class CreditPage implements OnInit {
     )
   }
   getDataCredit() {
-    this.db.getCollection<DataCredit>('/Estimaciones/estimicion-1/dato-credito').subscribe((data) => {
+    this.db.getCollection<DataCredit>(`/Estimaciones/${this.idEstim}/dato-credito`).subscribe((data) => {
       this.dataCredit = data;
       this.dataCredit.montoFinanciar = this.budgetSummary.montoFinanciar
     },
@@ -110,7 +111,7 @@ export class CreditPage implements OnInit {
         } else {
 
           //Cargado de datos de credito a la base de datos
-          this.db.actualizarDatos<DataCredit>(data, '/Estimaciones/estimicion-1', 'dato-credito');
+          this.db.actualizarDatos<DataCredit>(data, `/Estimaciones/${this.idEstim}`, 'dato-credito');
           this.navigateTo('/business-plan');
         }
       }

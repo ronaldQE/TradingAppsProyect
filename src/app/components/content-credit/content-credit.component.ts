@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { serviceDataBase } from '../../services/services-database';
 
@@ -10,6 +10,8 @@ import { Budget, BudgetSummary, DataCredit, InvestmentCapital, OperatingCapital 
   styleUrls: ['./content-credit.component.scss'],
 })
 export class ContentCreditComponent implements OnInit {
+
+  @Input() idEstim:string;
 
   public budgetSummary: BudgetSummary={
     aportePropio: 0,
@@ -40,7 +42,7 @@ export class ContentCreditComponent implements OnInit {
     this.router.navigate([path]);
   }
   getBudgetSummary(){
-    this.db.getCollection<BudgetSummary>('/Estimaciones/estimicion-1/resumen-presupuesto').subscribe( (data)=>{
+    this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe( (data)=>{
       this.budgetSummary = data;
 
     },
@@ -51,7 +53,7 @@ export class ContentCreditComponent implements OnInit {
     )
   }
   getDataCredit(){
-    this.db.getCollection<DataCredit>('/Estimaciones/estimicion-1/dato-credito').subscribe( (data)=>{
+    this.db.getCollection<DataCredit>(`/Estimaciones/${this.idEstim}/dato-credito`).subscribe( (data)=>{
       this.dataCredit = data;
 
     },

@@ -1,6 +1,6 @@
 import { CollectionToArrayPipe } from './../../common/collection-to-array.pipe';
 import { ComportamientoVentas, ComportamientoVentasTotales, ProductSer } from './../../models/interfaces';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { serviceDataBase } from '../../services/services-database';
 import { MonthlyCost, ProductMonth, } from 'src/app/models/interfaces';
@@ -12,6 +12,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./content-costs.component.scss'],
 })
 export class ContentCostsComponent implements OnInit {
+
+  @Input() idEstim:string;
+
 
   totalSumaVenta = 0;
   totalSumaCostos = 0;
@@ -45,7 +48,7 @@ export class ContentCostsComponent implements OnInit {
   public totalVenta: number = 0;
   public totalCostoVenta: number = 0;
 
-  public idEstim: string;
+  //public idEstim: string;
   public totalCostosOperativosMensuales: number = 0;
   //products: Observable<any>;
   public products:Observable<any>
@@ -57,7 +60,7 @@ export class ContentCostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
+    //this.idEstim = "-Mq9gCpEK8IUZsLaY98B";
     //this.getTotalVenta();
     this.getMonthlyCost();
     //this.products = this.db.getListCollection()
