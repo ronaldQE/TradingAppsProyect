@@ -16,6 +16,8 @@ export class InsumoComponent implements OnInit {
   @Input() idProduct:string;
 
   public insumoArray:any[]=[]
+  public productosArray: any[] = []
+
 
 
   constructor(
@@ -48,6 +50,7 @@ export class InsumoComponent implements OnInit {
   deleteInsumo(){
     this.db.deleteCollection(this.idEstim,`productos/${this.idProduct}/insumos/${this.idInsumo}`)
     this.getInsumoDataList()
+    this.getProductDataList()
   }
 
   getInsumoDataList(){
@@ -61,6 +64,34 @@ export class InsumoComponent implements OnInit {
       }
       const dataTotal={totalCosto:totalCostoCal}
       this.db.updateDataCollection(dataTotal,this.idEstim,`productos/${this.idProduct}`,'totalesInsumo')
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
+  }
+
+  getProductDataList() {
+    this.db.getDataCollectionList(this.idEstim, `/productos`).subscribe((data) => {
+      //console.log("Estimacion: ", data)
+      this.productosArray = data
+      let totalCostoCal = 0
+      let totalVentaCal = 0
+      console.log("Estimacion: ", this.productosArray)
+      for (let i = 0; i < this.productosArray.length; i++) {
+        let numfrecuencia: number = this.productosArray[i].frecuenciaNum
+        totalCostoCal = totalCostoCal + (this.productosArray[i].totalesInsumo.totalCosto / numfrecuencia);
+        totalVentaCal = totalVentaCal + (this.productosArray[i].totalesInsumo.totalVenta / numfrecuencia);
+      }
+      const dataTotal = {
+        totalCostos: totalCostoCal,
+        totalVentas: totalVentaCal,
+        mub: ((totalVentaCal - totalCostoCal) / totalVentaCal)
+      }
+      this.db.updateDataCollection(dataTotal, this.idEstim, "", 'productosCalMUB');
+      localStorage.setItem('mub',dataTotal.mub.toString());
+
 
     },
       (error: any) => {

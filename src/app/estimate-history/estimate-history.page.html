@@ -9,12 +9,13 @@
 </ion-header>
 
 <ion-content>
-<div *ngFor="let estimacion of estimacionArray; let i = index"><div>{{setValueEstimacion(i,estimacion.resultado.van, estimacion.resultado.tir, estimacion.id)}}</div>
+<div *ngFor="let estimacion of estimacionArray; let i = index"><div>{{setValueEstimacion(i,estimacion.resultado.van, estimacion.resultado.tir, estimacion.id, estimacion.productosCalMUB.mub)}}</div>
   <app-calculated-estimate
   [title]="estimacionTitle"
   [van]="estimacionVan"
   [tir]="estimacionTir"
-  [idEstim]="estimacionId" ></app-calculated-estimate>
+  [idEstim]="estimacionId"
+  [mub]="mub" ><div></div></app-calculated-estimate>
 
 </div>
 </ion-content>

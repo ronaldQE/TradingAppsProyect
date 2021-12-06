@@ -12,6 +12,7 @@ export class CalculatedEstimateComponent implements OnInit {
   @Input() van:number;
   @Input() tir:string;
   @Input() idEstim:string;
+  @Input() mub:string;
 
   constructor(
     private router: Router,
@@ -24,6 +25,7 @@ export class CalculatedEstimateComponent implements OnInit {
     this.router.navigate([path,this.idEstim,this.title]);
     localStorage.setItem('idEstim',this.idEstim);
     localStorage.setItem('title',this.title);
+    localStorage.setItem('mub',this.mub)
 
   }
 

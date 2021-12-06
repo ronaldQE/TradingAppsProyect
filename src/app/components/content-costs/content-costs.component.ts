@@ -52,6 +52,7 @@ export class ContentCostsComponent implements OnInit {
   public totalCostosOperativosMensuales: number = 0;
   //products: Observable<any>;
   public products:Observable<any>
+  public productosArray: any[] = []
 
   constructor(
     private router: Router,
@@ -152,5 +153,33 @@ export class ContentCostsComponent implements OnInit {
   //nuevos Metodos
   deleteProduct(idProduct:string){
     this.db.deleteCollection(this.idEstim,`productos/${idProduct}`)
+    this.getProductDataList()
+  }
+  getProductDataList() {
+    this.db.getDataCollectionList(this.idEstim, `/productos`).subscribe((data) => {
+      //console.log("Estimacion: ", data)
+      this.productosArray = data
+      let totalCostoCal = 0
+      let totalVentaCal = 0
+      console.log("Estimacion: ", this.productosArray)
+      for (let i = 0; i < this.productosArray.length; i++) {
+        let numfrecuencia: number = this.productosArray[i].frecuenciaNum
+        totalCostoCal = totalCostoCal + (this.productosArray[i].totalesInsumo.totalCosto / numfrecuencia);
+        totalVentaCal = totalVentaCal + (this.productosArray[i].totalesInsumo.totalVenta / numfrecuencia);
+      }
+      const dataTotal = {
+        totalCostos: totalCostoCal,
+        totalVentas: totalVentaCal,
+        mub: ((totalVentaCal - totalCostoCal) / totalVentaCal)
+      }
+      this.db.updateDataCollection(dataTotal, this.idEstim, "", 'productosCalMUB');
+      localStorage.setItem('mub',dataTotal.mub.toString());
+
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+      }
+    )
   }
 }

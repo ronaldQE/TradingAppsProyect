@@ -12,18 +12,19 @@ import { Router } from '@angular/router';
 })
 export class EstimateHistoryPage implements OnInit {
 
-  public estimacionTitle:string="Estimación"
-  public estimacionVan:number=0
-  public estimacionTir:string="-"
-  public estimacionId:string=""
+  public estimacionTitle: string = "Estimación"
+  public estimacionVan: number = 0
+  public estimacionTir: string = "-"
+  public estimacionId: string = ""
 
-  public estimaciones:HistoryData[]=[];
-  public estimacionArray:any[]=[];
-  public dataHistory: HistoryData ={
-    id:0,
-    title:"",
+  public mub: string;
+  public estimaciones: HistoryData[] = [];
+  public estimacionArray: any[] = [];
+  public dataHistory: HistoryData = {
+    id: 0,
+    title: "",
     van: 0,
-    tir:""
+    tir: ""
   };
   constructor(
     private router: Router,
@@ -40,11 +41,12 @@ export class EstimateHistoryPage implements OnInit {
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
-  setValueEstimacion(numTitle:number, van:number, tir:string, id:string){
-    this.estimacionTitle= `Estimación-${numTitle+1}`
-    this.estimacionVan=van;
-    this.estimacionTir=tir
-    this.estimacionId=id
+  setValueEstimacion(numTitle: number, van: number, tir: string, id: string, mub:number) {
+    this.estimacionTitle = `Estimación-${numTitle + 1}`
+    this.estimacionVan = van;
+    this.estimacionTir = tir
+    this.estimacionId = id
+    this.mub = mub.toString();
 
   }
   //metodos carga de historial DE hisrotia
@@ -59,4 +61,6 @@ export class EstimateHistoryPage implements OnInit {
       }
     )
   }
+
+
 }
