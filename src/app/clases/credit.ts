@@ -24,7 +24,7 @@ class Cuota {
       cuota = this.calCuotaVariado(monto / plazo, saldo, (tasaInteres / 12) / 100) + (saldo * (poliza / 1000))
       saldo = this.calSaldoVariado(saldo, monto / plazo)
       //showSaldo = Math.round(saldo)
-      showCuota = Math.round(cuota)
+      showCuota = cuota
       this.cuotasV[i] = showCuota
     }
 
@@ -44,7 +44,7 @@ class Cuota {
     let pago: number
     pago = this.calPagoFijo(monto,(tasaInteres / 12) / 100, plazo);
     for (let i = 0; i < plazo; i++) {
-      showCuota = Math.round(pago + (saldo * (poliza / 1000)))
+      showCuota = pago + (saldo * (poliza / 1000))
       saldo = this.calSaldoFijo(saldo, (tasaInteres / 12) / 100, pago)
       this.cuotasF[i] = showCuota
     }

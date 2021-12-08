@@ -75,6 +75,7 @@ export class ContentFlowComponent implements OnInit {
   public cuotas = [];
 
   public tirCal = 0;
+  public tirCalR =0;
   public costoFijoT = 0;
 
   constructor(
@@ -264,7 +265,7 @@ export class ContentFlowComponent implements OnInit {
 
           //calcular TIR
           this.testTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
-          this.outCome.tir = this.tirCal.toFixed(2)
+          this.outCome.tir = this.tirCalR.toFixed(2)
           //carga de datos Reusltado
           this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
 
@@ -306,7 +307,7 @@ export class ContentFlowComponent implements OnInit {
     this.flujoAnual.utilidadBruta = this.calUtilidadBrutaTotal(totalIngreso, totalCostoProduccion);
     this.flujoAnual.costosFijo = costoFijoT;
     this.flujoAnual.utilidadNeta = this.calUtilidadNetaTotal(this.flujoAnual.utilidadBruta, this.flujoAnual.costosFijo);
-    this.flujoAnual.cuota = totalCuota;
+    this.flujoAnual.cuota = Math.round(totalCuota);
     this.flujoAnual.flujoAcumulado = this.calFlujoAcumuladoTotal(this.flujoAnual.saldoInicial, this.flujoAnual.utilidadNeta, totalCuota);
 
   }
@@ -328,8 +329,8 @@ export class ContentFlowComponent implements OnInit {
 
     let van1 = this.calVanForFCctte(montoFinanciar, flujoAcumulado, k1, plazo);
     let van2 = this.calVanForFCctte(montoFinanciar, flujoAcumulado, k2, plazo);
-    //console.log("----------------------------------------------");
-    //console.log("VAN1: " + van1 + " VAN2: " + van2)
+    console.log("----------------------------------------------");
+    console.log("VAN1: " + van1 + " VAN2: " + van2)
 
     console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
     this.tirCal = (this.proximoAcero(k1, k2, van1, van2));
@@ -345,17 +346,17 @@ export class ContentFlowComponent implements OnInit {
       let tir = this.interpolar(k1, k2, van1, van2)
       let vanNew = this.calVanForFCctte(montoFinanciar, flujoAcumulado, tir, plazo);
 
-      //console.log("nuevo TIR:" + tir + " nuevo VAN: " + vanNew)
-
+      console.log("nuevo TIR:" + tir + " nuevo VAN: " + vanNew)
+      this.tirCalR=tir //Obtecion de TIR
 
       if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew == 0) {
 
         return tir;
       } else {
-        //console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
+        console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
         if (this.proximoAcero(k1, k2, van1, van2) === k1) {
 
-          // console.log("Nuevo TIR posi:" +this.nuevoTir(k2, tir, van2, vanNew) )
+          //console.log("Nuevo TIR posi:" +this.nuevoTir(k2, tir, van2, vanNew) )
           this.testTir(k1 - 1, this.nuevoTir(k2, tir, van2, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
         } else {
           this.testTir(k1 - 1, this.nuevoTir(k1, tir, van1, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
@@ -383,8 +384,8 @@ export class ContentFlowComponent implements OnInit {
     if (van2 < 0) {
       van2Compare = van2 * (-1)
     }
-    //console.log("n1: " + van1Compare)
-    //console.log("n2: " + van2Compare)
+    console.log("n1: " + van1Compare)
+    console.log("n2: " + van2Compare)
 
     if (van1Compare < van2Compare) {
       return k1
