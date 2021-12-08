@@ -17,7 +17,7 @@ export class MonthlyFlowComponent implements OnInit {
   public cuotas = [];
   public costoVenta = [];
   public venta = [];
-  public idEstim:string =""
+  public idEstim:string
 
   constructor(public db: serviceDataBase) { }
 
@@ -110,14 +110,16 @@ export class MonthlyFlowComponent implements OnInit {
     this.currentMonthlyFlow.saldoInicial = this.previousMonthFlow.flujoAcumulado;
     this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/comportamientoVentas`).subscribe((data)=>{
       this.currentMonthlyFlow.ingresos = data.enero.venta;
-      this.currentMonthlyFlow.costoProduccion = data.enero.costoVenta;
-      this.currentMonthlyFlow.utilidadBruta = this.currentMonthlyFlow.ingresos-this.currentMonthlyFlow.costoProduccion;
+      this.currentMonthlyFlow.costoProduccion = Math.round(data.enero.costoVenta);
+      this.currentMonthlyFlow.utilidadBruta = Math.round(this.currentMonthlyFlow.ingresos-data.enero.costoVenta)//this.currentMonthlyFlow.costoProduccion;
+      let utilBruta=this.currentMonthlyFlow.ingresos-data.enero.costoVenta
 
     this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/costos-operativos`).subscribe( (data)=>{
       this.currentMonthlyFlow.costosFijos = data.totalCostosOperativos == undefined?0:data.totalCostosOperativos;
-      this.currentMonthlyFlow.utilidadNeta = this.currentMonthlyFlow.utilidadBruta-this.currentMonthlyFlow.costosFijos;
+      this.currentMonthlyFlow.utilidadNeta = Math.round(utilBruta-this.currentMonthlyFlow.costosFijos);
+      let utilNeta = utilBruta-this.currentMonthlyFlow.costosFijos;
       this.currentMonthlyFlow.cuota = this.cuotas[0];
-      this.currentMonthlyFlow.flujoAcumulado = this.currentMonthlyFlow.utilidadNeta+this.currentMonthlyFlow.saldoInicial-this.currentMonthlyFlow.cuota;
+      this.currentMonthlyFlow.flujoAcumulado = Math.round(utilNeta+this.currentMonthlyFlow.saldoInicial-this.currentMonthlyFlow.cuota);
     });})
   }
 
@@ -187,29 +189,29 @@ export class MonthlyFlowComponent implements OnInit {
   }
   calculateCostOfSale(){
     this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/comportamientoVentas`).subscribe((data)=>{
-      this.costoVenta[0]=data.enero.costoVenta;
+      this.costoVenta[0]= Math.round(data.enero.costoVenta);
       this.venta[0]=data.enero.venta;
-      this.costoVenta[1]=data.febrero.costoVenta;
+      this.costoVenta[1]= Math.round(data.febrero.costoVenta);
       this.venta[1]=data.febrero.venta;
-      this.costoVenta[2]=data.marzo.costoVenta;
+      this.costoVenta[2]= Math.round(data.marzo.costoVenta);
       this.venta[2]=data.marzo.venta;
-      this.costoVenta[3]=data.abril.costoVenta;
+      this.costoVenta[3]= Math.round(data.abril.costoVenta);
       this.venta[3]=data.abril.venta;
-      this.costoVenta[4]=data.mayo.costoVenta;
+      this.costoVenta[4]= Math.round(data.mayo.costoVenta);
       this.venta[4]=data.mayo.venta;
-      this.costoVenta[5]=data.junio.costoVenta;
+      this.costoVenta[5]= Math.round(data.junio.costoVenta);
       this.venta[5]=data.junio.venta;
-      this.costoVenta[6]=data.julio.costoVenta;
+      this.costoVenta[6]= Math.round(data.julio.costoVenta);
       this.venta[6]=data.julio.venta;
-      this.costoVenta[7]=data.agosto.costoVenta;
+      this.costoVenta[7]= Math.round(data.agosto.costoVenta);
       this.venta[7]=data.agosto.venta;
-      this.costoVenta[8]=data.septiembre.costoVenta;
+      this.costoVenta[8]= Math.round(data.septiembre.costoVenta);
       this.venta[8]=data.septiembre.venta;
-      this.costoVenta[9]=data.octubre.costoVenta;
+      this.costoVenta[9]= Math.round(data.octubre.costoVenta);
       this.venta[9]=data.octubre.venta;
-      this.costoVenta[10]=data.noviembre.costoVenta;
+      this.costoVenta[10]= Math.round(data.noviembre.costoVenta);
       this.venta[10]=data.noviembre.venta;
-      this.costoVenta[11]=data.diciembre.costoVenta;
+      this.costoVenta[11]= Math.round(data.diciembre.costoVenta);
       this.venta[11]=data.diciembre.venta;
     })
 

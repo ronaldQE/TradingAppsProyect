@@ -102,6 +102,7 @@ export interface SaleMonth{
     ventaBaja: number,
 }
 export interface ComportamientoVentas{
+    rango:string,
     venta: number,
     costoVenta: number,
 }

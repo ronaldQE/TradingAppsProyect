@@ -19,10 +19,11 @@ export class ContentCostsComponent implements OnInit {
   totalSumaVenta = 0;
   totalSumaCostos = 0;
 
-  public comportamientoVentas: ComportamientoVentas = {
-    venta: 0,
-    costoVenta: 0,
-  }
+  // public comportamientoVentas: ComportamientoVentas = {
+  //   rango:"",
+  //   venta: 0,
+  //   costoVenta: 0,
+  // }
   public comportamientoVentasTotales: ComportamientoVentasTotales = {
     totalVenta: 0,
     totalCostoVenta: 0,
