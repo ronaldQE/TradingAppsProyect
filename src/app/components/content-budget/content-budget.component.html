@@ -1,8 +1,12 @@
 <div>
-  <!-- La lista de ejemplo -->
-  <ion-list>
+  <div class="carga" *ngIf="showSpinner">
+    <ion-progress-bar color="primary" type="indeterminate"></ion-progress-bar>
+    <br>
+    <ion-label slot="none">Cargando...</ion-label>
+  </div>
+  <ion-list *ngIf="!showSpinner">
     <!-- PRESUSPIUESTO (click)="navigateTo('budget')"-->
-    <ion-item color="primary" [routerLink]="['/budget']"  lines="none" detail="true">
+    <ion-item color="primary" [routerLink]="['/budget']" lines="none" detail="true">
       <ion-title>Presupuesto</ion-title>
     </ion-item>
 
@@ -87,4 +91,3 @@
 
   </ion-list>
 </div>
-

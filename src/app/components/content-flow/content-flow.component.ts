@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ToastController} from '@ionic/angular';
 import { ComportamientoVentas, ComportamientoVentasTotales, DataCredit, FlujoAnual, MonthlyCostFull, OutCome } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 
@@ -21,6 +21,7 @@ export class ContentFlowComponent implements OnInit {
 
   @Input() idEstim:string;
 
+  public showSpinner:boolean
 
   public flujoAnual: FlujoAnual = {
     saldoInicial: 0,
@@ -95,8 +96,9 @@ export class ContentFlowComponent implements OnInit {
     this.idEstim = localStorage.getItem('idEstim')
 
     //this.getTotalSuma()
-    this.getFlujoAnual("2021");
+    this.showSpinner=true;
     this.getDataCredit()
+    this.getFlujoAnual("2021");
     //this.getOutCome();
   }
   navigateTo(path: String) {
@@ -108,7 +110,7 @@ export class ContentFlowComponent implements OnInit {
     this.getFlujoAnual(this.valueSelected);
   }
 
-  getFlujoAnual(gestion: string) {
+  async getFlujoAnual(gestion: string) {
     this.db.getCollection<FlujoAnual>(`/Estimaciones/${this.idEstim}/flujo-anual/${gestion}`).subscribe((data) => {
       if (data == null) {
         if (gestion !== "2021") {
@@ -155,6 +157,7 @@ export class ContentFlowComponent implements OnInit {
       }
     )
   }
+
 
   async presentToast(mensaje: string) {
     const toast = await this.toast.create({
@@ -264,7 +267,7 @@ export class ContentFlowComponent implements OnInit {
 
 
           //calcular TIR
-          this.testTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
+          this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
           this.outCome.tir = this.tirCalR.toFixed(2)
           //carga de datos Reusltado
           this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
@@ -322,7 +325,7 @@ export class ContentFlowComponent implements OnInit {
   }
 
   //METODOS PARA EL CALCULLO DE TIR
-  testTir(k1: number, k2: number, montoFinanciar: number, flujoAcumulado: number, plazo: number): number {
+  generateTir(k1: number, k2: number, montoFinanciar: number, flujoAcumulado: number, plazo: number): number {
 
     let van1Posi = false;
     let van2Posi = false;
@@ -350,16 +353,16 @@ export class ContentFlowComponent implements OnInit {
       this.tirCalR=tir //Obtecion de TIR
 
       if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew == 0) {
-
+        this.showSpinner= false;
         return tir;
       } else {
         console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
         if (this.proximoAcero(k1, k2, van1, van2) === k1) {
 
           //console.log("Nuevo TIR posi:" +this.nuevoTir(k2, tir, van2, vanNew) )
-          this.testTir(k1 - 1, this.nuevoTir(k2, tir, van2, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
+          this.generateTir(k1 - 1, this.nuevoTir(k2, tir, van2, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
         } else {
-          this.testTir(k1 - 1, this.nuevoTir(k1, tir, van1, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
+          this.generateTir(k1 - 1, this.nuevoTir(k1, tir, van1, vanNew, montoFinanciar, flujoAcumulado, plazo), montoFinanciar, flujoAcumulado, plazo);
         }
         //this.testTir(k1 - 1, k2 + 1);
 
@@ -415,8 +418,8 @@ export class ContentFlowComponent implements OnInit {
 
   }
 
-  testTirCal(montoFinanciar: number, flujoAcumulado: number, plazo: number) {
-    this.testTir(500, 1, montoFinanciar, flujoAcumulado, plazo);
+  generateTirCal(montoFinanciar: number, flujoAcumulado: number, plazo: number) {
+    this.generateTir(500, 1, montoFinanciar, flujoAcumulado, plazo);
    //console.log("Este es el tir: " + this.tirCal.toFixed(2));
   }
 
