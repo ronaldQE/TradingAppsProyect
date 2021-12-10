@@ -43,7 +43,8 @@
     <div class="contentInsumo">
       <ion-item>
         <ion-title>Lista de Insumos</ion-title>
-        <ion-button (click)="openModal()" color="secondary" size="default" expand="block"><ion-icon name="add-outline"></ion-icon></ion-button>
+        <ion-button *ngIf="btnShow" (click)="openModal()" color="secondary" size="default" expand="block"><ion-icon name="add-outline"></ion-icon></ion-button>
+        <ion-button  *ngIf="!btnShow" color="secondary" size="default" expand="block" disabled><ion-icon name="add-outline"></ion-icon></ion-button>
       </ion-item>
 
       <div *ngFor="let insumo of insumos|async|collectionToArray">

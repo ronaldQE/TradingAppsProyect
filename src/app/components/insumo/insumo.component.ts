@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { ModalEditPage } from 'src/app/pages/modal-edit/modal-edit.page';
 import { serviceDataBase } from 'src/app/services/services-database';
 
@@ -23,8 +23,8 @@ export class InsumoComponent implements OnInit {
   constructor(
     private router: Router,
     public modalControllerEdit: ModalController,
-    public db: serviceDataBase
-
+    public db: serviceDataBase,
+    public alertController: AlertController
 
   ) { }
 
@@ -51,6 +51,32 @@ export class InsumoComponent implements OnInit {
     this.db.deleteCollection(this.idEstim,`productos/${this.idProduct}/insumos/${this.idInsumo}`)
     this.getInsumoDataList()
     this.getProductDataList()
+  }
+
+  async presentAlertConfirm(nameinsumo:string) {
+    console.log("entra al Alert")
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmar Elimiación',
+      message: `El Insumo ${nameinsumo} será Eliminado` ,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          },
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.deleteInsumo()
+          },
+        },
+      ],
+    });
+    await alert.present();
+
   }
 
   getInsumoDataList(){

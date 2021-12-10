@@ -10,7 +10,10 @@ import { Budget, BudgetSummary, InvestmentCapital, OperatingCapital } from '../.
   styleUrls: ['./content-budget.component.scss'],
 })
 export class ContentBudgetComponent implements OnInit {
-  @Input() idEstim:string;
+  @Input() idEstim: string;
+
+  public showSpinner: boolean
+
   public budget: Budget = {
     efectivo: 0,
     banco: 0,
@@ -50,6 +53,7 @@ export class ContentBudgetComponent implements OnInit {
 
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
+    this.showSpinner = true;
     this.getBudget();
     this.getOperatingCapital();
     this.getInvestmentCapital();
@@ -132,19 +136,19 @@ export class ContentBudgetComponent implements OnInit {
           this.investmentCapital.equipoComputo = 0;
         }
         this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data) => {
-          this.budgetSummary=data;
-          let gastosOperativos = this.operatingCapital.alquiler+this.operatingCapital.manoObra+this.operatingCapital.serviciosBasicos
-          let maquinariaEquipos = this.investmentCapital.equipoComputo+this.investmentCapital.equipamientoOficina
-          let planInversionCal=gastosOperativos+this.operatingCapital.promociones+maquinariaEquipos+this.investmentCapital.consultoria
-          let totalProyectoCal=planInversionCal+this.budgetSummary.aportePropio-this.budgetSummary.totalEfectivo
-          let montoFinanciarCal=planInversionCal-this.budgetSummary.totalEfectivo
+          this.budgetSummary = data;
+          let gastosOperativos = this.operatingCapital.alquiler + this.operatingCapital.manoObra + this.operatingCapital.serviciosBasicos
+          let maquinariaEquipos = this.investmentCapital.equipoComputo + this.investmentCapital.equipamientoOficina
+          let planInversionCal = gastosOperativos + this.operatingCapital.promociones + maquinariaEquipos + this.investmentCapital.consultoria
+          let totalProyectoCal = planInversionCal + this.budgetSummary.aportePropio - this.budgetSummary.totalEfectivo
+          let montoFinanciarCal = planInversionCal - this.budgetSummary.totalEfectivo
           const dataUp = {
             planInversion: planInversionCal,
             totalProyecto: totalProyectoCal,
             montoFinanciar: montoFinanciarCal,
           }
           this.dataUpdate(dataUp);
-          this.dataUpdateMontoCredit({montoFinanciar: montoFinanciarCal})
+          this.dataUpdateMontoCredit({ montoFinanciar: montoFinanciarCal })
         },
           (error: any) => {
             console.log(`Error: ${error}`);
@@ -198,10 +202,12 @@ export class ContentBudgetComponent implements OnInit {
   getBudgetSummary() {
     this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data) => {
       this.budgetSummary = data;
-
+      this.showSpinner = false;
     },
       (error: any) => {
         console.log(`Error: ${error}`);
+        this.showSpinner = false;
+
 
       }
     )

@@ -3,8 +3,8 @@
     <ion-label position="floating">{{nombreInsumo}}</ion-label>
     <ion-buttons slot="end">
 
-      <ion-button  (click)="openModal()" color="medium" size="default" expand="block"><ion-icon name="create-outline"></ion-icon></ion-button>
-      <ion-button  (click)="deleteInsumo()" color="danger" size="default" expand="block"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
+      <ion-button  (click)="openModal()" color="primary" size="default" expand="block"><ion-icon name="create-outline"></ion-icon></ion-button>
+      <ion-button  (click)="presentAlertConfirm(nombreInsumo)" color="danger" size="default" expand="block"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
     </ion-buttons>
 
     <ion-input></ion-input>

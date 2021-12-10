@@ -18,9 +18,10 @@ export class SaleMonthPage implements OnInit {
 
   totalVentas = 0;
   totalCostos = 0;
-  porsentajeCosto:number = 1-parseFloat( localStorage.getItem('mub'));
+  porsentajeCosto: number = 1 - parseFloat(localStorage.getItem('mub'));
 
   public comportamientoVentas: ComportamientoVentas = {
+    rango: "",
     venta: 0,
     costoVenta: 0,
   }
@@ -33,8 +34,8 @@ export class SaleMonthPage implements OnInit {
     ventaMedia: 0,
     ventaBaja: 0,
   }
-  public idEstim:string
-  meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+  public idEstim: string
+  public meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 
   users: User[] = [
     {
@@ -62,7 +63,19 @@ export class SaleMonthPage implements OnInit {
 
     return o1.id === o2.id;
   }
-
+  public selectEne: string = ""
+  public selectFeb: string = ""
+  public selectMar: string = ""
+  public selectAbr: string = ""
+  public selectMay: string = ""
+  public selectJun: string = ""
+  public selectJul: string = ""
+  public selectAgo: string = ""
+  public selectSep: string = ""
+  public selectOct: string = ""
+  public selectNov: string = ""
+  public selectDic: string = ""
+  public selectedRango: string = ""
 
   constructor(private router: Router,
     public db: serviceDataBase) { }
@@ -71,203 +84,221 @@ export class SaleMonthPage implements OnInit {
 
     this.idEstim = localStorage.getItem('idEstim')
     this.getRangoVentas();
+    this.getValueRangoMes();
     //this.updataSaleMonth();
-    this.getTotalSuma();
+    //this.getTotalSuma();
     //this.getTotalVentaCosto();
 
   }
 
   selectEneroRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('enero', this.comportamientoVentas);
 
-    //this.getTotalSuma();
   }
 
 
   selectFebreroRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
+
     this.updataComportamientoVentas('febrero', this.comportamientoVentas);
   }
 
   selectMarzoRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
+
     this.updataComportamientoVentas('marzo', this.comportamientoVentas);
   }
 
   selectAbrilRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('abril', this.comportamientoVentas);
   }
 
   selectMayoRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('mayo', this.comportamientoVentas);
   }
 
   selectJunioRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('junio', this.comportamientoVentas);
   }
 
   selectJulioRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('julio', this.comportamientoVentas);
   }
 
   selectAgostoRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('agosto', this.comportamientoVentas);
   }
 
   selectSeptiembreRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('septiembre', this.comportamientoVentas);
   }
 
   selectOctubreRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
+
     this.updataComportamientoVentas('octubre', this.comportamientoVentas);
   }
 
   selectNoviembreRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('noviembre', this.comportamientoVentas);
   }
 
   selectDiciembreRango(event: CustomEvent | any) {
-    if ('Alta' == event.detail.value.rank) {
+    this.comportamientoVentas.rango = event.detail.value
+    if ('Alta' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaAlta;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaAlta * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaAlta * this.porsentajeCosto;
     }
-    if ('Media' == event.detail.value.rank) {
+    if ('Media' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaMedia;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaMedia * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaMedia * this.porsentajeCosto;
     }
-    if ('Baja' == event.detail.value.rank) {
+    if ('Baja' == this.comportamientoVentas.rango) {
       this.comportamientoVentas.venta = this.saleMonth.ventaBaja;
-      this.comportamientoVentas.costoVenta = Math.round(this.saleMonth.ventaBaja * this.porsentajeCosto);
+      this.comportamientoVentas.costoVenta = this.saleMonth.ventaBaja * this.porsentajeCosto;
     }
     this.updataComportamientoVentas('diciembre', this.comportamientoVentas);
   }
@@ -292,8 +323,8 @@ export class SaleMonthPage implements OnInit {
   }
 
   getTotalSuma() {
-    this.totalCostos=0;
-    this.totalVentas=0;
+    this.totalCostos = 0;
+    this.totalVentas = 0;
 
     for (let i = 0; i < this.meses.length; i++) {
       this.db.getCollection<ComportamientoVentas>(`/Estimaciones/${this.idEstim}/comportamientoVentas/` + this.meses[i]).subscribe((data) => {
@@ -303,12 +334,12 @@ export class SaleMonthPage implements OnInit {
         }
         if (i == 11) {
           let dataTotal = {
-            totalVenta: this.totalVentas,
-            totalCostoVenta: this.totalCostos,
+            totalVenta: Math.round(this.totalVentas),
+            totalCostoVenta: Math.round(this.totalCostos)
           }
-          this.db.updateData(dataTotal, `/Estimaciones/${this.idEstim}/comportamientoVentas`, 'totales');          console.log("----------------------------------------")
-          console.log(this.totalVentas)
-          console.log(this.totalCostos)
+          this.db.updateData(dataTotal, `/Estimaciones/${this.idEstim}/comportamientoVentas`, 'totales');
+          // console.log(this.totalVentas)
+          // console.log(this.totalCostos)
         }
       },
         (error: any) => {
@@ -325,11 +356,40 @@ export class SaleMonthPage implements OnInit {
   save() {
     this.updataSaleMonth();
     this.navigateTo('business-plan')
-
+    this.getTotalSuma();
   }
 
-  send() {
-    const data = this.saleMonth;
-    this.db.actualizarDatos<SaleMonth>(data, `/Estimaciones/${this.idEstim}`, 'valoresMes');
+  getValueRangoMes() {
+    for (let i = 0; i < this.meses.length; i++) {
+      this.db.getCollection<ComportamientoVentas>(`/Estimaciones/${this.idEstim}/comportamientoVentas/${this.meses[i]}`).subscribe((data) => {
+        //console.log("mes: "+this.meses[i])
+        if (data !== null) {
+
+          this.selectedRango = data.rango
+
+          this.setValueMeses(this.meses[i], this.selectedRango)
+        }
+      },
+        (error: any) => {
+          console.log(`Error: ${error}`);
+
+        }
+      )
+    }
   }
+  setValueMeses(mes: string, rango: string) {
+    if (mes == 'enero') { this.selectEne = rango }
+    if (mes == 'febrero') { this.selectFeb = rango }
+    if (mes == 'marzo') { this.selectMar = rango }
+    if (mes == 'abril') { this.selectAbr = rango }
+    if (mes == 'mayo') { this.selectMay = rango }
+    if (mes == 'junio') { this.selectJun = rango }
+    if (mes == 'julio') { this.selectJul = rango }
+    if (mes == 'agosto') { this.selectAgo = rango }
+    if (mes == 'septiembre') { this.selectSep = rango }
+    if (mes == 'octubre') { this.selectOct = rango }
+    if (mes == 'noviembre') { this.selectNov = rango }
+    if (mes == 'diciembre') { this.selectDic = rango }
+  }
+
 }

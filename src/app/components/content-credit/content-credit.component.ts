@@ -11,21 +11,21 @@ import { Budget, BudgetSummary, DataCredit, InvestmentCapital, OperatingCapital 
 })
 export class ContentCreditComponent implements OnInit {
 
-  @Input() idEstim:string;
-
-  public budgetSummary: BudgetSummary={
+  @Input() idEstim: string;
+  public showSpinner: boolean
+  public budgetSummary: BudgetSummary = {
     aportePropio: 0,
     planInversion: 0,
     montoFinanciar: 0,
     totalProyecto: 0,
-    totalEfectivo:0
+    totalEfectivo: 0
 
   }
-  public dataCredit: DataCredit={
-    montoFinanciar:0,
-    tasaInteres:0,
-    plazo:0,
-    poliza:0,
+  public dataCredit: DataCredit = {
+    montoFinanciar: 0,
+    tasaInteres: 0,
+    plazo: 0,
+    poliza: 0,
     tipoCuota: "",
   }
   constructor(
@@ -35,6 +35,7 @@ export class ContentCreditComponent implements OnInit {
 
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
+    this.showSpinner = true
     this.getBudgetSummary();
     this.getDataCredit();
   }
@@ -42,26 +43,28 @@ export class ContentCreditComponent implements OnInit {
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
-  getBudgetSummary(){
-    this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe( (data)=>{
+  getBudgetSummary() {
+    this.db.getCollection<BudgetSummary>(`/Estimaciones/${this.idEstim}/resumen-presupuesto`).subscribe((data) => {
       this.budgetSummary = data;
 
     },
-    (error:any) => {
-      console.log(`Error: ${error}`);
+      (error: any) => {
+        console.log(`Error: ${error}`);
 
-    }
+      }
     )
   }
-  getDataCredit(){
-    this.db.getCollection<DataCredit>(`/Estimaciones/${this.idEstim}/dato-credito`).subscribe( (data)=>{
+  getDataCredit() {
+    this.db.getCollection<DataCredit>(`/Estimaciones/${this.idEstim}/dato-credito`).subscribe((data) => {
       this.dataCredit = data;
+      this.showSpinner = false;
 
     },
-    (error:any) => {
-      console.log(`Error: ${error}`);
+      (error: any) => {
+        console.log(`Error: ${error}`);
+        this.showSpinner = false;
 
-    }
+      }
     )
   }
 }

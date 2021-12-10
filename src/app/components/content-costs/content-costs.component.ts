@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { serviceDataBase } from '../../services/services-database';
 import { MonthlyCost, ProductMonth, } from 'src/app/models/interfaces';
 import { Observable } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-content-costs',
@@ -13,16 +14,18 @@ import { Observable } from 'rxjs';
 })
 export class ContentCostsComponent implements OnInit {
 
-  @Input() idEstim:string;
+  @Input() idEstim: string;
+  public showSpinner: boolean
 
 
   totalSumaVenta = 0;
   totalSumaCostos = 0;
 
-  public comportamientoVentas: ComportamientoVentas = {
-    venta: 0,
-    costoVenta: 0,
-  }
+  // public comportamientoVentas: ComportamientoVentas = {
+  //   rango:"",
+  //   venta: 0,
+  //   costoVenta: 0,
+  // }
   public comportamientoVentasTotales: ComportamientoVentasTotales = {
     totalVenta: 0,
     totalCostoVenta: 0,
@@ -51,36 +54,41 @@ export class ContentCostsComponent implements OnInit {
   //public idEstim: string;
   public totalCostosOperativosMensuales: number = 0;
   //products: Observable<any>;
-  public products:Observable<any>
+  public products: Observable<any>
   public productosArray: any[] = []
 
   constructor(
     private router: Router,
-    public db: serviceDataBase
+    public db: serviceDataBase,
+    public alertController: AlertController
+
   ) {
   }
 
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
+    this.showSpinner = true
     this.getMonthlyCost();
     //this.products = this.db.getListCollection()
-     this.products = this.db.getProductList<ProductSer>(this.idEstim);
+    this.products = this.db.getProductList<ProductSer>(this.idEstim);
 
-     //console.log("El arregol...",this.products)
-      this.getComportamientoVentas();
+    //console.log("El arregol...",this.products)
+    this.getComportamientoVentas();
   }
 
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
-  navigateToParm(path: String, idEstim:string, idProduct:string) {
-    this.router.navigate([path,idEstim,idProduct]);
+  navigateToParm(path: String, idEstim: string, idProduct: string) {
+    this.router.navigate([path, idEstim, idProduct]);
   }
 
   getComportamientoVentas() {
     this.db.getCollection<ComportamientoVentasTotales>(`/Estimaciones/${this.idEstim}/comportamientoVentas/totales`).subscribe((data) => {
-      this.comportamientoVentasTotales.totalCostoVenta = data.totalCostoVenta;
+      this.comportamientoVentasTotales.totalCostoVenta = Math.round(data.totalCostoVenta);
       this.comportamientoVentasTotales.totalVenta = data.totalVenta;
+      this.showSpinner = false
+
     },
       (error: any) => {
         console.log(`Error: ${error}`);
@@ -151,8 +159,35 @@ export class ContentCostsComponent implements OnInit {
   }
 
   //nuevos Metodos
-  deleteProduct(idProduct:string){
-    this.db.deleteCollection(this.idEstim,`productos/${idProduct}`)
+  async presentAlertConfirm(idProduct: string, nameProduct: string) {
+    console.log("entra al Alert")
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmar Elimiación',
+      message: `El porducto ${nameProduct} será Eliminado`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          },
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.deleteProduct(idProduct)
+          },
+        },
+      ],
+    });
+    await alert.present();
+
+  }
+
+  async deleteProduct(idProduct: string) {
+    this.db.deleteCollection(this.idEstim, `productos/${idProduct}`)
+
     this.getProductDataList()
   }
   getProductDataList() {
@@ -173,7 +208,7 @@ export class ContentCostsComponent implements OnInit {
         mub: ((totalVentaCal - totalCostoCal) / totalVentaCal)
       }
       this.db.updateDataCollection(dataTotal, this.idEstim, "", 'productosCalMUB');
-      localStorage.setItem('mub',dataTotal.mub.toString());
+      localStorage.setItem('mub', dataTotal.mub.toString());
 
 
     },

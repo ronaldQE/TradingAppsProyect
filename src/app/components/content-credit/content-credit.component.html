@@ -1,6 +1,10 @@
 <div>
-  <!-- La lista de ejemplo -->
-  <ion-list>
+  <div class="carga" *ngIf="showSpinner">
+    <ion-progress-bar color="primary" type="indeterminate"></ion-progress-bar>
+    <br>
+    <ion-label slot="none">Cargando...</ion-label>
+  </div>
+  <ion-list *ngIf="!showSpinner">
     <!-- CREDITOS -->
     <ion-item color="primary" (click)="navigateTo('credit')" lines="none" detail="true">
       <ion-title>Datos del Credito</ion-title>

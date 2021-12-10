@@ -31,12 +31,7 @@ export class BusinessPlanPage implements OnInit {
     promociones: 0,
     serviciosBasicos:0
   }
-  // public budgetSummary: BudgetSummary={
-  //   aportePropio: 0,
-  //   planInversion: 0,
-  //   montoFinanciar: 0,
-  //   totalProyecto: 0
-  // }
+
 
   public cOperativo:number=0;
   public cInversion:number=0;
