@@ -57,9 +57,6 @@ export class ContentFlowComponent implements OnInit {
     this.btncolorSi="light"
 
   }
-  segmentChanged(event: CustomEvent | any) {
-
-  }
 
 
 

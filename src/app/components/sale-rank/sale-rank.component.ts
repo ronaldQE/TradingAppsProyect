@@ -94,11 +94,11 @@ export class SaleRankComponent implements OnInit {
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
 
-    //this.getTotalSuma()
-    this.showSpinner=true;
-    this.getDataCredit()
-    this.getFlujoAnual("2021");
-    //this.getOutCome();
+    //-----------------------------
+    //this.showSpinner=true;
+    //this.getDataCredit()
+    //this.getFlujoAnual("2021");
+
   }
   navigateTo(path: String) {
     this.router.navigate([path]);

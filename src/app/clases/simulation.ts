@@ -1,43 +1,50 @@
 import { VentaSimulation } from "../models/interfaces"
 
 class Simulation {
-  public ventaMeses: VentaSimulation[]
+  public ventaMeses: VentaSimulation[] = []
   vMed: number
-  MUB: number
+  //MUB: number
   constructor() { }
 
   private setMedia(vMax: number, vMin: number) {
     this.vMed = (vMax + vMin) / 2
   }
-  public setMUB(mub: number) {
-    this.MUB = mub
-  }
+  // public setMUB(mub: number) {
+  //   this.MUB = mub
+  // }
 
   calVentaBaja(vMax: number, vMin: number, R: number) {
     this.setMedia(vMax, vMin);
-    return vMin + Math.pow(((vMax - vMin) * (this.vMed - vMin) * (R)), (1 / 2));
+    return vMin + Math.sqrt((vMax - vMin) * (this.vMed - vMin) * (R));
 
   }
 
   calVentaAlta(vMax: number, vMin: number, R: number) {
     this.setMedia(vMax, vMin);
-    return vMin - Math.pow(((vMax - vMin) * (this.vMed - vMin) * (R - 1)), (1 / 2));
+    return vMax - Math.sqrt((vMax - vMin) * (this.vMed - vMax) * (R - 1));
   }
 
   cargarVentasCostos(vMax: number, vMin: number, mub: number) {
 
-    let R: number
+    // console.log("llego MAx: " + vMax)
+    // console.log("llego Min: " + vMin)
+    // console.log("llego mub: " + mub)
+
+    let R: number = 0
     let ventaMes: number
     let costoMes: number
     let semilla: number = this.generateSemilla()
+
+    console.log("semilla: " + semilla)
 
     for (let i = 0; i < 12; i++) {
 
       //genera R
       R = this.generadorCongruenciaMixto(semilla);
-      if (R <= 1 / 2) {
+      console.log("R: " + R)
+      if (R <= (0.5)) {
         ventaMes = Math.round(this.calVentaBaja(vMax, vMin, R))
-        costoMes = Math.round(ventaMes * mub)
+        costoMes = Math.round(ventaMes * (1-mub))
         const venta: VentaSimulation = {
           venta: ventaMes,
           costoVenta: costoMes
@@ -46,7 +53,7 @@ class Simulation {
 
       } else {
         ventaMes = Math.round(this.calVentaAlta(vMax, vMin, R))
-        costoMes = Math.round(ventaMes * mub)
+        costoMes = Math.round(ventaMes * (1-mub))
         const venta: VentaSimulation = {
           venta: ventaMes,
           costoVenta: costoMes
