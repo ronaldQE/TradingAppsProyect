@@ -11,7 +11,9 @@ import { MonthlyFlowComponent } from './monthly-flow/monthly-flow.component';
 import { CollectionToArrayPipe } from '../common/collection-to-array.pipe';
 import { CalculatedEstimateComponent } from './calculated-estimate/calculated-estimate.component';
 import { InsumoComponent } from './insumo/insumo.component';
-import { ModalEditPage } from '../pages/modal-edit/modal-edit.page';
+//import { ModalEditPage } from '../pages/modal-edit/modal-edit.page';
+import { SaleRankComponent } from './sale-rank/sale-rank.component';
+import { SaleSimulationComponent } from './sale-simulation/sale-simulation.component';
 
 
 
@@ -26,6 +28,8 @@ import { ModalEditPage } from '../pages/modal-edit/modal-edit.page';
     MonthlyFlowComponent,
     CollectionToArrayPipe,
     CalculatedEstimateComponent,
+    SaleRankComponent,
+    SaleSimulationComponent
 
 
   ],
@@ -38,7 +42,9 @@ import { ModalEditPage } from '../pages/modal-edit/modal-edit.page';
     ContentFlowComponent,
     MonthlyFlowComponent,
     CalculatedEstimateComponent,
-    CollectionToArrayPipe
+    CollectionToArrayPipe,
+    SaleRankComponent,
+    SaleSimulationComponent
 
   ],
   imports: [
