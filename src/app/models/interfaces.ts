@@ -106,6 +106,10 @@ export interface ComportamientoVentas{
     venta: number,
     costoVenta: number,
 }
+export interface VentaSimulation{
+    venta: number,
+    costoVenta: number,
+}
 export interface ComportamientoVentasTotales{
     totalVenta: number,
     totalCostoVenta: number,
