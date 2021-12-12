@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController} from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { ComportamientoVentas, ComportamientoVentasTotales, DataCredit, FlujoAnual, MonthlyCostFull, OutCome } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 
@@ -18,10 +18,10 @@ interface Gestions {
 })
 export class SaleRankComponent implements OnInit {
 
-  @Input() idEstim:string;
+  @Input() idEstim: string;
 
-  public showSpinner:boolean
-
+  public showSpinner: boolean
+  public flujoAcumuladoVan: number;
   public flujoAnual: FlujoAnual = {
     saldoInicial: 0,
     ingresos: 0,
@@ -35,7 +35,9 @@ export class SaleRankComponent implements OnInit {
   public outCome: OutCome = {
     van: 0,
     tir: "",
-    conclusion: "No Factible"
+    conclusion: "",
+    generado:"rangos"
+
   }
   meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
   totalCostos = 0;
@@ -75,9 +77,9 @@ export class SaleRankComponent implements OnInit {
   public cuotas = [];
 
   public tirCal = 0;
-  public tirCalR =0;
+  public tirCalR = 0;
   public costoFijoT = 0;
-  public isFactible:boolean
+  public isFactible: boolean
 
   constructor(
     private router: Router,
@@ -88,7 +90,7 @@ export class SaleRankComponent implements OnInit {
 
   }
 
-  goToGraphics(){
+  goToGraphics() {
     this.navigateTo('annual-flow-graphs');
   }
 
@@ -96,7 +98,7 @@ export class SaleRankComponent implements OnInit {
     this.idEstim = localStorage.getItem('idEstim')
     this.isFactible = false
     //-----------------------------
-    this.showSpinner=true;
+    this.showSpinner = true;
     this.getDataCredit()
     this.getFlujoAnual("2021");
 
@@ -137,6 +139,7 @@ export class SaleRankComponent implements OnInit {
         this.flujoAnual.utilidadBruta = Math.round(data.utilidadBruta)
         this.flujoAnual.utilidadNeta = Math.round(data.utilidadNeta)
         this.flujoAnual.flujoAcumulado = Math.round(data.flujoAcumulado)
+        //this.flujoAcumuladoVan=data.flujoAcumulado
       }
 
 
@@ -270,10 +273,15 @@ export class SaleRankComponent implements OnInit {
             this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
 
             this.outCome.tir = this.tirCalR.toFixed(2)
-          }else{
+          } else {
             this.outCome.tir = "-"
+            this.outCome.conclusion = 'No es Factible'
+            this.showSpinner = false;
+
           }
 
+          //carga de datos Reusltado
+          this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
 
         } else {
           indexCuotas = indexCuotas + 12;
@@ -353,10 +361,10 @@ export class SaleRankComponent implements OnInit {
       let vanNew = this.calVanForFCctte(montoFinanciar, flujoAcumulado, tir, plazo);
 
       console.log("nuevo TIR:" + tir + " nuevo VAN: " + vanNew)
-      this.tirCalR=tir //Obtecion de TIR
+      this.tirCalR = tir //Obtecion de TIR
 
       if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew == 0) {
-        this.showSpinner= false;
+        this.showSpinner = false;
         return tir;
       } else {
         console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
@@ -423,7 +431,7 @@ export class SaleRankComponent implements OnInit {
 
   generateTirCal(montoFinanciar: number, flujoAcumulado: number, plazo: number) {
     this.generateTir(500, 1, montoFinanciar, flujoAcumulado, plazo);
-   //console.log("Este es el tir: " + this.tirCal.toFixed(2));
+    //console.log("Este es el tir: " + this.tirCal.toFixed(2));
   }
 
 }

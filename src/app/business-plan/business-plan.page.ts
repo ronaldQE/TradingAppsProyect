@@ -50,7 +50,7 @@ export class BusinessPlanPage implements OnInit {
 
     this.title = localStorage.getItem('title')//this.activatedRoute.snapshot.paramMap.get("idEstim");
     this.idEstim = this.activatedRoute.snapshot.paramMap.get("idEstim");//localStorage.getItem('idEstim')this.activatedRoute.snapshot.paramMap.get("idEstim");
-    console.log(this.idEstim)
+    //console.log(this.idEstim)
   }
   navigateTo(path: String) {
     this.router.navigate([path]);

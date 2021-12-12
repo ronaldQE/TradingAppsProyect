@@ -334,8 +334,8 @@ export class SaleMonthPage implements OnInit {
         }
         if (i == 11) {
           let dataTotal = {
-            totalVenta: Math.round(this.totalVentas),
-            totalCostoVenta: Math.round(this.totalCostos)
+            totalVenta: this.totalVentas,
+            totalCostoVenta: this.totalCostos
           }
           this.db.updateData(dataTotal, `/Estimaciones/${this.idEstim}/comportamientoVentas`, 'totales');
           // console.log(this.totalVentas)

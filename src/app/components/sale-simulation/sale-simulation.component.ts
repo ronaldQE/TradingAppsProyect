@@ -36,7 +36,8 @@ export class SaleSimulationComponent implements OnInit {
   public outCome: OutCome = {
     van: 0,
     tir: "",
-    conclusion: "No Factible"
+    conclusion: "",
+    generado:"simulacion"
   }
   meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
   totalCostos = 0;
@@ -97,9 +98,7 @@ export class SaleSimulationComponent implements OnInit {
 
   }
 
-  goToGraphics() {
-    this.navigateTo('annual-flow-graphs');
-  }
+
 
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
@@ -115,6 +114,9 @@ export class SaleSimulationComponent implements OnInit {
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+  goToGraphics() {
+    this.navigateTo('annual-flow-graphs');
   }
 
   segmentChanged(event: CustomEvent | any) {
@@ -168,10 +170,10 @@ export class SaleSimulationComponent implements OnInit {
       for (let i = 0; i < this.meses.length; i++) {
         const ventaMes = {
           venta: this.simulacionVenta.ventaMeses[i].venta,
-          ventaCosto: this.simulacionVenta.ventaMeses[i].costoVenta
+          costoVenta: this.simulacionVenta.ventaMeses[i].costoVenta
         }
         totalesV = totalesV + ventaMes.venta;
-        totalesC = totalesC + ventaMes.ventaCosto;
+        totalesC = totalesC + ventaMes.costoVenta;
 
         this.db.updateData(ventaMes, `/Estimaciones/${this.idEstim}/comportamientoVentasSimuladas`, this.meses[i]);
       }
@@ -314,11 +316,13 @@ export class SaleSimulationComponent implements OnInit {
             this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
 
             this.outCome.tir = this.tirCalR.toFixed(2)
+
           }else{
             this.outCome.tir = "-"
+            this.showSpinner = false;
+            this.outCome.conclusion = 'No es Factible'
+
           }
-
-
 
           //carga de datos Reusltado
           this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
@@ -389,7 +393,7 @@ export class SaleSimulationComponent implements OnInit {
     console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
     if (van2 == 0) {
       this.showSpinner = false;
-      this.tirCalR = this.proximoAcero(k1, k2, van1, van2) //Obtecion de TIR  OPSION2
+      this.tirCalR =  k2 //Obtecion de TIR  OPSION2
 
     }
     this.tirCal = (this.proximoAcero(k1, k2, van1, van2));
