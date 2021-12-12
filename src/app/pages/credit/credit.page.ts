@@ -49,11 +49,7 @@ export class CreditPage implements OnInit {
   totalVentas = 0;
   public idEstim:string
   public costoFijoT = 0;
-  public outCome: OutCome = {
-    van: 0,
-    tir: "",
-    conclusion: "No Factible"
-  }
+
   public tirCal = 0;
 
   constructor(

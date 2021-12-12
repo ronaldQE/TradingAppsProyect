@@ -36,7 +36,8 @@ export class SaleSimulationComponent implements OnInit {
   public outCome: OutCome = {
     van: 0,
     tir: "",
-    conclusion: "No Factible"
+    conclusion: "",
+    generado:"simulacion"
   }
   meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
   totalCostos = 0;
@@ -315,13 +316,13 @@ export class SaleSimulationComponent implements OnInit {
             this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
 
             this.outCome.tir = this.tirCalR.toFixed(2)
+
           }else{
             this.outCome.tir = "-"
             this.showSpinner = false;
+            this.outCome.conclusion = 'No es Factible'
 
           }
-
-
 
           //carga de datos Reusltado
           this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');

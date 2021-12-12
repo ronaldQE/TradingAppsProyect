@@ -95,6 +95,7 @@ export interface OutCome{
   van:number;
   tir:string;
   conclusion:string;
+  generado:string;
 }
 export interface SaleMonth{
     ventaAlta: number,

@@ -35,7 +35,9 @@ export class SaleRankComponent implements OnInit {
   public outCome: OutCome = {
     van: 0,
     tir: "",
-    conclusion: "No Factible"
+    conclusion: "",
+    generado:"rangos"
+
   }
   meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
   totalCostos = 0;
@@ -273,10 +275,13 @@ export class SaleRankComponent implements OnInit {
             this.outCome.tir = this.tirCalR.toFixed(2)
           } else {
             this.outCome.tir = "-"
+            this.outCome.conclusion = 'No es Factible'
             this.showSpinner = false;
 
           }
 
+          //carga de datos Reusltado
+          this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
 
         } else {
           indexCuotas = indexCuotas + 12;
