@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./estimate-history.page.scss'],
 })
 export class EstimateHistoryPage implements OnInit {
+  
 
   public estimacionTitle: string = "Estimación"
   public estimacionVan: number = 0
