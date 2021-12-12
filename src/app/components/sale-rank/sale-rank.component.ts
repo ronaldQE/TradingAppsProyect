@@ -347,6 +347,11 @@ export class SaleRankComponent implements OnInit {
     console.log("VAN1: " + van1 + " VAN2: " + van2)
 
     console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
+    if (van2 == 0) {
+      this.showSpinner = false;
+      this.tirCalR =  k2 //Obtecion de TIR  OPSION2
+
+    }
     this.tirCal = (this.proximoAcero(k1, k2, van1, van2));
 
     if (van1 > 0) {
