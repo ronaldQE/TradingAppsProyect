@@ -97,9 +97,7 @@ export class SaleSimulationComponent implements OnInit {
 
   }
 
-  goToGraphics() {
-    this.navigateTo('annual-flow-graphs');
-  }
+
 
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
@@ -115,6 +113,9 @@ export class SaleSimulationComponent implements OnInit {
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
+  }
+  goToGraphics() {
+    this.navigateTo('annual-flow-graphs');
   }
 
   segmentChanged(event: CustomEvent | any) {
@@ -316,6 +317,8 @@ export class SaleSimulationComponent implements OnInit {
             this.outCome.tir = this.tirCalR.toFixed(2)
           }else{
             this.outCome.tir = "-"
+            this.showSpinner = false;
+
           }
 
 
