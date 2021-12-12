@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController} from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { ComportamientoVentas, ComportamientoVentasTotales, DataCredit, FlujoAnual, MonthlyCostFull, OutCome, SaleMonth, VentaSimulation } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 
@@ -19,9 +19,9 @@ interface Gestions {
 })
 export class SaleSimulationComponent implements OnInit {
 
-  @Input() idEstim:string;
+  @Input() idEstim: string;
 
-  public showSpinner:boolean
+  public showSpinner: boolean
 
   public flujoAnual: FlujoAnual = {
     saldoInicial: 0,
@@ -81,10 +81,12 @@ export class SaleSimulationComponent implements OnInit {
   public simulacionVenta = new Simulation()
   public cuotas = [];
 
+  //public tirCalRShow:string
   public tirCal = 0;
-  public tirCalR =0;
+  public tirCalR = 0;
   public costoFijoT = 0;
-  public mub:number
+  public mub: number
+  public isFactible:boolean
 
   constructor(
     private router: Router,
@@ -95,7 +97,7 @@ export class SaleSimulationComponent implements OnInit {
 
   }
 
-  goToGraphics(){
+  goToGraphics() {
     this.navigateTo('annual-flow-graphs');
   }
 
@@ -103,14 +105,13 @@ export class SaleSimulationComponent implements OnInit {
     this.idEstim = localStorage.getItem('idEstim')
     this.mub = parseFloat(localStorage.getItem('mub'));
     //console.log(this.mub)
+    this.isFactible = false;
     this.addSimularVentas()
 
-
-
-//------------------------------------------
-    //this.showSpinner=true;
-    //this.getDataCredit()
-    //this.getFlujoAnual("2021");
+    //------------------------------------------
+    this.showSpinner = true;
+    this.getDataCredit()
+    this.getFlujoAnual("2021");
   }
   navigateTo(path: String) {
     this.router.navigate([path]);
@@ -158,17 +159,28 @@ export class SaleSimulationComponent implements OnInit {
     )
   }
   //CArgar ventas simuladas
-  addSimularVentas(){
+  addSimularVentas() {
     this.db.getCollection<SaleMonth>(`/Estimaciones/${this.idEstim}/rangoVentas`).subscribe((data) => {
       this.saleMonth = data;
       this.simulacionVenta.cargarVentasCostos(this.saleMonth.ventaAlta, this.saleMonth.ventaBaja, this.mub);
-      for(let i=0; i<this.meses.length; i++){
-        const ventaMes={
+      let totalesV = 0;
+      let totalesC = 0;
+      for (let i = 0; i < this.meses.length; i++) {
+        const ventaMes = {
           venta: this.simulacionVenta.ventaMeses[i].venta,
           ventaCosto: this.simulacionVenta.ventaMeses[i].costoVenta
         }
+        totalesV = totalesV + ventaMes.venta;
+        totalesC = totalesC + ventaMes.ventaCosto;
+
         this.db.updateData(ventaMes, `/Estimaciones/${this.idEstim}/comportamientoVentasSimuladas`, this.meses[i]);
       }
+      const totales = {
+        totalCostoVenta: totalesC,
+        totalVenta: totalesV
+      }
+      this.db.updateData(totales, `/Estimaciones/${this.idEstim}/comportamientoVentasSimuladas`, 'totales');
+
 
     },
       (error: any) => {
@@ -232,9 +244,9 @@ export class SaleSimulationComponent implements OnInit {
   getDataCredit() {
     this.db.getCollection<DataCredit>(`/Estimaciones/${this.idEstim}/dato-credito`).subscribe((data) => {
       this.dataCredit = data;
-      this.db.getCollection<ComportamientoVentasTotales>(`/Estimaciones/${this.idEstim}/comportamientoVentas/totales`).subscribe((data) => {
-        let totalVentaAnual = data.totalVenta;
-        let totalCostoVentaAnual = data.totalCostoVenta;
+      this.db.getCollection<ComportamientoVentasTotales>(`/Estimaciones/${this.idEstim}/comportamientoVentasSimuladas/totales`).subscribe((data) => {
+        let totalVentaAnual = data.totalVenta;            //Cambiar al totales simulados
+        let totalCostoVentaAnual = data.totalCostoVenta; //Cambiar al totales simulados
         this.cuotas = []
 
         if (this.dataCredit.tipoCuota == "Cuota Fija") {
@@ -295,12 +307,19 @@ export class SaleSimulationComponent implements OnInit {
           this.outCome.van = this.calVanForFCctte(montoFinanciar, this.flujoAnual.flujoAcumulado, tasaInteres, plazo);
           console.log(this.outCome.van)
 
-          if (this.outCome.van > 0) { this.outCome.conclusion = 'Es Factible' }
+          if (this.outCome.van > 0) {
+            this.outCome.conclusion = 'Es Factible'
+            this.isFactible = true;
+            //calcular TIR*******************************
+            this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
+
+            this.outCome.tir = this.tirCalR.toFixed(2)
+          }else{
+            this.outCome.tir = "-"
+          }
 
 
-          //calcular TIR
-          this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
-          this.outCome.tir = this.tirCalR.toFixed(2)
+
           //carga de datos Reusltado
           this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
 
@@ -368,6 +387,11 @@ export class SaleSimulationComponent implements OnInit {
     console.log("VAN1: " + van1 + " VAN2: " + van2)
 
     console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
+    if (van2 == 0) {
+      this.showSpinner = false;
+      this.tirCalR = this.proximoAcero(k1, k2, van1, van2) //Obtecion de TIR  OPSION2
+
+    }
     this.tirCal = (this.proximoAcero(k1, k2, van1, van2));
 
     if (van1 > 0) {
@@ -382,10 +406,10 @@ export class SaleSimulationComponent implements OnInit {
       let vanNew = this.calVanForFCctte(montoFinanciar, flujoAcumulado, tir, plazo);
 
       console.log("nuevo TIR:" + tir + " nuevo VAN: " + vanNew)
-      this.tirCalR=tir //Obtecion de TIR
+      this.tirCalR = tir //Obtecion de TIR
 
       if (vanNew > 0.0001 && vanNew < 0.9999 || vanNew == 0) {
-        this.showSpinner= false;
+        this.showSpinner = false;
         return tir;
       } else {
         console.log("K1: " + (k1 - 1) + " K2: " + (k2 + 1))
@@ -419,6 +443,9 @@ export class SaleSimulationComponent implements OnInit {
     if (van2 < 0) {
       van2Compare = van2 * (-1)
     }
+    // if (van1 == 0 || van2 || 0) { //Si encontro Van = 0
+    //   this.showSpinner = false;
+    // }
     console.log("n1: " + van1Compare)
     console.log("n2: " + van2Compare)
 
@@ -452,6 +479,6 @@ export class SaleSimulationComponent implements OnInit {
 
   generateTirCal(montoFinanciar: number, flujoAcumulado: number, plazo: number) {
     this.generateTir(500, 1, montoFinanciar, flujoAcumulado, plazo);
-   //console.log("Este es el tir: " + this.tirCal.toFixed(2));
+    //console.log("Este es el tir: " + this.tirCal.toFixed(2));
   }
 }

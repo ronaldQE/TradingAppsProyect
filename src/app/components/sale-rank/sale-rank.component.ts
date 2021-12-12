@@ -77,6 +77,7 @@ export class SaleRankComponent implements OnInit {
   public tirCal = 0;
   public tirCalR =0;
   public costoFijoT = 0;
+  public isFactible:boolean
 
   constructor(
     private router: Router,
@@ -93,11 +94,11 @@ export class SaleRankComponent implements OnInit {
 
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
-
+    this.isFactible = false
     //-----------------------------
-    //this.showSpinner=true;
-    //this.getDataCredit()
-    //this.getFlujoAnual("2021");
+    this.showSpinner=true;
+    this.getDataCredit()
+    this.getFlujoAnual("2021");
 
   }
   navigateTo(path: String) {
@@ -262,14 +263,17 @@ export class SaleRankComponent implements OnInit {
           this.outCome.van = this.calVanForFCctte(montoFinanciar, this.flujoAnual.flujoAcumulado, tasaInteres, plazo);
           console.log(this.outCome.van)
 
-          if (this.outCome.van > 0) { this.outCome.conclusion = 'Es Factible' }
+          if (this.outCome.van > 0) {
+            this.outCome.conclusion = 'Es Factible'
+            this.isFactible = true;
+            //calcular TIR*******************************
+            this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
 
+            this.outCome.tir = this.tirCalR.toFixed(2)
+          }else{
+            this.outCome.tir = "-"
+          }
 
-          //calcular TIR
-          this.generateTirCal(montoFinanciar, this.flujoAnual.flujoAcumulado, plazo);
-          this.outCome.tir = this.tirCalR.toFixed(2)
-          //carga de datos Reusltado
-          this.db.updateData<OutCome>(this.outCome, `/Estimaciones/${this.idEstim}`, 'resultado');
 
         } else {
           indexCuotas = indexCuotas + 12;

@@ -35,13 +35,13 @@ class Simulation {
     let costoMes: number
     let semilla: number = this.generateSemilla()
 
-    console.log("semilla: " + semilla)
+    //console.log("semilla: " + semilla)
 
     for (let i = 0; i < 12; i++) {
 
       //genera R
       R = this.generadorCongruenciaMixto(semilla);
-      console.log("R: " + R)
+      //console.log("R: " + R)
       if (R <= (0.5)) {
         ventaMes = Math.round(this.calVentaBaja(vMax, vMin, R))
         costoMes = Math.round(ventaMes * (1-mub))

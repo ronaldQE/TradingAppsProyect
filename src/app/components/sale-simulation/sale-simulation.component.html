@@ -13,8 +13,8 @@
 
       <ion-item color="secondary">
         <ion-label>Proyección Mensual</ion-label>
-        <ion-select >
-          <ion-select-option ></ion-select-option>
+        <ion-select>
+          <ion-select-option></ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -54,8 +54,8 @@
 
       <ion-item color="secondary">
         <ion-label>Proyección Anual</ion-label>
-        <ion-select >
-          <ion-select-option ></ion-select-option>
+        <ion-select>
+          <ion-select-option></ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -94,7 +94,7 @@
       </ion-item>
     </ion-list>
   </div>
-<!-- Vista con datos de carga -->
+  <!-- Vista con datos de carga -->
   <ion-list *ngIf="!showSpinner">
 
     <app-monthly-flow></app-monthly-flow>
@@ -145,20 +145,25 @@
 
 
     <!-- Calculos -->
-    <ion-item color="tertiary" lines="none">
-      <ion-title>VAN</ion-title>
-      <ion-label slot="end">{{outCome.van}}</ion-label>
+    <ion-item color="light" lines="none">
+      <ion-title><b>VAN</b></ion-title>
+      <ion-label slot="end"><b>{{outCome.van}}</b></ion-label>
     </ion-item>
-    <ion-item color="tertiary" lines="none">
-      <ion-title>TIR %</ion-title>
-      <ion-label slot="end">{{outCome.tir}}</ion-label>
+    <ion-item color="light" lines="none">
+      <ion-title><b>TIR %</b></ion-title>
+      <ion-label slot="end"><b>{{outCome.tir}}</b></ion-label>
     </ion-item>
     <ion-item lines="none">
-      <ion-title color="Success">{{"La Inversión "+outCome.conclusion}}</ion-title>
+      <div *ngIf="isFactible" class="factible">
+        <ion-title color="Success">La Inversión es Factible</ion-title>
+
+      </div>
+      <div *ngIf="!isFactible" class="noFactible">
+        <ion-title color="Success">La Inversión NO es Factible</ion-title>
+      </div>
     </ion-item>
 
-    <ion-button class="btnGraficos" (click)="goToGraphics()" color="dark" size="large" expand="block">ver Graficos
-    </ion-button>
+    <ion-button class="btnGrafic" (click)="goToGraphics()" size="large" expand="block">ver Graficos</ion-button>
   </ion-list>
 
 
