@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MonthlyFlow, BudgetSummary } from 'src/app/models/interfaces';
+import { Component, Input, OnInit } from '@angular/core';
+import { MonthlyFlow, BudgetSummary, VentaSimulation } from 'src/app/models/interfaces';
 import { serviceDataBase } from '../../services/services-database';
 import { Cuota } from '../../clases/credit'
 @Component({
@@ -8,6 +8,7 @@ import { Cuota } from '../../clases/credit'
   styleUrls: ['./monthly-flow.component.scss'],
 })
 export class MonthlyFlowComponent implements OnInit {
+  @Input() isSimu: boolean
 
   public newOptionSelect: number;
   public totalOperatingCosts: number;
@@ -23,7 +24,8 @@ export class MonthlyFlowComponent implements OnInit {
 
   ngOnInit() {
     this.idEstim = localStorage.getItem('idEstim')
-    this.calculateCostOfSale();
+    this.getSalesAndCost(this.isSimu);
+    //this.calculateCostOfSale();
     this.calculateDues();
     this.getTotalOperatingCosts();
     this.getBudgetSummary();
@@ -95,8 +97,8 @@ export class MonthlyFlowComponent implements OnInit {
   }
 
   calculateNextMonthlyFlow(month: number) {
-    let salIni= this.previousMonthFlow.flujoAcumulado
-    this.currentMonthlyFlow.saldoInicial = Math.round(salIni) ;
+    let salIni = this.previousMonthFlow.flujoAcumulado
+    this.currentMonthlyFlow.saldoInicial = Math.round(salIni);
     this.currentMonthlyFlow.ingresos = this.venta[month];
     this.currentMonthlyFlow.costoProduccion = this.costoVenta[month];
     this.currentMonthlyFlow.utilidadBruta = this.currentMonthlyFlow.ingresos - this.currentMonthlyFlow.costoProduccion;
@@ -110,7 +112,13 @@ export class MonthlyFlowComponent implements OnInit {
   calculateJunuary() {
     //this.saveFlowCurrentMonth(this.previousMonthFlow,this.initialMonthFlow);
     this.currentMonthlyFlow.saldoInicial = this.previousMonthFlow.flujoAcumulado;
-    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/comportamientoVentas`).subscribe((data) => {
+    let colectionSale=""
+    if(this.isSimu==true){
+      colectionSale = 'comportamientoVentasSimuladas';
+    }else{
+      colectionSale = 'comportamientoVentas';
+    }
+    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/${colectionSale}`).subscribe((data) => {
       this.currentMonthlyFlow.ingresos = data.enero.venta;
       this.currentMonthlyFlow.costoProduccion = Math.round(data.enero.costoVenta);
       this.currentMonthlyFlow.utilidadBruta = Math.round(this.currentMonthlyFlow.ingresos - data.enero.costoVenta)//this.currentMonthlyFlow.costoProduccion;
@@ -136,8 +144,7 @@ export class MonthlyFlowComponent implements OnInit {
     auxFlowMont.cuota = currentFlowMont.cuota;
     auxFlowMont.flujoAcumulado = currentFlowMont.flujoAcumulado;
   }
-
-  recuperar(event: CustomEvent) {
+  recuperar(event: CustomEvent | any) {
     this.newOptionSelect = event.detail.value;
     this.calculateMonthlyFlow(parseInt(this.newOptionSelect + ""));
     /*console.log(this.newOptionSelect+" "+this.previousOptionSelect);
@@ -150,11 +157,11 @@ export class MonthlyFlowComponent implements OnInit {
     }*/
 
   }
-
-  async initialState() {
-    await this.getTotalOperatingCosts();
-    await this.getBudgetSummary();
-  }
+  //-----------------comentado recientemente
+  // async initialState() {
+  //   await this.getTotalOperatingCosts();
+  //   await this.getBudgetSummary();
+  // }
 
 
   calculateMonthlyFlow(numberMonth: number) {
@@ -219,5 +226,49 @@ export class MonthlyFlowComponent implements OnInit {
     })
 
   }
+  calculateCostOfSaleSimulation() {
+    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/comportamientoVentasSimuladas`).subscribe((data) => {
+
+      console.log("ventas sumuladas: ",data)
+      this.costoVenta[0] = Math.round(data.enero.costoVenta);
+      this.venta[0] = data.enero.venta;
+      this.costoVenta[1] = Math.round(data.febrero.costoVenta);
+      this.venta[1] = data.febrero.venta;
+      this.costoVenta[2] = Math.round(data.marzo.costoVenta);
+      this.venta[2] = data.marzo.venta;
+      this.costoVenta[3] = Math.round(data.abril.costoVenta);
+      this.venta[3] = data.abril.venta;
+      this.costoVenta[4] = Math.round(data.mayo.costoVenta);
+      this.venta[4] = data.mayo.venta;
+      this.costoVenta[5] = Math.round(data.junio.costoVenta);
+      this.venta[5] = data.junio.venta;
+      this.costoVenta[6] = Math.round(data.julio.costoVenta);
+      this.venta[6] = data.julio.venta;
+      this.costoVenta[7] = Math.round(data.agosto.costoVenta);
+      this.venta[7] = data.agosto.venta;
+      this.costoVenta[8] = Math.round(data.septiembre.costoVenta);
+      this.venta[8] = data.septiembre.venta;
+      this.costoVenta[9] = Math.round(data.octubre.costoVenta);
+      this.venta[9] = data.octubre.venta;
+      this.costoVenta[10] = Math.round(data.noviembre.costoVenta);
+      this.venta[10] = data.noviembre.venta;
+      this.costoVenta[11] = Math.round(data.diciembre.costoVenta);
+      this.venta[11] = data.diciembre.venta;
+    })
+
+  }
+
+  getSalesAndCost(isSimu: boolean) {
+    if (isSimu == true) {
+      this.calculateCostOfSaleSimulation()
+    } else {
+      this.calculateCostOfSale()
+    }
+
+  }
+
+
+
+
 
 }
