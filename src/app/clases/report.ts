@@ -115,7 +115,7 @@ class Report{
                                 text:[
                                     {text: '\nComportamiento de Ventas', bold: true},
                                     `\n\nVentas Totales = ${cv.totales.totalVenta}`,
-                                    `\nCostos Totales = ${cv.totales.totalCostoVenta}`,
+                                    `\nCostos Totales = ${cv.totales.totalCostoVenta.toFixed(2)}`,
                                 ]
                             }
                         ]
@@ -170,7 +170,7 @@ class Report{
                     {text: '\n1) Proyeccion Mensual'},
                     {text: '\n'},
                     {
-                        fontSize:10,
+                        fontSize:8,
                         table: {
                             body: [
                                 ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
@@ -351,7 +351,7 @@ class Report{
                                 text:[
                                     {text: '\nComportamiento de Ventas', bold: true},
                                     `\n\nVentas Totales = ${cv.totales.totalVenta}`,
-                                    `\nCostos Totales = ${cv.totales.totalCostoVenta}`,
+                                    `\nCostos Totales = ${cv.totales.totalCostoVenta.toFixed(2)}`,
                                 ]
                             }
                         ]
@@ -400,13 +400,13 @@ class Report{
                             `\n\nTipo de credito = ${credito.tipoCuota}`
                         ]
                     },
-                    {text: '\n\nFLUJO', style: 'titulo'},
+                    {text: '\n\n\n\n\n\n\nFLUJO', style: 'titulo'},
                     {text: '_______________________________________________________________________________________________'},
                     {text: `\nSALDO INICIAL = ${resumenPresupuesto.planInversion}`},
                     {text: '\n1) Proyeccion Mensual'},
                     {text: '\n'},
                     {
-                        fontSize:10,
+                        fontSize:8,
                         table: {
                             body: [
                                 ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
