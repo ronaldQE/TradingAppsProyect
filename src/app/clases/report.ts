@@ -5,9 +5,14 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 class Report{
     public pdfObject: any;
     public docDefinition = {};
-    constructor(presupuesto,capitalOperativo,capitalInversion,resumenPresupuesto,comportamientoVentas,rangoVentas,costosOperativos,credito,resultado){
+    constructor(presupuesto,capitalOperativo,capitalInversion,resumenPresupuesto,comportamientoVentas,rangoVentas,costosOperativos,credito,resultado,flujoAnual){
         let cv = comportamientoVentas;
         let co = costosOperativos;
+        let fa = flujoAnual;
+        while(fa.length < 5){
+            fa.push(['0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00'])
+        }
+        
         this.docDefinition = {
             content: [
                 {
@@ -217,15 +222,15 @@ class Report{
                 {
                     table: {
                         body: [
-                            ['', '2021', '2022'],
-                            ['SAL. INICIAL', 'Media', 'Media'],
-                            ['Ingresos', 'Media', 'Media'],
-                            ['Costo de producción', 'Media', 'Media'],
-                            ['Utilidad Bruta', 'Media', 'Media'],
-                            ['Costos Fijos', 'Media', 'Media'],
-                            ['UTILIDAD NETA', 'Media', 'Media'],
-                            ['Cuota', 'Media', 'Media'],
-                            ['FLUJO ACUMULADO', 'Media', 'Media']
+                            ['', '2021', '2022','2023','2024','2025'],
+                            ['SAL. INICIAL', `${fa[0][5]}`, `${fa[1][5]}`,`${fa[2][5]}`,fa[3][5],fa[4][5]],
+                            ['Ingresos', fa[0][4], fa[1][4],fa[2][4],fa[3][4],fa[4][4]],
+                            ['Costo de producción', fa[0][0], fa[1][0],fa[2][0],fa[3][0],fa[4][0]],
+                            ['Utilidad Bruta', fa[0][6], fa[1][6],fa[2][6],fa[3][6],fa[4][6]],
+                            ['Costos Fijos', fa[0][1], fa[1][1],fa[2][1],fa[3][1],fa[4][1]],
+                            ['UTILIDAD NETA', fa[0][7], fa[1][7],fa[2][7],fa[3][7],fa[4][7]],
+                            ['Cuota', fa[0][2], fa[1][2],fa[2][2],fa[3][2],fa[4][2]],
+                            ['FLUJO ACUMULADO', fa[0][3], fa[1][3],fa[2][3],fa[3][3],fa[4][3]]
                         ]
                     },
                     layout: {
