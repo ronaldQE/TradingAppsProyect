@@ -19,6 +19,7 @@ export class EstimateHistoryPage implements OnInit {
   public estimacionVan: number = 0
   public estimacionTir: string = "-"
   public estimacionId: string = ""
+  public estimacionGenerado: string = ""
 
   public mub: string;
   public estimaciones: HistoryData[] = [];
@@ -38,17 +39,19 @@ export class EstimateHistoryPage implements OnInit {
   }
 
   ngOnInit() {
-    this.recuperaEstimation();
+    //this.recuperaEstimation();
+    this.getEstimations();
   }
 
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
-  setValueEstimacion(numTitle: number, van: number, tir: string, id: string, mub: number) {
+  setValueEstimacion(numTitle: number, van: number, tir: string, id: string, mub: number, generado:string) {
     this.estimacionTitle = `Estimación-${numTitle + 1}`
     this.estimacionVan = van;
     this.estimacionTir = tir
     this.estimacionId = id
+    this.estimacionGenerado = generado
     this.mub = mub.toString();
 
   }
@@ -68,6 +71,18 @@ export class EstimateHistoryPage implements OnInit {
     }).catch((error) => {
       console.error(error);
     });
+  }
+
+  getEstimations(){
+    this.db.getEstimacionesLists().subscribe((data) => {
+      this.estimacionArray = data;
+
+    },
+      (error: any) => {
+        console.log(`Error: ${error}`);
+
+      }
+    )
   }
 
 

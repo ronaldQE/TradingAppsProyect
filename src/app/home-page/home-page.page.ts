@@ -162,8 +162,9 @@ export class HomePagePage implements OnInit {
   createColeccion(){
     const data={
       conclusion:'No Factible',
-      tir:"0",
-      van:0
+      tir:"-",
+      van:0,
+      generado:'vacio'
     }
     this.db.addCollection(data, this.idEstim, 'resultado')
   }

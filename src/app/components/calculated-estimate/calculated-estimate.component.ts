@@ -1,9 +1,12 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { serviceDataBase } from '../../services/services-database';
 import { Report } from '../../clases/report'
 import { MonthlyFlow } from 'src/app/models/interfaces';
 import { Cuota } from 'src/app/clases/credit';
+import { ToastController } from '@ionic/angular';
+
 @Component({
   selector: 'app-calculated-estimate',
   templateUrl: './calculated-estimate.component.html',
@@ -16,6 +19,7 @@ export class CalculatedEstimateComponent implements OnInit {
   @Input() van: number;
   @Input() tir: string;
   @Input() idEstim: string;
+  @Input() generado: string;
   @Input() mub: string;
 
   public cuotas = [];
@@ -45,10 +49,14 @@ export class CalculatedEstimateComponent implements OnInit {
   }
   constructor(
     private router: Router,
-    public db: serviceDataBase
+    public db: serviceDataBase,
+    public toast: ToastController,
+
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log("generado: ", this.generado)
+   }
 
   navigateTo(path: string) {
     this.router.navigate([path, this.idEstim, this.title]);
@@ -56,6 +64,24 @@ export class CalculatedEstimateComponent implements OnInit {
     localStorage.setItem('title', this.title);
     localStorage.setItem('mub', this.mub)
 
+  }
+  async presentToast(mensaje: string) {
+    const toast = await this.toast.create({
+      message: mensaje,
+      duration: 3000
+    });
+    toast.present(); //
+  }
+
+  //METODO PARA EJECURAR TOAST SI NO SE CALCULO LA ESTIMACION
+  generatePdf(){
+    if(this.generado == 'vacio'){
+      this.presentToast('La Estimación es NUEVA requiere ser calculada')
+
+    }else{
+
+      //AQUI tu metodo para GGENERAR TU PDF
+    }
   }
 
   generar(){

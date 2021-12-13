@@ -14,7 +14,6 @@ class Cuota {
 
   public calPlanPagosVariado(monto: number, tasaInteres: number, plazo: number, poliza: number):void {
     let saldo = monto;
-    //let showSaldo: number
     let showCuota: number
     let cuota: number
     this.cuotasV=[];
@@ -23,7 +22,6 @@ class Cuota {
 
       cuota = this.calCuotaVariado(monto / plazo, saldo, (tasaInteres / 12) / 100) + (saldo * (poliza / 1000))
       saldo = this.calSaldoVariado(saldo, monto / plazo)
-      //showSaldo = Math.round(saldo)
       showCuota = cuota
       this.cuotasV[i] = showCuota
     }
@@ -37,6 +35,8 @@ class Cuota {
     let aux =  Math.pow((1+intersMes), plazo);
     return monto*((intersMes*aux)/(aux-1));
   }
+
+     // CALCULAR EL PLAN DE PAGOS CUOTA FIJA
   public calPlanPagosFijo(monto: number, tasaInteres: number, plazo: number, poliza: number):void{
     this.cuotasF=[];
     let saldo = monto;
