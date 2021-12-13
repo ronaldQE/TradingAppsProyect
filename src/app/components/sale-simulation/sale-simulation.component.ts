@@ -370,7 +370,7 @@ export class SaleSimulationComponent implements OnInit {
 
   }
 
-  //METODOS PARA EL CALCULLO DE VAN (tipo excel)
+  //METODOS PARA EL CALCULLO DE VAN
 
   calVanForFCctte(inversion: number, fc: number, interes: number, periodo: number): number {
 
@@ -393,7 +393,7 @@ export class SaleSimulationComponent implements OnInit {
     console.log("El mas sercano a cero es TIR: " + this.proximoAcero(k1, k2, van1, van2));
     if (van2 == 0) {
       this.showSpinner = false;
-      this.tirCalR =  k2 //Obtecion de TIR  OPSION2
+      this.tirCalR =  k2 //Obtecion de TIR
 
     }
     this.tirCal = (this.proximoAcero(k1, k2, van1, van2));
@@ -447,9 +447,7 @@ export class SaleSimulationComponent implements OnInit {
     if (van2 < 0) {
       van2Compare = van2 * (-1)
     }
-    // if (van1 == 0 || van2 || 0) { //Si encontro Van = 0
-    //   this.showSpinner = false;
-    // }
+
     console.log("n1: " + van1Compare)
     console.log("n2: " + van2Compare)
 
@@ -465,7 +463,6 @@ export class SaleSimulationComponent implements OnInit {
       if (vanCal < 0) {
 
         while (vanCal < 0) {
-          //let tir = this.interpolar(k1, k2, van1, van2)
 
           vanCal = this.calVanForFCctte(montoFinanciar, flujoAcumulado, kcal = kcal - 1, plazo);
         }
