@@ -13,6 +13,7 @@ import { getDatabase, ref, child, get } from "firebase/database";
   styleUrls: ['./estimate-history.page.scss'],
 })
 export class EstimateHistoryPage implements OnInit {
+  
 
   public estimacionTitle: string = "Estimación"
   public estimacionVan: number = 0
