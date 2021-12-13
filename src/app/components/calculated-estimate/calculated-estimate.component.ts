@@ -6,6 +6,8 @@ import { Report } from '../../clases/report'
 import { MonthlyFlow } from 'src/app/models/interfaces';
 import { Cuota } from 'src/app/clases/credit';
 import { ToastController } from '@ionic/angular';
+import { getDatabase, ref, child, get } from "firebase/database";
+
 
 @Component({
   selector: 'app-calculated-estimate',
@@ -55,7 +57,7 @@ export class CalculatedEstimateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("generado: ", this.generado)
+    console.log("generado: ", this.generado)   
    }
 
   navigateTo(path: string) {
@@ -75,19 +77,22 @@ export class CalculatedEstimateComponent implements OnInit {
 
   //METODO PARA EJECURAR TOAST SI NO SE CALCULO LA ESTIMACION
   generatePdf(){
+    console.log(this.generado)
     if(this.generado == 'vacio'){
       this.presentToast('La Estimación es NUEVA requiere ser calculada')
 
     }else{
-
-      //AQUI tu metodo para GGENERAR TU PDF
+      this.generar(this.generado);
     }
   }
 
-  generar(){
+  generar(estado: string){
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `/Estimaciones/${this.idEstim}/`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        let data = snapshot.val();
 
-    this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/`).subscribe((data)=>{
-      let object = data['flujo-anual'];
+        let object = data['flujo-anual'];
       let flowYear = [];
       for (const key in object) {
         let year = [];
@@ -103,7 +108,7 @@ export class CalculatedEstimateComponent implements OnInit {
         //recuperacion de la cuotas aun arreglo
         this.cuotas = []
         
-        if (false) {
+        if (estado == 'simulacion') {
           this.costoVenta[0] = Math.round(data['comportamientoVentasSimuladas'].enero.costoVenta);
           this.venta[0] = data['comportamientoVentasSimuladas'].enero.venta;
           this.costoVenta[1] = Math.round(data['comportamientoVentasSimuladas'].febrero.costoVenta);
@@ -112,7 +117,7 @@ export class CalculatedEstimateComponent implements OnInit {
           this.venta[2] = data['comportamientoVentasSimuladas'].marzo.venta;
           this.costoVenta[3] = Math.round(data['comportamientoVentasSimuladas'].abril.costoVenta);
           this.venta[3] = data['comportamientoVentasSimuladas'].abril.venta;
-          this.costoVenta[4] = Math.round(data.mayo.costoVenta);
+          this.costoVenta[4] = Math.round(data['comportamientoVentasSimuladas'].mayo.costoVenta);
           this.venta[4] = data['comportamientoVentasSimuladas'].mayo.venta;
           this.costoVenta[5] = Math.round(data['comportamientoVentasSimuladas'].junio.costoVenta);
           this.venta[5] = data['comportamientoVentasSimuladas'].junio.venta;
@@ -165,15 +170,20 @@ export class CalculatedEstimateComponent implements OnInit {
           //console.log(this.cuotas)
         }
       }
-      console.log(this.currentMonthlyFlow)
+      
       let monthlyFlow = this.getMonthlyFlowNormal(data['costos-operativos'].totalCostosOperativos)
 
-      this.reporte = new Report(data.presupuesto,data['capital-operativo'],data['capital-de-inversion'],data['resumen-presupuesto'],data.comportamientoVentas,data.rangoVentas,data['costos-operativos'],data['dato-credito'],data.resultado,flowYear,monthlyFlow,data.productos,data.productosCalMUB);
+      this.reporte = new Report(data.presupuesto,data['capital-operativo'],data['capital-de-inversion'],data['resumen-presupuesto'],data.comportamientoVentas,data.rangoVentas,data['costos-operativos'],data['dato-credito'],data.resultado,flowYear,monthlyFlow,data.productos,data.productosCalMUB,estado);
       
       
       this.reporte.generarPdf();
-      
-    });
+
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    }); 
   }
 
   getMonthlyFlowNormal(totalOperatingCosts: number){
