@@ -61,7 +61,7 @@ export class CalculatedEstimateComponent implements OnInit {
   generar(){
 
     this.db.getCollection<any>(`/Estimaciones/${this.idEstim}/`).subscribe((data)=>{
-      /*let object = data['flujo-anual'];
+      let object = data['flujo-anual'];
       let flowYear = [];
       for (const key in object) {
         let year = [];
@@ -76,6 +76,58 @@ export class CalculatedEstimateComponent implements OnInit {
       } else {
         //recuperacion de la cuotas aun arreglo
         this.cuotas = []
+        
+        if (false) {
+          this.costoVenta[0] = Math.round(data['comportamientoVentasSimuladas'].enero.costoVenta);
+          this.venta[0] = data['comportamientoVentasSimuladas'].enero.venta;
+          this.costoVenta[1] = Math.round(data['comportamientoVentasSimuladas'].febrero.costoVenta);
+          this.venta[1] = data['comportamientoVentasSimuladas'].febrero.venta;
+          this.costoVenta[2] = Math.round(data['comportamientoVentasSimuladas'].marzo.costoVenta);
+          this.venta[2] = data['comportamientoVentasSimuladas'].marzo.venta;
+          this.costoVenta[3] = Math.round(data['comportamientoVentasSimuladas'].abril.costoVenta);
+          this.venta[3] = data['comportamientoVentasSimuladas'].abril.venta;
+          this.costoVenta[4] = Math.round(data.mayo.costoVenta);
+          this.venta[4] = data['comportamientoVentasSimuladas'].mayo.venta;
+          this.costoVenta[5] = Math.round(data['comportamientoVentasSimuladas'].junio.costoVenta);
+          this.venta[5] = data['comportamientoVentasSimuladas'].junio.venta;
+          this.costoVenta[6] = Math.round(data['comportamientoVentasSimuladas'].julio.costoVenta);
+          this.venta[6] = data['comportamientoVentasSimuladas'].julio.venta;
+          this.costoVenta[7] = Math.round(data['comportamientoVentasSimuladas'].agosto.costoVenta);
+          this.venta[7] = data['comportamientoVentasSimuladas'].agosto.venta;
+          this.costoVenta[8] = Math.round(data['comportamientoVentasSimuladas'].septiembre.costoVenta);
+          this.venta[8] = data['comportamientoVentasSimuladas'].septiembre.venta;
+          this.costoVenta[9] = Math.round(data['comportamientoVentasSimuladas'].octubre.costoVenta);
+          this.venta[9] = data['comportamientoVentasSimuladas'].octubre.venta;
+          this.costoVenta[10] = Math.round(data['comportamientoVentasSimuladas'].noviembre.costoVenta);
+          this.venta[10] = data['comportamientoVentasSimuladas'].noviembre.venta;
+          this.costoVenta[11] = Math.round(data['comportamientoVentasSimuladas'].diciembre.costoVenta);
+          this.venta[11] = data['comportamientoVentasSimuladas'].diciembre.venta;
+        } else {
+          this.costoVenta[0] = Math.round(data['comportamientoVentas'].enero.costoVenta);
+          this.venta[0] = data['comportamientoVentas'].enero.venta;
+          this.costoVenta[1] = Math.round(data['comportamientoVentas'].febrero.costoVenta);
+          this.venta[1] = data['comportamientoVentas'].febrero.venta;
+          this.costoVenta[2] = Math.round(data['comportamientoVentas'].marzo.costoVenta);
+          this.venta[2] = data['comportamientoVentas'].marzo.venta;
+          this.costoVenta[3] = Math.round(data['comportamientoVentas'].abril.costoVenta);
+          this.venta[3] = data['comportamientoVentas'].abril.venta;
+          this.costoVenta[4] = Math.round(data['comportamientoVentas'].mayo.costoVenta);
+          this.venta[4] = data['comportamientoVentas'].mayo.venta;
+          this.costoVenta[5] = Math.round(data['comportamientoVentas'].junio.costoVenta);
+          this.venta[5] = data['comportamientoVentas'].junio.venta;
+          this.costoVenta[6] = Math.round(data['comportamientoVentas'].julio.costoVenta);
+          this.venta[6] = data['comportamientoVentas'].julio.venta;
+          this.costoVenta[7] = Math.round(data['comportamientoVentas'].agosto.costoVenta);
+          this.venta[7] = data['comportamientoVentas'].agosto.venta;
+          this.costoVenta[8] = Math.round(data['comportamientoVentas'].septiembre.costoVenta);
+          this.venta[8] = data['comportamientoVentas'].septiembre.venta;
+          this.costoVenta[9] = Math.round(data['comportamientoVentas'].octubre.costoVenta);
+          this.venta[9] = data['comportamientoVentas'].octubre.venta;
+          this.costoVenta[10] = Math.round(data['comportamientoVentas'].noviembre.costoVenta);
+          this.venta[10] = data['comportamientoVentas'].noviembre.venta;
+          this.costoVenta[11] = Math.round(data['comportamientoVentas'].diciembre.costoVenta);
+          this.venta[11] = data['comportamientoVentas'].diciembre.venta;
+        }
 
         if (data['dato-credito'].tipoCuota == "Cuota Fija") {
           this.planPagosVariado.calPlanPagosFijo(data['dato-credito'].montoFinanciar, data['dato-credito'].tasaInteres, data['dato-credito'].plazo, data['dato-credito'].poliza);
@@ -87,36 +139,13 @@ export class CalculatedEstimateComponent implements OnInit {
           //console.log(this.cuotas)
         }
       }
-
-      this.currentMonthlyFlow.ingresos = data['comportamientoVentas'].enero.venta;
-      this.currentMonthlyFlow.costoProduccion = Math.round(data['comportamientoVentas'].enero.costoVenta);
-      this.currentMonthlyFlow.utilidadBruta = Math.round(this.currentMonthlyFlow.ingresos - data['comportamientoVentas'].enero.costoVenta)//this.currentMonthlyFlow.costoProduccion;
-      let utilBruta = this.currentMonthlyFlow.ingresos - data['comportamientoVentas'].enero.costoVenta
-      this.currentMonthlyFlow.costosFijos = data['costos-operativos'].totalCostosOperativos == undefined ? 0 : data['costos-operativos'].totalCostosOperativos;
-      this.currentMonthlyFlow.utilidadNeta = Math.round(utilBruta - this.currentMonthlyFlow.costosFijos);
-      let utilNeta = utilBruta - this.currentMonthlyFlow.costosFijos;
-      this.currentMonthlyFlow.cuota = Math.round(this.cuotas[0]);
-      this.currentMonthlyFlow.flujoAcumulado = Math.round(utilNeta + this.currentMonthlyFlow.saldoInicial - this.currentMonthlyFlow.cuota);
-
-      this.currentMonthlyFlow.saldoInicial= 0;
-      this.currentMonthlyFlow.ingresos= 0;
-      this.currentMonthlyFlow.costoProduccion= 0;
-      this.currentMonthlyFlow.utilidadBruta= 0;
-      this.currentMonthlyFlow.costosFijos= 0;
-      this.currentMonthlyFlow.utilidadNeta= 0;
-      this.currentMonthlyFlow.cuota= 0;
-      this.currentMonthlyFlow.flujoAcumulado= 0;
-
       console.log(this.currentMonthlyFlow)
       let monthlyFlow = this.getMonthlyFlowNormal(data['costos-operativos'].totalCostosOperativos)
 
-      
-      console.log(monthlyFlow)*/
-
-      //this.reporte = new Report(data.presupuesto,data['capital-operativo'],data['capital-de-inversion'],data['resumen-presupuesto'],data.comportamientoVentas,data.rangoVentas,data['costos-operativos'],data['dato-credito'],data.resultado,flowYear);
+      this.reporte = new Report(data.presupuesto,data['capital-operativo'],data['capital-de-inversion'],data['resumen-presupuesto'],data.comportamientoVentas,data.rangoVentas,data['costos-operativos'],data['dato-credito'],data.resultado,flowYear,monthlyFlow,data.productos,data.productosCalMUB);
       
       
-      //this.reporte.generarPdf();
+      this.reporte.generarPdf();
       
     });
   }
@@ -124,8 +153,6 @@ export class CalculatedEstimateComponent implements OnInit {
   getMonthlyFlowNormal(totalOperatingCosts: number){
     let cont: number = 0;
     let resMonthlyFlow = [];
-    //this.initialState();
-    //this.saveFlowCurrentMonth(this.currentMonthlyFlow, this.initialMonthFlow);
     while (cont < 12) {
       this.saveFlowCurrentMonth(this.previousMonthFlow, this.currentMonthlyFlow);
       let aux = this.calculateNextMonthlyFlow(cont,totalOperatingCosts);
@@ -138,6 +165,7 @@ export class CalculatedEstimateComponent implements OnInit {
   calculateNextMonthlyFlow(month: number,totalOperatingCosts: number) {
     let res = [];
     let salIni = this.previousMonthFlow.flujoAcumulado
+    
     this.currentMonthlyFlow.saldoInicial = Math.round(salIni);
     this.currentMonthlyFlow.ingresos = this.venta[month];
     this.currentMonthlyFlow.costoProduccion = this.costoVenta[month];
@@ -147,7 +175,7 @@ export class CalculatedEstimateComponent implements OnInit {
     this.currentMonthlyFlow.cuota = Math.round(this.cuotas[month]);
     let flujoAcu = this.currentMonthlyFlow.utilidadNeta + salIni - this.cuotas[month];
     this.currentMonthlyFlow.flujoAcumulado = Math.round(flujoAcu);
-    res = [this.currentMonthlyFlow.saldoInicial,this.currentMonthlyFlow.ingresos,this.currentMonthlyFlow.costoProduccion,this.currentMonthlyFlow.utilidadBruta,this.currentMonthlyFlow.costoProduccion,this.currentMonthlyFlow.utilidadBruta,this.currentMonthlyFlow.costosFijos,this.currentMonthlyFlow.utilidadNeta,this.currentMonthlyFlow.cuota,this.currentMonthlyFlow.flujoAcumulado]
+    res = [this.currentMonthlyFlow.saldoInicial,this.currentMonthlyFlow.ingresos,this.currentMonthlyFlow.costoProduccion,this.currentMonthlyFlow.utilidadBruta,this.currentMonthlyFlow.costosFijos,this.currentMonthlyFlow.utilidadNeta,this.currentMonthlyFlow.cuota,this.currentMonthlyFlow.flujoAcumulado]
     return res;
   }
 
@@ -161,4 +189,5 @@ export class CalculatedEstimateComponent implements OnInit {
     auxFlowMont.cuota = currentFlowMont.cuota;
     auxFlowMont.flujoAcumulado = currentFlowMont.flujoAcumulado;
   }
+
 }

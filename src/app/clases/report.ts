@@ -5,14 +5,31 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 class Report{
     public pdfObject: any;
     public docDefinition = {};
-    constructor(presupuesto,capitalOperativo,capitalInversion,resumenPresupuesto,comportamientoVentas,rangoVentas,costosOperativos,credito,resultado,flujoAnual){
+    constructor(presupuesto,capitalOperativo,capitalInversion,resumenPresupuesto,comportamientoVentas,rangoVentas,costosOperativos,credito,resultado,flujoAnual,monthlyFlow,productos,totalProductos){
         let cv = comportamientoVentas;
         let co = costosOperativos;
         let fa = flujoAnual;
+        let mf = monthlyFlow;
+        let productoDato = {};
+        let insumo = {};
         while(fa.length < 5){
             fa.push(['0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00'])
         }
+        let cont = 1;
+        let datosProducto = [];
+        let datosInsumo = [];
+        for (const producto in productos) {
+            let aux = productos[producto];
+            datosProducto.push([cont,aux.nombre,aux.tipo,aux.cantidad,aux.frecuencia,aux.totalesInsumo.totalCosto,aux.totalesInsumo.totalVenta]);
+            let insumos = aux.insumos;
+            for (const insumo in insumos) {
+                datosInsumo.push([insumos[insumo].nombreInsumo,insumos[insumo].cantidad,insumos[insumo].unidad,insumos[insumo].precioUnitario,insumos[insumo].totalCostoInsumo,cont]);
+            }
+            cont ++;
+        }
         
+        productoDato = this.generarProducto(datosProducto);
+        insumo = this.generarInsumo(datosInsumo);
         this.docDefinition = {
             content: [
                 {
@@ -70,34 +87,18 @@ class Report{
                 {text: '_______________________________________________________________________________________________'},
                 {text: '\n1) Costos Directos', bold: true},
                 {text: '\n'},
-                {
-                    table: {
-                        body: [
-                            ['Producto o Servicio', 'Tipo', 'Cantdiad', 'Frecuencia','Precio C','Precio V'],
-                            ['Apps Empresas', 'Comercial', '1','Semestral','700','16000']
-                        ]
-                    },
-                    layout: {
-                        fillColor: function (rowIndex, node, columnIndex) {
-                            return (rowIndex  === 0) ? '#F3C57D' : null;
-                        }
-                    }
-                },
+                productoDato,
                 {text: '\n'},
-                {
-                    table: {
-                        body: [
-                            ['Insumo', 'Cantidad', 'Unidades de Productos', 'Precio Unitario','Total'],
-                            ['Servidor de prueba', '1', 'Unidad','300','300']
-                        ]
-                    },
-                    layout: {
-                        fillColor: function (rowIndex, node, columnIndex) {
-                            return (rowIndex  === 0) ? '#B8EBBD' : null;
-                        }
-                    }
-                },
-                {text: '\n2) Comportamiento de Ventas mensuales', bold: true},
+                insumo,
+                {text: '\n->Totales para Costos Directos', bold: true},
+		        {
+		            text:[
+				        `\nTotal Compra Mensual = ${totalProductos.totalCostos.toFixed(2)}`,
+				        `\n\nTotal Venta Mensual = ${totalProductos.totalVentas.toFixed(2)}`,
+				        `\n\nMUB (Margen de Utilidad Bruta) = ${totalProductos.mub.toFixed(2)}`
+			        ]
+		        },
+                {text: '\n\n\n\n\n\n2) Comportamiento de Ventas mensuales', bold: true},
                 {text: '\n'},
                 {
                     margin: [100,0,100,0],
@@ -201,14 +202,14 @@ class Report{
                     table: {
                         body: [
                             ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-                            ['SALDO INICIAL', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media'],
-                            ['Ingresos', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media'],
-                            ['Costo de producción', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media'],
-                            ['Utilidad Bruta', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media'],
-                            ['Costos Fijos', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media'],
-                            ['UTILIDAD NETA', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media'],
-                            ['Cuota', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media'],
-                            ['FLUJO ACUMULADO', 'Media', 'Media', '100', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media', 'Media']
+                            ['SALDO INICIAL', mf[0][0], mf[1][0], mf[2][0], mf[3][0], mf[4][0], mf[5][0], mf[6][0], mf[7][0], mf[8][0], mf[9][0], mf[10][0], mf[11][0]],
+                            ['Ingresos', mf[0][1], mf[1][1], mf[2][1], mf[3][1], mf[4][1], mf[5][1], mf[6][1], mf[7][1], mf[8][1], mf[9][1], mf[10][1], mf[11][1]],
+                            ['Costo de producción', mf[0][2], mf[1][2], mf[2][2], mf[3][2], mf[4][2], mf[5][2], mf[6][2], mf[7][2], mf[8][2], mf[9][2], mf[10][2], mf[11][2]],
+                            ['Utilidad Bruta', mf[0][3], mf[1][3], mf[2][3], mf[3][3], mf[4][3], mf[5][3], mf[6][3], mf[7][3], mf[8][3], mf[9][3], mf[10][3], mf[11][3]],
+                            ['Costos Fijos', mf[0][4], mf[1][4], mf[2][4], mf[3][4], mf[4][4], mf[5][4], mf[6][4], mf[7][4], mf[8][4], mf[9][4], mf[10][4], mf[11][4]],
+                            ['UTILIDAD NETA', mf[0][5], mf[1][5], mf[2][5], mf[3][5], mf[4][5], mf[5][5], mf[6][5], mf[7][5], mf[8][5], mf[9][5], mf[10][5], mf[11][5]],
+                            ['Cuota', mf[0][6], mf[1][6], mf[2][6], mf[3][6], mf[4][6], mf[5][6], mf[6][6], mf[7][6], mf[8][6], mf[9][6], mf[10][6], mf[11][6]],
+                            ['FLUJO ACUMULADO', mf[0][7], mf[1][7], mf[2][7], mf[3][7], mf[4][7], mf[5][7], mf[6][7], mf[7][7], mf[8][7], mf[9][7], mf[10][7], mf[11][7]]
                         ]
                     },
                     layout: {
@@ -268,6 +269,44 @@ class Report{
     generarPdf(){
         this.pdfObject = pdfMake.createPdf(this.docDefinition)
         this.pdfObject.download();
+    }
+
+    generarInsumo(insumos){
+        let res = {
+            table: {
+                body: [
+                    ['Insumo', 'Cantidad', 'Unidades de Productos', 'Precio Unitario','Total','Usado para el producto Nro']
+                ]
+            },
+            layout: {
+                fillColor: function (rowIndex, node, columnIndex) {
+                    return (rowIndex  === 0) ? '#B8EBBD' : null;
+                }
+            }
+        }
+        insumos.forEach(element => {
+            res.table.body.push(element)
+        });
+        return res;
+    }
+
+    generarProducto(productos){
+        let res = {
+            table: {
+                body: [
+                    ['Nro','Producto o Servicio', 'Tipo', 'Cantdiad', 'Frecuencia','Precio C','Precio V']
+                ]
+            },
+            layout: {
+                fillColor: function (rowIndex, node, columnIndex) {
+                    return (rowIndex  === 0) ? '#F3C57D' : null;
+                }
+            }
+        }
+        productos.forEach(element => {
+            res.table.body.push(element)
+        });
+        return res;
     }
 }
 
