@@ -34,7 +34,7 @@ class Report{
             this.docDefinition = {
                 content: [
                     {
-                        text: 'Reporte de la Estimación escogida',
+                        text: 'Reporte de la Estimación Simulada',
                         style: 'header',
                         alignment: 'center'
                     },
@@ -164,7 +164,7 @@ class Report{
                             `\n\nTipo de credito = ${credito.tipoCuota}`
                         ]
                     },
-                    {text: '\n\nFLUJO', style: 'titulo'},
+                    {text: '\n\n\n\n\n\n\n\n\n\n\n\n\n\nFLUJO', style: 'titulo'},
                     {text: '_______________________________________________________________________________________________'},
                     {text: `\nSALDO INICIAL = ${resumenPresupuesto.planInversion}`},
                     {text: '\n1) Proyeccion Mensual'},
@@ -241,7 +241,7 @@ class Report{
             this.docDefinition = {
                 content: [
                     {
-                        text: 'Reporte de la Estimación escogida',
+                        text: 'Reporte de la Estimación calculada por Rangos',
                         style: 'header',
                         alignment: 'center'
                     },
