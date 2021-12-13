@@ -1,5 +1,7 @@
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { Injectable } from '@angular/core';
+import { getDatabase, ref, child, get } from "firebase/database";
+
 
 @Injectable({
   providedIn: 'root'
@@ -91,13 +93,30 @@ export class serviceDataBase {
 
   }
 
-  getEstimacionesList() {
+  getEstimacionesLists() {
     const list = this.database.list("/Estimaciones");
-    list.valueChanges().subscribe(a => {
+    list.valueChanges().forEach(a => {
+    console.log("lista de Estimaciones:", a)
 
     })
     return list.valueChanges();
   }
+//************************** */
+  recuperaList() {
+
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `Estimaciones`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
   getEstimacion(idEstim: string) {
     const collection = this.database.object(`/Estimaciones/${idEstim}`);
     collection.valueChanges().subscribe(a => {
@@ -105,14 +124,14 @@ export class serviceDataBase {
     })
     return collection.valueChanges();
   }
-  getDataCollectionList(idEstim: string, path:string) {
+  getDataCollectionList(idEstim: string, path: string) {
     const collection = this.database.list(`/Estimaciones/${idEstim}/${path}`);
     collection.valueChanges().subscribe(a => {
 
     })
     return collection.valueChanges();
   }
-  getDataCollection<tipo>(idEstim: string, path:string) {
+  getDataCollection<tipo>(idEstim: string, path: string) {
     const collection = this.database.object<tipo>(`/Estimaciones/${idEstim}/${path}`);
     collection.valueChanges().subscribe(a => {
 
@@ -134,7 +153,7 @@ export class serviceDataBase {
     return collection.valueChanges();
   }
 
-  generateId():string {
+  generateId(): string {
     return this.database.createPushId()
   }
   createProdutCollection<tipo>(data: tipo, idEstim: string, coleccion: string) {
@@ -146,17 +165,17 @@ export class serviceDataBase {
     this.database.list(`/Estimaciones/${idEstim}`).update(coleccion, data);
   }
 
-  createInsumoCollection<tipo>(data: tipo, idEstim: string, idProduct:string, coleccion: string) {
+  createInsumoCollection<tipo>(data: tipo, idEstim: string, idProduct: string, coleccion: string) {
 
     this.database.list(`/Estimaciones/${idEstim}/productos/${idProduct}/insumos`).update(coleccion, data);
   }
-  updateDataCollection<tipo>(data: tipo, idEstim: string, path:string, coleccion: string) {
+  updateDataCollection<tipo>(data: tipo, idEstim: string, path: string, coleccion: string) {
 
     this.database.list(`/Estimaciones/${idEstim}/${path}`).update(coleccion, data);
   }
 
 
-  deleteCollection(idEstim: string, path: string){
+  deleteCollection(idEstim: string, path: string) {
     this.database.list(`/Estimaciones/${idEstim}/${path}`).remove()
 
   }

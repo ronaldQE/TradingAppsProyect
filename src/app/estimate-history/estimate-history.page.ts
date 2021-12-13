@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { serviceDataBase } from '../services/services-database';
 
-import { HistoryData, OutCome } from '../models/interfaces';
+import { HistoryData } from '../models/interfaces';
 import { Router } from '@angular/router';
+import { getDatabase, ref, child, get } from "firebase/database";
+
 
 
 @Component({
@@ -20,7 +22,7 @@ export class EstimateHistoryPage implements OnInit {
 
   public mub: string;
   public estimaciones: HistoryData[] = [];
-  public estimacionArray: any[] = [];
+   public estimacionArray: any
   public dataHistory: HistoryData = {
     id: 0,
     title: "",
@@ -36,13 +38,13 @@ export class EstimateHistoryPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getEstimacionesList();
+    this.recuperaEstimation();
   }
 
   navigateTo(path: String) {
     this.router.navigate([path]);
   }
-  setValueEstimacion(numTitle: number, van: number, tir: string, id: string, mub:number) {
+  setValueEstimacion(numTitle: number, van: number, tir: string, id: string, mub: number) {
     this.estimacionTitle = `Estimación-${numTitle + 1}`
     this.estimacionVan = van;
     this.estimacionTir = tir
@@ -50,17 +52,22 @@ export class EstimateHistoryPage implements OnInit {
     this.mub = mub.toString();
 
   }
-  //metodos carga de historial DE hisrotia
-  getEstimacionesList() {
-    this.db.getEstimacionesList().subscribe((data) => {
-      console.log("Estimacion: ", data)
-      this.estimacionArray = data
 
-    },
-      (error: any) => {
-        console.log(`Error: ${error}`);
+  //Metodo que Para ejecutar solo una vez
+  recuperaEstimation() {
+
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `Estimaciones`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        this.estimacionArray = Object.values(snapshot.val())
+        console.log(this.estimacionArray);
+
+      } else {
+        console.log("No data available");
       }
-    )
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
 
