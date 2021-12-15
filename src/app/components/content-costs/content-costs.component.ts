@@ -21,6 +21,7 @@ export class ContentCostsComponent implements OnInit {
   totalSumaVenta = 0;
   totalSumaCostos = 0;
 
+
   // public comportamientoVentas: ComportamientoVentas = {
   //   rango:"",
   //   venta: 0,
@@ -184,6 +185,7 @@ export class ContentCostsComponent implements OnInit {
     await alert.present();
 
   }
+
 
   async deleteProduct(idProduct: string) {
     this.db.deleteCollection(this.idEstim, `productos/${idProduct}`)
