@@ -57,7 +57,7 @@ export class InsumoComponent implements OnInit {
     console.log("entra al Alert")
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Confirmar Elimiación',
+      header: 'Confirmar Eliminación',
       message: `El Insumo ${nameinsumo} será Eliminado` ,
       buttons: [
         {

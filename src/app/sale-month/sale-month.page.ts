@@ -314,8 +314,8 @@ export class SaleMonthPage implements OnInit {
     )
   }
 
-  updataSaleMonth() {
-    this.db.updateData<SaleMonth>(this.saleMonth, `/Estimaciones/${this.idEstim}`, 'rangoVentas');
+  async updataSaleMonth() {
+    const up = this.db.updateData<SaleMonth>(this.saleMonth, `/Estimaciones/${this.idEstim}`, 'rangoVentas');
   }
 
   updataComportamientoVentas(mes: string, dataMes: ComportamientoVentas) {
@@ -326,17 +326,28 @@ export class SaleMonthPage implements OnInit {
     this.totalCostos = 0;
     this.totalVentas = 0;
 
+    console.log("te actulizaras_?")
+
     for (let i = 0; i < this.meses.length; i++) {
       this.db.getCollection<ComportamientoVentas>(`/Estimaciones/${this.idEstim}/comportamientoVentas/` + this.meses[i]).subscribe((data) => {
         if (data !== null) {
-          this.totalCostos = this.totalCostos + data.costoVenta;
-          this.totalVentas = this.totalVentas + data.venta;
+          if (data.rango === "Alta") {
+            this.totalVentas = this.totalVentas + this.saleMonth.ventaAlta
+          }
+          if (data.rango === "Media") {
+            this.totalVentas = this.totalVentas + this.saleMonth.ventaMedia
+          }
+          if (data.rango === "Baja") {
+            this.totalVentas = this.totalVentas + this.saleMonth.ventaBaja
+          }
         }
         if (i == 11) {
           let dataTotal = {
             totalVenta: this.totalVentas,
-            totalCostoVenta: this.totalCostos
+            totalCostoVenta: this.totalVentas * this.porsentajeCosto
           }
+
+          console.log("muestrame los totales:", dataTotal)
           this.db.updateData(dataTotal, `/Estimaciones/${this.idEstim}/comportamientoVentas`, 'totales');
           // console.log(this.totalVentas)
           // console.log(this.totalCostos)
@@ -355,8 +366,8 @@ export class SaleMonthPage implements OnInit {
   }
   save() {
     this.updataSaleMonth();
-    this.navigateTo('business-plan')
     this.getTotalSuma();
+    this.navigateTo('business-plan')
   }
 
   getValueRangoMes() {

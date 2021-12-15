@@ -21,6 +21,7 @@ export class ContentCostsComponent implements OnInit {
   totalSumaVenta = 0;
   totalSumaCostos = 0;
 
+
   // public comportamientoVentas: ComportamientoVentas = {
   //   rango:"",
   //   venta: 0,
@@ -163,8 +164,8 @@ export class ContentCostsComponent implements OnInit {
     console.log("entra al Alert")
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Confirmar Elimiación',
-      message: `El porducto ${nameProduct} será Eliminado`,
+      header: 'Confirmar Eliminación',
+      message: `El producto ${nameProduct} será Eliminado`,
       buttons: [
         {
           text: 'Cancelar',
@@ -184,6 +185,7 @@ export class ContentCostsComponent implements OnInit {
     await alert.present();
 
   }
+
 
   async deleteProduct(idProduct: string) {
     this.db.deleteCollection(this.idEstim, `productos/${idProduct}`)
