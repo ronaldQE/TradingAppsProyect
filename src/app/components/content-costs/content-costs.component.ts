@@ -163,8 +163,8 @@ export class ContentCostsComponent implements OnInit {
     console.log("entra al Alert")
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Confirmar Elimiación',
-      message: `El porducto ${nameProduct} será Eliminado`,
+      header: 'Confirmar Eliminación',
+      message: `El producto ${nameProduct} será Eliminado`,
       buttons: [
         {
           text: 'Cancelar',
